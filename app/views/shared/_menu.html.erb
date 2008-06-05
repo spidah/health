@@ -6,6 +6,7 @@
       <ul>
         <li><%= link_to('View Weights', weights_path) -%></li>
         <li><%= link_to('New Weight', new_weight_path) -%></li>
+        <li><%= link_to('Target Weight', targetweights_path, :class => 'break-above') -%></li>
       </ul>
     </li>
     <li><%= link_to('Measurements', measurements_path) -%>
@@ -18,7 +19,7 @@
       <ul>
         <li><%= link_to('View Meals', meals_path) -%></li>
         <li><%= link_to('New Meal', new_meal_path) -%></li>
-        <li><%= link_to('View Foods', foods_path) -%></li>
+        <li><%= link_to('View Foods', foods_path, :class => 'break-above') -%></li>
         <li><%= link_to('New Food', foods_path) -%></li>
       </ul>
     </li>
@@ -26,7 +27,7 @@
       <ul>
         <li><%= link_to('View Exercises', meals_path) -%></li>
         <li><%= link_to('New Exercise', new_meal_path) -%></li>
-        <li><%= link_to('View Activities', foods_path) -%></li>
+        <li><%= link_to('View Activities', foods_path, :class => 'break-above') -%></li>
         <li><%= link_to('New Activity', foods_path) -%></li>
       </ul>
     </li>
