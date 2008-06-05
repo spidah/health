@@ -24,9 +24,8 @@ module ApplicationHelper
   def menu_extra(activemenuitem)
     css = "<style type=\"text/css\" media=\"screen\">\n"
     css << "<!--\n"
-    css << "ul#nav li a##{activemenuitem}, ul#nav li a##{activemenuitem}:hover {\n"
-    css << "  background: #fff;\n"
-    css << "  color: #003;\n"
+    css << "div#menu ul li a##{activemenuitem}, div#menu ul li a##{activemenuitem}:hover {\n"
+    css << "  color: #0f0;\n"
     css << "}\n"
     css << "-->\n"
     css << "</style>\n"

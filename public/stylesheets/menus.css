@@ -37,6 +37,7 @@ a.break-above {
   width: 140px;
   color: #fff;
   text-decoration: none;
+  font-weight: bold;
 }
 
 #menu a:hover {
@@ -63,6 +64,7 @@ a.break-above {
 
 #menu li ul li a {
   width: 130px;
+  font-weight: normal;
 }
 
 #menu li ul a {
