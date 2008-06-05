@@ -1,0 +1,27 @@
+<div class="block">
+  <h2><%= @meal.name -%>: Add Food</h2>
+  <table id="foods">
+    <tr>
+      <th><%= sort_link('Name', 'name') -%></th>
+      <th><%= sort_link('Description', 'description') -%></th>
+      <th><%= sort_link('Manufacturer', 'manufacturer') -%></th>
+      <th><%= sort_link('Weight', 'weight') -%></th>
+      <th>Add</th>
+    </tr>
+  <% for food in @foods do -%>
+    <tr class="food-item">
+      <td class="name"><%= h(food.name) -%></td>
+      <td class="description"><%= h(food.description) -%></td>
+      <td class="manufacturer"><%= h(food.manufacturer) -%></td>
+      <td class="weight"><%= h(food.weight) -%></td>
+      <td class="add">
+        <% form_tag(meal_food_items_path(@meal)) do -%>
+        <%= hidden_field_tag 'food_id', food.id -%>
+        <div><input type="image" src="/images/add.gif" border="0" alt="Add Food" /></div>
+        <% end -%>
+      </td>
+    </tr>
+  <% end -%>
+  </table>
+  <%= will_paginate(@foods) -%>
+</div>

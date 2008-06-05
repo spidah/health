@@ -1,0 +1,7 @@
+<div class="block">
+<h2>News</h2>
+<% for item in @news do -%>
+<%= render :partial => 'news_item', :locals => {:news_item => item} -%>
+<% end -%>
+<%= will_paginate @news -%>
+</div>

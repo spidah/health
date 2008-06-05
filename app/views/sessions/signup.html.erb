@@ -1,0 +1,37 @@
+<div class="block">
+<h2>Signup</h2>
+<% if session[:openid_url] -%>
+<p>As this is the first time you have logged in with your OpenID login I require that you pick a loginname and a password.
+The loginname is used as both your public profile username and also a backup way of logging in (along with the password) if
+your OpenID provider is not working for any reason.</p>
+<% else -%>
+<p>To login to the Healtheriser website you need to have either an OpenID account or a normal account. OpenID allows
+you to have a single login that works over multiple websites, meaning you only need to remember
+one password to access all the websites that support OpenID accounts.</p>
+<p>You can get an OpenID account from various places but I recommend that you use
+<a href="http://www.myopenid.com/" title="MyOpenID homepage" onclick="window.open(this.href); return false;">MyOpenID.com</a>
+(opens in a new window) to get your account.
+Just click the &quot;Sign Up Now&quot; link, enter in the details it asks for, click the
+&quot;Sign Up&quot; button and you're all done. Now you can close that window and return here
+to login.</p>
+<p>If you would rather not use an OpenID account then please fill out the form below to create a normal account.</p>
+<% end -%>
+<%= print_flash(flash[:signup_error], 'error', 'Signup error') -%>
+<% form_tag signup_path, :id => 'signup_form' do -%>
+  <div class="form-row">
+    <label for="loginname" class="label">Loginname</label>
+    <span class="data"><%= text_field_tag('loginname', session[:signup_loginname]) -%></span>
+  </div>
+  <div class="form-row">
+    <label for="password" class="label">Password</label>
+    <span class="data"><%= password_field_tag('password') -%></span>
+  </div>
+  <div class="form-row">
+    <label for="password_confirmation" class="label">Confirm Password</label>
+    <span class="data"><%= password_field_tag('password_confirmation') -%></span>
+  </div>
+  <div class="form-row">
+    <span class="data"><input type="submit" name="signup" value="Signup" /></span>
+  </div>
+<% end -%>
+</div>

@@ -1,0 +1,8 @@
+table.measurements-list tr td.date {
+  background-color: #bbdbfe;
+  padding: 1px 4px;
+}
+
+table tr td.location {
+  padding-left : 25px;
+}

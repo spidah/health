@@ -1,0 +1,32 @@
+div.news-item {
+  padding-left: 1em;
+  border-bottom: 1px solid #b0a8b8;
+}
+
+div.news-item-date {
+  margin-top: 0.2em;
+}
+
+div.news-item-date p {
+  background-color: #5cdbff;
+  float: left;
+  width: 3.5em;
+  text-align: center;
+  line-height: 1em;
+  padding: 0.3em 0;
+}
+
+div.news-item-main {
+  margin-left: 4em;
+}
+
+p.news-item-title {
+  font-weight: bold;
+}
+
+p.news-item-body {
+}
+
+div.pagination {
+  padding-top: 0.5em;
+}

@@ -1,0 +1,28 @@
+<table id="target-weight">
+<tr>
+  <th>Target</th>
+  <th>Current</th>
+  <% if target_weight.achieved_on -%>
+  <th>Completed</th>
+  <% else -%>
+  <th>Remaining</th>
+  <% end -%>
+  <th>Delete</th>
+</tr>
+<tr class="odd">
+  <td class="target-weight-target"><%= target_weight.format(units) -%></td>
+<% if current_weight -%>
+  <td class="target-weight-current"><%= current_weight.format(units) -%></td>
+<% if target_weight.achieved_on -%>
+  <td class="target-weight-completed">Target reached on <%= format_date(target_weight.achieved_on) -%>!</td>
+<% else -%>
+  <td class="target-weight-difference"><%= format_weight_number(units, target_weight.difference) -%></td>
+<% end -%>
+<% else -%>
+  <td class="target-weight-current">No entry</td>
+  <td class="target-weight-difference"><%= target_weight.format(units) -%></td>
+<% end -%>
+  <td class="delete"><%= link_to image_tag('/images/delete.gif'), targetweight_path(target_weight),
+    :confirm => 'Are you sure you want to delete this target weight?', :method => :delete -%></td>
+</tr>
+</table>

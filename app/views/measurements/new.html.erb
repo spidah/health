@@ -1,0 +1,11 @@
+<div class="block">
+<h2>New Measurement</h2>
+<%= print_flash(flash[:info], 'info') %>
+<p>If you accidentally make a mistake while adding the new measurement you will still be
+able to edit it from the measurements list.</p>
+<% form_for :measurement, @measurement, :url => measurements_path, :html => {:id => 'measurements_form'} do |f| %>
+  <%= render :partial => 'measurement_form', :locals => {
+    :f => f, :user => @current_user, :measurement => @measurement, :action => 'Add',
+    :error => print_flash(flash[:error], 'error', 'Error saving measurement') } %>
+<% end %>
+</div>

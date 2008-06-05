@@ -1,0 +1,17 @@
+<fieldset>
+  <legend><%= h(meal.name) -%></legend>
+  <% for item in meal.food_items do -%>
+  <div class="form-row">
+    <span class="label"><%= item.quantity -%> *</span>
+    <span class="data"><%= h(item.name) -%></span>
+  </div>
+  <% end -%>
+  <div class="form-row">
+    <span class="label"><strong>Total Calories</strong></span>
+    <span class="data"><strong><%= meal.total_calories -%></strong></span>
+  </div>
+  <div class="form-row">
+    <%= link_to 'Edit', meal_path(meal) -%>
+    <%= link_to 'Delete', meal_path(meal), :method => :delete, :confirm => 'Are you sure you want to delete this meal?' -%>
+  </div>
+</fieldset>

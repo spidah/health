@@ -1,0 +1,8 @@
+<tr class="weight-data<% if current_date == weight.taken_on %> today<% else %> <%= cycle('odd', 'even') -%><% end %>">
+<td class="date"><%= link_date(weight.taken_on) -%></td>
+<td class="weight"><%= weight.format(units) %></td>
+<td class="difference"><%= weight_difference(units, weight.difference) %></td>
+<td class="edit"><%= link_to image_tag('/images/edit.gif'), edit_weight_path(weight) %></td>
+<td class="delete"><%= link_to image_tag('/images/delete.gif'), weight_path(weight),
+  :confirm => 'Are you sure you want to delete this weight?', :method => :delete %></td>
+</tr>

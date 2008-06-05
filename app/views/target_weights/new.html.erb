@@ -1,0 +1,9 @@
+<div class="block">
+<h2>New Target Weight</h2>
+<%= print_flash(flash[:info], 'info') %>
+<% form_for :target_weight, @target_weight, :url => targetweights_path, :html => {:id => 'target_weight_form'} do |f| %>
+  <%= render :partial => 'target_weight_form', :locals => {
+    :f => f, :user => @current_user, :target_weight => @target_weight, :action => 'Add',
+    :error => print_flash(flash[:error], 'error', 'Error saving target weight') } %>
+<% end %>
+</div>

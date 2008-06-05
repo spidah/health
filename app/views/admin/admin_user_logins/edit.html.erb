@@ -1,0 +1,35 @@
+<div class="block">
+<h2>Admin :: Edit <%= display_name(@user_login) -%>'s User Login</h2>
+<%= print_flash(flash[:error], 'error', 'Unable to update the user login') -%>
+<%= print_flash(flash[:info], 'info') -%>
+<% form_for(:user_login, @user_login, :url => admin_user_login_path(@user_login), :html => {:method => :put}) do |f| -%>
+<% if @user_login.openid_url.blank? -%>
+<fieldset>
+  <legend>Change Password</legend>
+  <div class="form-row">
+    <label for="password" class="label">Password</label>
+    <span class="data"><%= password_field_tag('password') -%></span>
+  </div>
+  <div class="form-row">
+    <label for="password_confirmation" class="label">Confirm Password</label>
+    <span class="data"><%= password_field_tag('password_confirmation') -%></span>
+  </div>
+</fieldset>
+<% else -%>
+<fieldset>
+  <legend>OpenID Login</legend>
+  <div class="form-row">
+    <label for="user_openid_openid_url" class="label">OpenID URL</label>
+    <span class="data"><%= f.text_field :openid_url -%></span>
+  </div>
+  <div class="form-row">
+    <label for="user_openid_user_id" class="label">User ID</label>
+    <span class="data"><%= f.text_field :user_id -%></span>
+  </div>
+</fieldset>
+<% end -%>
+<div class="form-row">
+  <%= submit_tag 'Update', :class => 'submit' %>
+</div>
+<% end -%>
+</div>

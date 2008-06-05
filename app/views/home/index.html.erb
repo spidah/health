@@ -1,0 +1,14 @@
+<%= print_flash(flash[:info], 'info') -%>
+<%= print_flash(flash[:error], 'error') -%>
+<div class="block">
+<h2>Welcome</h2>
+<p>Welcome to the Healtheriser. Using this website you will be able to store health data,
+like weights, measurements, meals, exercise, and so on, and see at a glance how you are doing.</p>
+</div>
+<div class="block">
+<h2>Latest News</h2>
+<% for item in @news do -%>
+<%= render :partial => 'news/news_item', :locals => {:news_item => item}-%>
+<% end -%>
+<p><span class="news-item-body"><%= link_to 'More news', news_path %></span></p>
+</div>

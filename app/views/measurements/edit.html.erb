@@ -1,0 +1,10 @@
+<div class="block">
+<h2>Edit Measurement For <%= h @measurement.location %> On <%= format_date(@measurement.taken_on) %></h2>
+<%= print_flash(flash[:error], 'error', 'Error') %>
+<%= print_flash(flash[:info], 'info') %>
+<% form_for(:measurement, @measurement, :url => measurement_path(@measurement), :html => {:method => :put, :id => 'measurements_form'}) do |f| %>
+  <%= render :partial => 'measurement_form', :locals => {
+    :f => f, :user => @current_user, :measurement => @measurement, :action => 'Update',
+    :error => print_flash(flash[:error], 'error', 'Error saving measurement') } %>
+<% end %>
+</div>

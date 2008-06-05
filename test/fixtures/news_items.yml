@@ -1,0 +1,72 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  title: First News Item
+  body: This is the first news item
+  posted_on: 2007-06-01
+
+two:
+  id: 2
+  title: Second News Item
+  body: This is the second news item
+  posted_on: 2007-06-01
+
+three:
+  id: 3
+  title: Third News Item
+  body: This is the third news item
+  posted_on: 2007-06-01
+
+four:
+  id: 4
+  title: Fourth News Item
+  body: This is the fourth news item
+  posted_on: 2007-06-01
+
+five:
+  id: 5
+  title: Fifth News Item
+  body: This is the fifth news item
+  posted_on: 2007-06-01
+
+six:
+  id: 6
+  title: Sixth News Item
+  body: This is the sixth news item
+  posted_on: 2007-06-01
+
+seven:
+  id: 7
+  title: Seventh News Item
+  body: This is the seventh news item
+  posted_on: 2007-06-01
+
+eight:
+  id: 8
+  title: Eighth News Item
+  body: This is the eighth news item
+  posted_on: 2007-06-01
+
+nine:
+  id: 9
+  title: Ninth News Item
+  body: This is the ninth news item
+  posted_on: 2007-06-01
+
+ten:
+  id: 10
+  title: Tenth News Item
+  body: This is the Tenth news item
+  posted_on: 2007-06-01
+
+eleven:
+  id: 11
+  title: Eleventh News Item
+  body: This is the eleventh news item
+  posted_on: 2007-06-01
+
+twelve:
+  id: 12
+  title: Twelveth News Item
+  body: This is the twelveth news item
+  posted_on: 2007-06-01

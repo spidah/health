@@ -1,0 +1,124 @@
+<div class="block">
+<h2>Settings</h2>
+<%= print_flash(flash[:error], 'error', 'Unable to update your settings') -%>
+<%= print_flash(flash[:openid_error], 'error', 'OpenID Error') -%>
+<%= print_flash(flash[:info], 'info') -%>
+<% if flash[:firstlogin] -%>
+<p>As this is the first time you've logged in please take the time to fill out your details.
+All of the details are optional but you will have a more personalised browsing session if you
+do.</p>
+<% end -%>
+<% form_for(:user, @user, :url => user_path, :html => {:method => :put}) do |f| -%>
+<fieldset>
+  <legend>Your Data</legend>
+  <div class="form-row">
+    <label for="user_gender" class="label">Gender</label>
+    <span class="data"><%= select('user', 'gender', [['Male', 'm'], ['Female', 'f']]) -%></span>
+  </div>
+  <div class="form-row">
+    <label class="label">Date of birth</label>
+    <span class="data"><%= date_select('user', 'dob', :start_year => Time.now.year, :end_year => Time.now.year - 120, :order => [:day, :month, :year]) -%></span>
+  </div>
+  <div class="form-row">
+    <label for="user_timezone" class="label">Timezone</label>
+    <span class="data"><%= select_tag 'user_timezone', options_for_select(TIMEZONES, @current_user.timezone.to_s), :name => 'user[timezone]' -%></span>
+  </div>
+  <div class="form-row">
+    <label for="user_isdst" class="label">Daylight savings?</label>
+    <span class="data"><%= f.check_box :isdst -%></span>
+  </div>
+</fieldset>
+<fieldset>
+  <legend>Units</legend>
+  <div class="form-row">
+    <label for="user_weight_units" class="label">Weight</label>
+    <span class="data"><%= select('user', 'weight_units', ['lbs', 'kg']) -%></span>
+  </div>
+  <div class="form-row">
+    <label for="user_measurement_units" class="label">Measurement</label>
+    <span class="data"><%= select('user', 'measurement_units', ['inches', 'cm']) -%></span>
+  </div>
+  <div class="form-row">
+    <p class="data">Please note that changing your units will <b>not</b> update any existing values.</p>
+  </div>
+</fieldset>
+<fieldset>
+  <legend>Profile</legend>
+  <div class="form-row">
+    <label for="user_profile_aboutme" class="label">About Me</label>
+    <span class="data"><%= f.text_area :profile_aboutme, :rows => 10 -%></span>
+  </div>
+  <div class="form-row">
+    <p class="data"><b>Enabled Sections</b></p>
+  </div>
+  <div class="form-row">
+    <label for="user_profile_targetweight" class="label">Target Weight</label>
+    <span class="data"><%= f.check_box :profile_targetweight -%></span>
+  </div>
+  <div class="form-row">
+    <label for="user_profile_weights" class="label">Weights</label>
+    <span class="data"><%= f.check_box :profile_weights -%></span>
+  </div>
+  <div class="form-row">
+    <label for="user_profile_measurements" class="label">Measurements</label>
+    <span class="data"><%= f.check_box :profile_measurements -%></span>
+  </div>
+  <div class="form-row">
+    <p class="data">These control which sections will appear on your public profile. Only the very latest entry will be visible if you
+      enable a section.</p>
+  </div>
+</fieldset>
+<fieldset>
+  <legend>Password Change</legend>
+  <div class="form-row">
+    <p class="data">To change your password please enter your current password and the new password you'd like to use.</p>
+  </div>
+  <div class="form-row">
+    <label for="current_password" class="label">Current Password</label>
+    <span class="data"><%= password_field_tag('current_password') -%></span>
+  </div>
+  <div class="form-row">
+    <label for="new_password" class="label">New Password</label>
+    <span class="data"><%= password_field_tag('new_password') -%></span>
+  </div>
+  <div class="form-row">
+    <label for="confirm_password" class="label">Confirm New Password</label>
+    <span class="data"><%= password_field_tag('confirm_password') -%></span>
+  </div>
+</fieldset>
+<div class="form-row">
+  <%= submit_tag 'Update', :class => 'submit' -%>
+</div>
+<% end -%>
+</div>
+<div class="block">
+<h2>OpenID Links</h2>
+<%= form_tag(openid_links_path) -%>
+<fieldset>
+  <legend>New OpenID</legend>
+  <div class="form-row">
+    <p class="data">Please add the OpenID accounts that you would like to use to login to the Healtheriser. You will need to
+      login to the OpenID account (and allow this site) before it will be listed and useable.</p>
+  </div>
+  <div class="form-row">
+    <label for="openid_link" class="label">OpenID</label>
+    <span class="data"><input type="text" name="openid_link" id="openid_link" class="openid_url"  size="30" value="http://" /></span>
+  </div>
+  <div class="form-row">
+    <%= submit_tag 'Link', :class => 'submit' -%>
+  </div>
+</fieldset>
+</form>
+<% if @openid_links && @openid_links.size > 0 -%>
+<fieldset>
+  <legend>Linked OpenID's</legend>
+  <% for link in @openid_links do -%>
+  <div class="form-row">
+    <label class="label"><%= link_to image_tag('/images/delete.gif'), openid_link_path(link),
+  :confirm => 'Are you sure you want to delete this OpenID login link?', :method => :delete %></label>
+    <span class="data"><span class="openid-link"><%= h(link.openid_url) -%></span></span>
+  </div>
+  <% end -%>
+</fieldset>
+<% end -%>
+</div>

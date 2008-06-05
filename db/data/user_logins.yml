@@ -1,0 +1,12 @@
+spidah:
+  id: 1
+  openid_url: http://spidah.myopenid.com/
+  user_id: 1
+  linked_to: 0
+
+spidah_normal:
+  id: 2
+  user_id: 1
+  linked_to: 0
+  crypted_password: baaa17f9c1bc649da3c0e8a8771ee18cb6d51553
+  salt: 796084f826e3bb5c394a68efd840a6d0ff0ba8c0

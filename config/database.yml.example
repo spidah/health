@@ -1,0 +1,12 @@
+development:
+  adapter: sqlite3
+  dbfile: db/health_development.db
+
+test:
+  adapter: sqlite3
+  dbfile: db/health_test.db
+
+production:
+  adapter: sqlite3
+  dbfile: db/health_production.db
+  

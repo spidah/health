@@ -1,0 +1,9 @@
+<div class="block">
+<h2>Admin :: Edit News Item</h2>
+<%= print_flash(flash[:info], 'info') -%>
+<% form_for(:news_item, @item, :url => admin_news_path(@item), :html => {:method => :put, :id => 'news_item_form'}) do |f| -%>
+  <%= render :partial => 'news_item_form', :locals => {
+    :f => f, :item => @item, :action => 'Update',
+    :error => print_flash(flash[:error], 'error', 'Error saving news item') } -%>
+<% end -%>
+</div>

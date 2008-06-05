@@ -1,0 +1,2 @@
+module Admin::AdminNewsHelper
+end

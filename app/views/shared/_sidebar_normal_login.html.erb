@@ -1,0 +1,17 @@
+<% form_tag session_url do -%>
+  <div class="form-row">
+    <label for="loginname">User Name</label>
+  </div>
+  <div class="form-row">
+    <span class="data"><%= text_field_tag('loginname', session[:loginname], :class => 'text login-input') -%></span>
+  </div>
+  <div class="form-row">
+    <label for="password">Password</label>
+  </div>
+  <div class="form-row">
+    <span class="data"><%= password_field_tag('password', nil, :class => 'text login-input') -%></span>
+  </div>
+  <div class="form-row">
+    <span class="data"><input type="submit" class="submit" name="login" value="Login" /></span>
+  </div>
+<% end -%>

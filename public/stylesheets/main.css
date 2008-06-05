@@ -1,0 +1,332 @@
+/* tag reset */
+
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address,
+big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt,
+var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot,
+thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+/* global tags */
+
+html {
+  font-size: 100.01%;
+}
+
+body {
+  background: #4c9fd4 url(/images/bg-g.gif) repeat-x scroll top left;
+  color: #000;
+  font-family: Verdana, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.2em 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+}
+
+label {
+  font-size: 90%;
+}
+
+input {
+  color: #000;
+}
+
+select {
+  color: #000;
+  padding: 0 5px 0 5px;
+}
+
+p {
+  font-size: 95%;
+  line-height: 1.2em;
+  margin-bottom: 0.4em;
+}
+
+img {
+  border: 0;
+  padding: 0;
+}
+
+fieldset {
+  border: 2px solid #bbdbfe;
+  margin: 1em 0 0 0;
+  padding: 0 0.5em 0.5em 0.5em;
+}
+
+  fieldset legend {
+    background-color: #bbdbfe;
+    border: 1px solid #bbdbfe;
+    font-size: 90%;
+    padding: 2px;
+  }
+
+/* main layout */
+
+#page {
+  margin: 0 auto;
+  width: 980px;
+  border: 3px solid black;
+}
+
+  #header {
+    position: relative;
+    width: 980px;
+    margin: 0;
+    background: url(/images/header.jpg) no-repeat top left;
+    height: 150px;
+  }
+
+  #main {
+    background-color: #fff;
+  }
+
+    div#side-bar {
+      float: right;
+      font-size: 85%;
+      width: 250px;
+      height: 100%;
+    }
+
+      div#side-bar div.container {
+        background-color: #e0dfd0;
+        margin: 1em;
+        padding-bottom: 0.5em;
+      }
+
+      div#side-bar div.container div {
+        margin: 0.5em;
+      }
+
+      div#side-bar div.container div h2 {
+        margin-bottom: 0.5em;
+      }
+
+      div#side-bar div.container div input.submit {
+        margin-top: 0.5em;
+      }
+
+      div#side-bar div.container div div.form-row {
+        margin: 0;
+      }
+
+    #content {
+      font-size: 14px;
+      width: 700px;
+      margin: 1em !important;
+      margin-left: 0.5em;
+      float: left;
+    }
+
+      #content h2 {
+        border-bottom: 1px dotted #000;
+        color: #007bC4;
+        font-size: 160%;
+      }
+
+      #content h3 {
+        padding: 0 0 3px 0;
+        margin: 0;
+        font-size: 110%;
+      }
+
+      #content form {
+        margin: 1em 0 1em 0;
+      }
+
+      #content div.form-row {
+        clear: both;
+        padding-top: 5px;
+      }
+
+      #content .label {
+        float: left;
+        text-align: right;
+        width: 150px;
+      }
+
+      #content span.data {
+        float: left;
+        padding-left: 20px;
+        text-align: left;
+        font-size: 95%;
+      }
+
+      #content input.submit {
+        margin-top: 1em;
+      }
+
+    #footer {
+      clear: both;
+      position: relative;
+    }
+
+      #footer div {
+        border-top: 1px dotted #000;
+        padding: 0.1em 1em;
+      }
+
+      #footer span {
+        font-size: 85%;
+      }
+
+      #footer span.footer-menu {
+        position: absolute;
+        right: 1em;
+      }
+
+/* misc elements */
+
+#error-flash {
+  background: #fff6bf url(/images/error.gif) center no-repeat;
+  background-position: 15px 50%;
+  border: 2px solid #ffd324;
+  margin: 0.5em 0;
+  padding: 5px 20px 5px 45px;
+  text-align: left;
+}
+
+#info-flash, #openid-flash {
+  background: #f8fafc url(/images/info.gif) center no-repeat;
+  background-position: 15px 50%;
+  border: 2px solid #b5d4fe;
+  margin: 0.5em 0;
+  padding: 5px 20px 5px 45px;
+  text-align: left;
+}
+
+p#date-nav {
+  text-align: center;
+}
+
+a.change-date-link:link, a.change-date-link:visited, a.change-date-link:active {
+  color: #00f;
+}
+
+a.sort-header:link, a.sort-header:visited, a.sort-header:active {
+  color: #00f;
+}
+
+div.block {
+  margin-bottom: 1em;
+  clear: left;
+  overflow: auto;
+}
+
+div.image-left {
+  float: left;
+  margin: 0.2em 0.5em 0 0;
+}
+
+div.image-right {
+  float: right;
+  margin: 0.2em 0 0 0.5em;
+}
+
+input.text {
+  background-color: #fff;
+}
+
+input.openid_url {
+  background-color: #fff;
+  background-image: url(/images/login-bg.gif);
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+  padding-left: 1.2em;
+  width: 10.8em;
+}
+
+input.login-input {
+  width: 12em;
+}
+
+span.openid {
+  color: darkgrey;
+  font-size: 85%;
+}
+
+/* tables */
+
+table {
+  background-color: #fafafa;
+  border: 1px #6699cc solid;
+  border-collapse: collapse;
+  border-spacing: 0px;
+  font-size: 95%;
+}
+
+  table th {
+    background-color: #ff7f50;
+    border-bottom: 1px #6699cc solid;
+    padding: 2px 10px;
+  }
+
+  table tr td {
+    border-bottom: 1px #6699CC dotted;
+    border-left: 1px #6699CC dotted;
+    padding: 2px 4px;
+  }
+
+    table tr td form {
+      padding: 0;
+      margin: 0;
+    }
+
+    table tr td.add, table tr td.delete, table tr td.edit {
+      text-align: center;
+      width: 50px;
+    }
+
+    table tr td.number {
+      text-align: right;
+    }
+
+    table tr td a.add-new-entry {
+      color: #00f;
+    }
+
+  table tr.today {
+    background-color: #FFB90F;
+  }
+
+  table tr.even {
+    background-color: #fdfcdc;
+  }
+
+  table tr.odd {
+    background-color: #f1edc2;
+  }
+
+/* other */
+
+div.weights {
+  float: left;
+  width: 48%;
+}
+
+div.measurements {
+  float: right;
+  width: 48%;
+}
+
+div.weights table, div.measurements table {
+  width: 100%;
+}
+
+p.profile-about-me {
+  text-indent: 2em;
+}

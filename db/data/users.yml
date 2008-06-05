@@ -1,0 +1,13 @@
+spidah:
+  id: 1
+  email: spidahman@gmail.com
+  loginname: spidah
+  gender: m
+  dob: 1982-08-16
+  timezone: 0
+  isdst: 1
+  weight_units: lbs
+  measurement_units: inches
+  admin: t
+  created_on: <%= Date.today.to_s(:db) %>
+  last_login: <%= Time.now.to_s(:db) %>

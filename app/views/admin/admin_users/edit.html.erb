@@ -1,0 +1,44 @@
+<div class="block">
+<h2>Admin :: Edit User</h2>
+<%= print_flash(flash[:error], 'error', 'Unable to update the settings') %>
+<%= print_flash(flash[:info], 'info') %>
+<% form_for(:user, @user, :url => user_path, :html => {:method => :put}) do |f| %>
+<fieldset>
+  <legend>Personal Data</legend>
+  <div class="form-row">
+    <label for="user_loginname" class="label">Login Name</label>
+    <span class="data"><%= f.text_field :loginname %></span>
+  </div>
+  <div class="form-row">
+    <label for="user_gender" class="label">Gender</label>
+    <span class="data"><%= select("user", "gender", [['Male', 'm'], ['Female', 'f']]) %></span>
+  </div>
+  <div class="form-row">
+    <label class="label">Date of birth</label>
+    <span class="data"><%= date_select("user", "dob", :start_year => Time.now.year, :end_year => Time.now.year - 120, :order => [:day, :month, :year]) %></span>
+  </div>
+  <div class="form-row">
+    <label for="user_timezone" class="label">Timezone</label>
+    <span class="data"><%= select_tag 'user_timezone', options_for_select(TIMEZONES, @user.timezone.to_s), :name => 'user[timezone]' %></span>
+  </div>
+  <div class="form-row">
+    <label for="user_isdst" class="label">Daylight savings?</label>
+    <span class="data"><%= f.check_box :isdst %></span>
+  </div>
+</fieldset>
+<fieldset>
+  <legend>Units</legend>
+  <div class="form-row">
+    <label for="user_weight_units" class="label">Weight</label>
+    <span class="data"><%= select("user", "weight_units", ['lbs', 'kg']) %></span>
+  </div>
+  <div class="form-row">
+    <label for="user_measurement_units" class="label">Measurement</label>
+    <span class="data"><%= select("user", "measurement_units", ['inches', 'cm'])%></span>
+  </div>
+</fieldset>
+<div class="form-row">
+  <%= submit_tag 'Update', :class => 'submit' %>
+</div>
+<% end %>
+</div>

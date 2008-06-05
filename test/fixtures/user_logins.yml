@@ -1,0 +1,19 @@
+spidah:
+  openid_url: http://spidah.myopenid.com/
+  user: spidah
+  linked_to: 0
+
+bob:
+  openid_url: http://bob.myopenid.com/
+  user: bob
+  linked_to: 0
+
+jimmy:
+  openid_url: http://jimmy.myopenid.com/
+  user: jimmy
+  linked_to: 0
+
+amanda:
+  user: amanda
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test

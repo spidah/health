@@ -1,0 +1,17 @@
+<div class="weights">
+<h3>Weights</h3>
+<table class="weights-list" cellspacing="0">
+  <tr>
+    <th class="weight-date-header">Taken</th>
+    <th class="weight-weight-header">Weight</th>
+    <th class="weight-difference-header">Difference</th>
+  </tr>
+  <% for weight in weights do %>
+  <tr class="weight-data <%= cycle('odd', 'even') -%>">
+    <td class="date"><%= format_date(weight.taken_on) -%></td>
+    <td class="weight"><%= weight.format(units) %></td>
+    <td class="difference"><%= weight_difference(units, weight.difference) %></td>
+  </tr>
+  <% end %>
+</table>
+</div>

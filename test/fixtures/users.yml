@@ -1,0 +1,58 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+spidah:
+  email: spidahman@gmail.com
+  loginname: spidah
+  gender: m
+  dob: 1982-08-16
+  timezone: 0
+  isdst: t
+  created_on: 2007-02-27
+  last_login: 2007-02-27 23:59:59
+  weight_units: lbs
+  measurement_units: inches
+  admin: t
+  profile_targetweight: t
+  profile_weights: t
+  profile_measurements: t
+  profile_meals: t
+  profile_exercise: t
+  profile_aboutme: Spidah.
+
+bob:
+  email: bob@gmail.com
+  loginname: bob
+  gender: m
+  dob: 1982-08-16
+  timezone: 360
+  isdst: f
+  created_on: 2007-02-28
+  last_login: 2007-02-28 23:59:59
+  weight_units: lbs
+  measurement_units: inches
+  admin: f
+
+jimmy:
+  email: jimmy@gmail.com
+  loginname: jimmy
+  gender: m
+  dob: 1982-08-16
+  timezone: 120
+  isdst: t
+  created_on: 2007-02-28
+  last_login: 2007-02-28 23:59:59
+  weight_units: kg
+  measurement_units: cm
+  admin: t
+
+amanda:
+  email: amanda@gmail.com
+  loginname: amanda
+  gender: f
+  dob: 1982-08-16
+  timezone: 0
+  isdst: f
+  created_on: 2007-02-28
+  last_login: 2007-02-28 23:59:59
+  weight_units: lbs
+  measurement_units: inches
+  admin: f

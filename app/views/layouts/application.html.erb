@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+<%= stylesheet_link_tag 'main', 'menus' -%>
+<%= javascript_include_tag 'prototype', 'effects', 'niftycube' -%>
+<% if @current_user -%>
+<%= stylesheet_link_tag 'calendar' -%>
+<%= javascript_include_tag 'calendar', 'calendar-setup', 'calendar-en', 'my-calendar-setup' -%>
+<% end -%>
+<%  if @extra_javascripts
+      @extra_javascripts.each {|file| -%>
+<%= javascript_include_tag file -%><%
+      }
+    end
+-%>
+<%  if @extra_stylesheets
+      @extra_stylesheets.each {|file| -%>
+<%= stylesheet_link_tag file -%><%
+      }
+    end
+-%>
+  <title>Healtheriser</title>
+  <%= menu_extra(@activemenuitem) if @activemenuitem and !@activemenuitem.blank? -%>
+</head>
+
+<body>
+<div id="page">
+  <div id="header">
+  </div>
+  <%= render :partial => 'shared/menu' -%>
+
+  <div id="main">
+<%= render :partial => 'shared/sidebar' -%>
+
+    <div id="content">
+<%= yield %>
+    </div>
+
+    <div id="footer">
+      <div>
+      <span>&copy; Stickiweb Software <%= year_range(2007) -%></span>
+<%= render :partial => 'shared/menu_footer' -%>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  Nifty("div.container", "tl tr transparent");
+<%= yield :niftycorners -%>
+}
+<%= yield :extrajavascript -%>
+</script>
+
+</body>
+
+</html>

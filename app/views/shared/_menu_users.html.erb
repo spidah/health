@@ -1,0 +1,8 @@
+<% content_for :sidebar do -%>
+<% menu_side_bar do -%>
+  <ul id="sub-nav" class="users-sub-nav">
+    <li><%= link_to('View Dashboard', dashboard_path) %></li>
+    <li class="last"><%= link_to('Edit Settings', edit_user_path) %></li>
+  </ul>
+<% end -%>
+<% end -%>

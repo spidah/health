@@ -1,0 +1,36 @@
+<div class="block">
+<h2>Your Dashboard</h2>
+<%= print_flash(flash[:error], 'error', 'Error') -%>
+<%= print_flash(flash[:info], 'info') -%>
+<%= print_flash(flash[:openidlink_error], 'error', 'OpenID Error') -%>
+<%
+messages = []
+if @new_openid_links and @new_openid_links.size > 0
+  for link in @new_openid_links do
+    openidlink = "<span>#{normalise_url(link.openid_url)} wants to link their account to yours. Please "
+    openidlink << link_to('confirm', openid_link_path(link), :method => :put)
+    openidlink << ' or '
+    openidlink << link_to('deny', openid_link_path(link), :method => :delete)
+    openidlink << ' the link.</span>'
+    messages << openidlink
+  end
+-%>
+<%= print_flash(messages, 'openid', 'Linked Accounts') -%>
+<% end -%>
+<p>Welcome to your dashboard. From here you will be able to view your latest entries and check
+your target weight, if you have entered any.</p>
+</div>
+<% if @target_weight -%>
+<div class="block">
+<h2>Target Weight</h2>
+<%= render :partial => 'target_weight', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
+  :units => @current_user.weight_units} -%>
+</div>
+<% end -%>
+<% if @weights.size > 0 or @measurements.size > 0 -%>
+<div class="block">
+<h2>Latest Entries</h2>
+<%= render :partial => 'weights_list', :locals => {:weights => @weights, :units => @current_user.weight_units} if @weights.size > 0 -%>
+<%= render :partial => 'measurements_list', :locals => {:measurements => @measurements, :units => @current_user.measurement_units} if @measurements.size > 0 -%>
+</div>
+<% end -%>

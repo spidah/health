@@ -1,0 +1,27 @@
+<div class="block">
+<h2><%= @user.loginname -%>'s Profile</h2>
+</div>
+<div class="block">
+<h4>About Me</h4>
+<p class="profile-about-me">
+<% if !@user.profile_aboutme.blank? -%>
+<%= h @user.profile_aboutme -%>
+<% else -%>
+Unfortunately, <%= @user.loginname -%> is a bit shy and has not written anything about themself.
+<% end -%>
+</p>
+</div>
+<% if @user.profile_targetweight && @target_weight -%>
+<div class="block">
+<h2>Target Weight</h2>
+<%= render :partial => 'target_weight', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
+  :units => @current_user.weight_units} -%>
+</div>
+<% end -%>
+<% if @user.profile_weights or @user.profile_measurements or @user.profile_meals or @user.profile_exercise -%>
+<div class="block">
+<h2>Latest Entries</h2>
+<%= render(:partial => 'weights_list', :locals => {:weights => [@weight], :units => @user.weight_units}) if @user.profile_weights && @weight -%>
+<%= render(:partial => 'measurements_list', :locals => {:measurements => @measurements, :units => @user.measurement_units}) if @user.profile_measurements && @measurements -%>
+</div>
+<% end -%>

@@ -1,0 +1,19 @@
+<div class="block">
+<h2>Admin :: View User</h2>
+<p>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Login Name</th>
+    <th>Email</th>
+    <th>Admin</th>
+    <th>Gender</th>
+    <th>Dob</th>
+    <th>Last Login</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+<%= render :partial => 'user_item', :locals => {:user_item => @user} -%>
+</table>
+</p>
+</div>
