@@ -25,10 +25,11 @@ class User < ActiveRecord::Base
   60, 120, 180, 210, 240, 270, 300, 330, 345, 360, 420, 480, 540, 570, 600, 660, 720, 780], :message => 'Please pick a valid time zone.'
 
   def get_date
-    date = Time.now
-    date += self[:timezone].to_i.minutes
-    date += 1.hour if isdst
-    date.to_date
+    #date = Time.now
+    #date += self[:timezone].to_i.minutes
+    #date += 1.hour if isdst
+    #date.to_date
+    Time.zone.now
   end
 
   def get_weights(meth = :all, direction = 'DESC', conditions = nil, limit = nil)

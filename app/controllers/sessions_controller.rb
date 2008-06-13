@@ -31,7 +31,8 @@ class SessionsController < ApplicationController
     elsif request.post?
       if session[:openid_url]
         oid_reg = session[:openid_registration]
-        @user = User.new(:loginname => params[:loginname], :email => oid_reg['email'], :gender => oid_reg['gender'], :dob => oid_reg['dob'])
+        @user = User.new(:loginname => params[:loginname], :email => oid_reg['email'], :gender => oid_reg['gender'], :dob => oid_reg['dob'],
+          :timezone => oid_reg['timezone'] || 'Europe/London')
       else
         @user = User.new(:loginname => params[:loginname], :gender => 'm', :dob => Date.today)
       end
