@@ -34,7 +34,7 @@ class SessionsController < ApplicationController
         @user = User.new(:loginname => params[:loginname], :email => oid_reg['email'], :gender => oid_reg['gender'], :dob => oid_reg['dob'],
           :timezone => oid_reg['timezone'] || 'Europe/London')
       else
-        @user = User.new(:loginname => params[:loginname], :gender => 'm', :dob => Date.today)
+        @user = User.new(:loginname => params[:loginname], :gender => 'm', :dob => Date.today, :timezone => 'Europe/London')
       end
 
       if !@user.valid?
