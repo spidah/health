@@ -4,8 +4,7 @@ spidah:
   loginname: spidah
   gender: m
   dob: 1982-08-16
-  timezone: 0
-  isdst: t
+  timezone: Europe/London
   created_on: 2007-02-27
   last_login: 2007-02-27 23:59:59
   weight_units: lbs
@@ -23,8 +22,7 @@ bob:
   loginname: bob
   gender: m
   dob: 1982-08-16
-  timezone: 360
-  isdst: f
+  timezone: Islamabad
   created_on: 2007-02-28
   last_login: 2007-02-28 23:59:59
   weight_units: lbs
@@ -36,8 +34,7 @@ jimmy:
   loginname: jimmy
   gender: m
   dob: 1982-08-16
-  timezone: 120
-  isdst: t
+  timezone: Helsinki
   created_on: 2007-02-28
   last_login: 2007-02-28 23:59:59
   weight_units: kg
@@ -49,8 +46,7 @@ amanda:
   loginname: amanda
   gender: f
   dob: 1982-08-16
-  timezone: 0
-  isdst: f
+  timezone: Europe/London
   created_on: 2007-02-28
   last_login: 2007-02-28 23:59:59
   weight_units: lbs

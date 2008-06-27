@@ -21,14 +21,9 @@ class User < ActiveRecord::Base
   validates_inclusion_of :gender, :in => %w(m f), :message => 'Please pick a valid gender.'
   validates_inclusion_of :weight_units, :in => %w(lbs kg), :message => 'Please pick a valid weight unit.'
   validates_inclusion_of :measurement_units, :in => %w(inches cm), :message => 'Please pick a valid measurement unit.'
-  validates_inclusion_of :timezone, :in => [-720, -660, -600, -540, -480, -420, -360, -300, -240, -210, -180, -120, -60, 0,
-  60, 120, 180, 210, 240, 270, 300, 330, 345, 360, 420, 480, 540, 570, 600, 660, 720, 780], :message => 'Please pick a valid time zone.'
 
   def get_date
-    date = Time.now
-    date += self[:timezone].to_i.minutes
-    date += 1.hour if isdst
-    date.to_date
+    Time.zone.now
   end
 
   def get_weights(meth = :all, direction = 'DESC', conditions = nil, limit = nil)
