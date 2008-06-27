@@ -1,5 +1,11 @@
 *Edge*
 
+* Added test/do declaration style testing to ActiveSupport::TestCase [DHH via Jay Fields]
+
+* Added Object#present? which is equivalent to !Object#blank? [DHH]
+
+* Added Enumberable#many? to encapsulate collection.size > 1 [DHH]
+
 * Add more standard Hash methods to ActiveSupport::OrderedHash [Steve Purcell]
 
 * Namespace Inflector, Dependencies, OrderedOptions, and TimeZone under ActiveSupport [Josh Peek]
