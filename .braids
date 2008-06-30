@@ -1,17 +1,14 @@
---- 
-<<<<<<< HEAD:.braids
 vendor/rails: 
   local_branch: braid/git/vendor/rails/master
-=======
-vendor/plugins: 
-  local_branch: braid/git/vendor/plugins/master
->>>>>>> braid/track:.braids
   type: git
   revision: 
   branch: master
   squash: true
-<<<<<<< HEAD:.braids
   remote: git://github.com/rails/rails.git
-=======
+vendor/plugins/open_id_authentication: 
+  local_branch: braid/git/vendor/plugins/open-id-authentication/master
+  type: git
+  revision: 
+  branch: master
+  squash: true
   remote: git://github.com/rails/open_id_authentication.git
->>>>>>> braid/track:.braids
