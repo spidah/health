@@ -421,8 +421,7 @@ module ActionController #:nodoc:
       end
 
       def view_paths=(value)
-        @view_paths = value
-        ActionView::TemplateFinder.process_view_paths(value)
+        @view_paths = ActionView::ViewLoadPaths.new(Array(value)) if value
       end
 
       # Adds a view_path to the front of the view_paths array.
@@ -434,8 +433,7 @@ module ActionController #:nodoc:
       #
       def prepend_view_path(path)
         @view_paths = superclass.view_paths.dup if @view_paths.nil?
-        view_paths.unshift(*path)
-        ActionView::TemplateFinder.process_view_paths(path)
+        @view_paths.unshift(*path)
       end
 
       # Adds a view_path to the end of the view_paths array.
@@ -447,8 +445,7 @@ module ActionController #:nodoc:
       #
       def append_view_path(path)
         @view_paths = superclass.view_paths.dup if @view_paths.nil?
-        view_paths.push(*path)
-        ActionView::TemplateFinder.process_view_paths(path)
+        @view_paths.push(*path)
       end
 
       # Replace sensitive parameter data from the request log.
@@ -606,8 +603,8 @@ module ActionController #:nodoc:
       #
       # This takes the current URL as is and only exchanges the action. In contrast, <tt>url_for :action => 'print'</tt>
       # would have slashed-off the path components after the changed action.
-      def url_for(options = nil) #:doc:
-        case options || {}
+      def url_for(options = {}) #:doc:
+        case options
           when String
             options
           when Hash
@@ -640,11 +637,11 @@ module ActionController #:nodoc:
 
       # View load paths for controller.
       def view_paths
-        @template.finder.view_paths
+        @template.view_paths
       end
 
       def view_paths=(value)
-        @template.finder.view_paths = value  # Mutex needed
+        @template.view_paths = ViewLoadPaths.new(value)
       end
 
       # Adds a view_path to the front of the view_paths array.
@@ -654,7 +651,7 @@ module ActionController #:nodoc:
       #   self.prepend_view_path(["views/default", "views/custom"])
       #
       def prepend_view_path(path)
-        @template.finder.prepend_view_path(path)  # Mutex needed
+        @template.view_paths.unshift(*path)
       end
 
       # Adds a view_path to the end of the view_paths array.
@@ -664,7 +661,7 @@ module ActionController #:nodoc:
       #   self.append_view_path(["views/default", "views/custom"])
       #
       def append_view_path(path)
-        @template.finder.append_view_path(path)  # Mutex needed
+        @template.view_paths.push(*path)
       end
 
     protected
@@ -862,8 +859,7 @@ module ActionController #:nodoc:
 
           elsif inline = options[:inline]
             add_variables_to_assigns
-            tmpl = ActionView::InlineTemplate.new(@template, options[:inline], options[:locals], options[:type])
-            render_for_text(@template.render_template(tmpl), options[:status])
+            render_for_text(@template.render(options), options[:status])
 
           elsif action_name = options[:action]
             template = default_template_name(action_name.to_s)
@@ -1098,7 +1094,7 @@ module ActionController #:nodoc:
       def render_for_file(template_path, status = nil, use_full_path = false, locals = {}) #:nodoc:
         add_variables_to_assigns
         logger.info("Rendering #{template_path}" + (status ? " (#{status})" : '')) if logger
-        render_for_text(@template.render_file(template_path, use_full_path, locals), status)
+        render_for_text(@template.render(:file => template_path, :use_full_path => use_full_path, :locals => locals), status)
       end
 
       def render_for_text(text = nil, status = nil, append_response = false) #:nodoc:
@@ -1225,7 +1221,7 @@ module ActionController #:nodoc:
       end
 
       def template_exists?(template_name = default_template_name)
-        @template.finder.file_exists?(template_name)
+        @template.file_exists?(template_name)
       end
 
       def template_public?(template_name = default_template_name)
@@ -1233,9 +1229,8 @@ module ActionController #:nodoc:
       end
 
       def template_exempt_from_layout?(template_name = default_template_name)
-        extension = @template && @template.finder.pick_template_extension(template_name)
-        name_with_extension = !template_name.include?('.') && extension ? "#{template_name}.#{extension}" : template_name
-        @@exempt_from_layout.any? { |ext| name_with_extension =~ ext }
+        template_name = @template.send(:template_file_from_name, template_name) if @template
+        @@exempt_from_layout.any? { |ext| template_name.to_s =~ ext }
       end
 
       def default_template_name(action_name = self.action_name)

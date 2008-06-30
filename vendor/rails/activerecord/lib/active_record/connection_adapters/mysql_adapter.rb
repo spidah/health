@@ -99,7 +99,8 @@ module ActiveRecord
         end
 
         def extract_limit(sql_type)
-          if sql_type =~ /blob|text/i
+          case sql_type
+          when /blob|text/i
             case sql_type
             when /tiny/i
               255
@@ -110,6 +111,11 @@ module ActiveRecord
             else
               super # we could return 65535 here, but we leave it undecorated by default
             end
+          when /^bigint/i;    8
+          when /^int/i;       4
+          when /^mediumint/i; 3
+          when /^smallint/i;  2
+          when /^tinyint/i;   1
           else
             super
           end
@@ -168,7 +174,7 @@ module ActiveRecord
         :primary_key => "int(11) DEFAULT NULL auto_increment PRIMARY KEY".freeze,
         :string      => { :name => "varchar", :limit => 255 },
         :text        => { :name => "text" },
-        :integer     => { :name => "int"},
+        :integer     => { :name => "int", :limit => 4 },
         :float       => { :name => "float" },
         :decimal     => { :name => "decimal" },
         :datetime    => { :name => "datetime" },
@@ -450,8 +456,16 @@ module ActiveRecord
       end
 
       def rename_column(table_name, column_name, new_column_name) #:nodoc:
+        options = {}
+        if column = columns(table_name).find { |c| c.name == column_name.to_s }
+          options[:default] = column.default
+        else
+          raise ActiveRecordError, "No such column: #{table_name}.#{column_name}"
+        end
         current_type = select_one("SHOW COLUMNS FROM #{quote_table_name(table_name)} LIKE '#{column_name}'")["Type"]
-        execute "ALTER TABLE #{quote_table_name(table_name)} CHANGE #{quote_column_name(column_name)} #{quote_column_name(new_column_name)} #{current_type}"
+        rename_column_sql = "ALTER TABLE #{quote_table_name(table_name)} CHANGE #{quote_column_name(column_name)} #{quote_column_name(new_column_name)} #{current_type}"
+        add_column_options!(rename_column_sql, options)
+        execute(rename_column_sql)
       end
 
       # Maps logical Rails types to MySQL-specific data types.
@@ -459,14 +473,12 @@ module ActiveRecord
         return super unless type.to_s == 'integer'
 
         case limit
-        when 0..3
-          "smallint(#{limit})"
-        when 4..8
-          "int(#{limit})"
-        when 9..20
-          "bigint(#{limit})"
-        else
-          'int(11)'
+        when 1; 'tinyint'
+        when 2; 'smallint'
+        when 3; 'mediumint'
+        when nil, 4, 11; 'int(11)'  # compatibility with MySQL default
+        when 5..8; 'bigint'
+        else raise(ActiveRecordError, "No integer type has byte size #{limit}")
         end
       end
 
