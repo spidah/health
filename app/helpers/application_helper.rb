@@ -33,9 +33,9 @@ module ApplicationHelper
 
   def menu_side_bar(&block)
     content = capture(&block)
-    concat("<div class=\"container\">\r\n\t\t\t\t<div>\r\n\t\t\t\t", block.binding)
-    concat(content, block.binding)
-    concat("\t</div>\r\n\t\t\t</div>", block.binding)
+    concat("<div class=\"container\">\r\n\t\t\t\t<div>\r\n\t\t\t\t")
+    concat(content)
+    concat("\t</div>\r\n\t\t\t</div>")
   end
   
   def format_date(date, format = nil)
