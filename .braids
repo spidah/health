@@ -6,3 +6,10 @@ vendor/plugins:
   branch: master
   squash: true
   remote: git://github.com/rails/open_id_authentication.git
+vendor/rails: 
+  local_branch: braid/git/vendor/rails/master
+  type: git
+  revision: 
+  branch: master
+  squash: true
+  remote: git://github.com/rails/rails.git
