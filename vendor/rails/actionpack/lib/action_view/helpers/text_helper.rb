@@ -30,11 +30,7 @@ module ActionView
           ActiveSupport::Deprecation.warn("The binding argument of #concat is no longer needed.  Please remove it from your views and helpers.")
         end
 
-        if output_buffer && string
-          output_buffer << string
-        else
-          string
-        end
+        output_buffer << string
       end
 
       if RUBY_VERSION < '1.9'
@@ -472,7 +468,7 @@ module ActionView
                           [-\w]+                   # subdomain or domain
                           (?:\.[-\w]+)*            # remaining subdomains or domain
                           (?::\d+)?                # port
-                          (?:/(?:(?:[~\w\+@%=\(\)-]|(?:[,.;:][^\s$]))+)?)* # path
+                          (?:/(?:(?:[~\w\+@%=\(\)-]|(?:[,.;:'][^\s$]))+)?)* # path
                           (?:\?[\w\+@%&=.;-]+)?     # query string
                           (?:\#[\w\-]*)?           # trailing anchor
                         )

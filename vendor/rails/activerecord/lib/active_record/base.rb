@@ -1297,6 +1297,20 @@ module ActiveRecord #:nodoc:
         store_full_sti_class ? name : name.demodulize
       end
 
+      # Merges conditions so that the result is a valid +condition+
+      def merge_conditions(*conditions)
+        segments = []
+
+        conditions.each do |condition|
+          unless condition.blank?
+            sql = sanitize_sql(condition)
+            segments << sql unless sql.blank?
+          end
+        end
+
+        "(#{segments.join(') AND (')})" unless segments.empty?
+      end
+
       private
         def find_initial(options)
           options.update(:limit => 1)
@@ -1465,7 +1479,7 @@ module ActiveRecord #:nodoc:
 
         def construct_finder_sql(options)
           scope = scope(:find)
-          sql  = "SELECT #{options[:select] || (scope && scope[:select]) || (options[:joins] && quoted_table_name + '.*') || '*'} "
+          sql  = "SELECT #{options[:select] || (scope && scope[:select]) || ((options[:joins] || (scope && scope[:joins])) && quoted_table_name + '.*') || '*'} "
           sql << "FROM #{(scope && scope[:from]) || options[:from] || quoted_table_name} "
 
           add_joins!(sql, options, scope)
@@ -1482,20 +1496,6 @@ module ActiveRecord #:nodoc:
         # Merges includes so that the result is a valid +include+
         def merge_includes(first, second)
          (safe_to_array(first) + safe_to_array(second)).uniq
-        end
-
-        # Merges conditions so that the result is a valid +condition+
-        def merge_conditions(*conditions)
-          segments = []
-
-          conditions.each do |condition|
-            unless condition.blank?
-              sql = sanitize_sql(condition)
-              segments << sql unless sql.blank?
-            end
-          end
-
-          "(#{segments.join(') AND (')})" unless segments.empty?
         end
 
         # Object#to_a is deprecated, though it does have the desired behavior
@@ -2055,9 +2055,10 @@ module ActiveRecord #:nodoc:
         end
 
         def replace_named_bind_variables(statement, bind_vars) #:nodoc:
-          statement.gsub(/:([a-zA-Z]\w*)/) do
-            match = $1.to_sym
-            if bind_vars.include?(match)
+          statement.gsub(/(:?):([a-zA-Z]\w*)/) do
+            if $1 == ':' # skip postgresql casts
+              $& # return the whole match
+            elsif bind_vars.include?(match = $2.to_sym)
               quote_bound_value(bind_vars[match])
             else
               raise PreparedStatementInvalid, "missing value for :#{match} in #{statement}"
@@ -2169,11 +2170,11 @@ module ActiveRecord #:nodoc:
       def cache_key
         case
         when new_record?
-          "#{self.class.name.tableize}/new"
-        when self[:updated_at]
-          "#{self.class.name.tableize}/#{id}-#{updated_at.to_s(:number)}"
+          "#{self.class.model_name.cache_key}/new"
+        when timestamp = self[:updated_at]
+          "#{self.class.model_name.cache_key}/#{id}-#{timestamp.to_s(:number)}"
         else
-          "#{self.class.name.tableize}/#{id}"
+          "#{self.class.model_name.cache_key}/#{id}"
         end
       end
 
