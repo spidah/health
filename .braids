@@ -1,4 +1,3 @@
---- 
 vendor/rails: 
   local_branch: braid/git/vendor/rails/master
   type: git
@@ -6,3 +5,10 @@ vendor/rails:
   branch: master
   squash: true
   remote: git://github.com/rails/rails.git
+vendor/plugins/open_id_authentication: 
+  local_branch: braid/git/vendor/plugins/open-id-authentication/master
+  type: git
+  revision: 
+  branch: master
+  squash: true
+  remote: git://github.com/rails/open_id_authentication.git

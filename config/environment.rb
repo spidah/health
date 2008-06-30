@@ -52,4 +52,7 @@ Rails::Initializer.run do |config|
 
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory is automatically loaded
+
+  # Application gems
+  config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com/'
 end
