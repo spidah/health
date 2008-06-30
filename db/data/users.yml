@@ -4,8 +4,7 @@ spidah:
   loginname: spidah
   gender: m
   dob: 1982-08-16
-  timezone: 0
-  isdst: 1
+  timezone: Europe/London
   weight_units: lbs
   measurement_units: inches
   admin: t

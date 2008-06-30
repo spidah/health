@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if params[:current_password]
+    if params[:current_password] && !params[:current_password].blank?
       ul = UserLogin.find_normal_login(@current_user)
       if ul.authenticated?(params[:current_password])
         ul.password = params[:new_password]

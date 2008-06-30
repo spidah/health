@@ -21,11 +21,11 @@ do.</p>
   </div>
   <div class="form-row">
     <label for="user_timezone" class="label">Timezone</label>
-    <span class="data"><%= select_tag 'user_timezone', options_for_select(TIMEZONES, @current_user.timezone.to_s), :name => 'user[timezone]' -%></span>
+    <span class="data"><%= f.time_zone_select :timezone, TZInfo::Timezone.all, :model => TZInfo::Timezone -%></span>
   </div>
   <div class="form-row">
-    <label for="user_isdst" class="label">Daylight savings?</label>
-    <span class="data"><%= f.check_box :isdst -%></span>
+    <label for="user_timezone" class="label">Timezone</label>
+    <span class="data"><%= select('user', 'timezone', time_zone_options(@user.timezone)) -%></span>
   </div>
 </fieldset>
 <fieldset>
