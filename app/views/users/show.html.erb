@@ -15,7 +15,7 @@ Unfortunately, <%= @user.loginname -%> is a bit shy and has not written anything
 <div class="block">
 <h2>Target Weight</h2>
 <%= render :partial => 'target_weight', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
-  :units => @current_user.weight_units} -%>
+  :units => @user.weight_units} -%>
 </div>
 <% end -%>
 <% if @user.profile_weights or @user.profile_measurements or @user.profile_meals or @user.profile_exercise -%>

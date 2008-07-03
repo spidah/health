@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :login_required
   before_filter :set_menu_item
   helper :measurements, :weights, :target_weights
 
