@@ -111,7 +111,7 @@ class SessionsController < ApplicationController
     end
 
     def open_id_authentication
-      authenticate_with_open_id(params[:openid_url], :optional => [:nickname, :gender, :dob, :timezone]) do |result, identity_url, registration|
+      authenticate_with_open_id(params[:openid_url], :optional => [:nickname, :gender, :timezone]) do |result, identity_url, registration|
         if result.successful?
           if @user_login = UserLogin.get(identity_url)
             @user = User.find(@user_login.user_id)
@@ -147,5 +147,9 @@ class SessionsController < ApplicationController
     def failed_login(message)
       flash[:login_error] = message
       redirect_to(login_path)
+    end
+
+    def root_url
+      open_id_complete_url
     end
 end
