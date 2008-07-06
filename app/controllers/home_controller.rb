@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   before_filter :include_thumbnail_viewer, :only => :tour
+  before_filter :include_news_stylesheet, :only => :index
   before_filter :set_menu_item
   protect_from_forgery :except => :contact
 
@@ -32,6 +33,10 @@ class HomeController < ApplicationController
     def include_thumbnail_viewer
       include_extra_javascript('thumbnailviewer')
       include_extra_stylesheet('thumbnailviewer')
+    end
+
+    def include_news_stylesheet
+      include_extra_stylesheet :news
     end
 
     def check_and_add_error(array, item, message)
