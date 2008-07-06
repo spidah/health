@@ -45,7 +45,7 @@ class HomeController < ApplicationController
 
     def set_menu_item
       if @current_user
-        @activemenuitem = 'menu-dashboard'
+        @activemenuitem = 'menu-account'
         @overridden_controller = 'users'
       end
     end

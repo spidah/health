@@ -62,7 +62,7 @@ class UsersController < ApplicationController
 
   protected
     def set_menu_item
-      @activemenuitem = 'menu-dashboard'
+      @activemenuitem = 'menu-account'
     end
 
     def failed_update(message)

@@ -51,6 +51,6 @@ class Admin::AdminUsersController < ApplicationController
     end
     
     def set_menu_item
-      @activemenuitem = 'menu-admin'
+      @activemenuitem = 'menu-account'
     end
 end
