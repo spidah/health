@@ -81,12 +81,12 @@ class NewRenderTestController < ActionController::Base
 
   def render_file_not_using_full_path
     @secret = 'in the sauce'
-    render :file => 'test/render_file_with_ivar', :use_full_path => true
+    render :file => 'test/render_file_with_ivar'
   end
 
   def render_file_not_using_full_path_with_dot_in_path
     @secret = 'in the sauce'
-    render :file => 'test/dot.directory/render_file_with_ivar', :use_full_path => true
+    render :file => 'test/dot.directory/render_file_with_ivar'
   end
 
   def render_xml_hello
@@ -150,6 +150,10 @@ class NewRenderTestController < ActionController::Base
 
   def partial_collection
     render :partial => "customer", :collection => [ Customer.new("david"), Customer.new("mary") ]
+  end
+
+  def partial_collection_with_as
+    render :partial => "customer_with_var", :collection => [ Customer.new("david"), Customer.new("mary") ], :as => :customer
   end
 
   def partial_collection_with_spacer
@@ -227,13 +231,13 @@ class NewRenderTestController < ActionController::Base
   end
 
   def render_to_string_with_exception
-    render_to_string :file => "exception that will not be caught - this will certainly not work", :use_full_path => true
+    render_to_string :file => "exception that will not be caught - this will certainly not work"
   end
 
   def render_to_string_with_caught_exception
     @before = "i'm before the render"
     begin
-      render_to_string :file => "exception that will be caught- hope my future instance vars still work!", :use_full_path => true
+      render_to_string :file => "exception that will be caught- hope my future instance vars still work!"
     rescue
     end
     @after = "i'm after the render"
@@ -266,6 +270,10 @@ class NewRenderTestController < ActionController::Base
 
   def render_with_explicit_template
     render :template => "test/hello_world"
+  end
+
+  def render_with_explicit_template_with_locals
+    render :template => "test/render_file_with_locals", :locals => { :secret => 'area51' }
   end
 
   def double_render
@@ -597,8 +605,7 @@ EOS
   end
 
   def test_render_with_default_from_accept_header
-    @request.env["HTTP_ACCEPT"] = "text/javascript"
-    get :greeting
+    xhr :get, :greeting
     assert_equal "$(\"body\").visualEffect(\"highlight\");", @response.body
   end
 
@@ -759,6 +766,11 @@ EOS
     assert_equal "Hello: davidHello: mary", @response.body
   end
 
+  def test_partial_collection_with_as
+    get :partial_collection_with_as
+    assert_equal "david david davidmary mary mary", @response.body
+  end
+
   def test_partial_collection_with_counter
     get :partial_collection_with_counter
     assert_equal "david0mary1", @response.body
@@ -818,6 +830,11 @@ EOS
   def test_render_text_with_assigns
     get :render_text_with_assigns
     assert_equal "world", assigns["hello"]
+  end
+
+  def test_template_with_locals
+    get :render_with_explicit_template_with_locals
+    assert_equal "The secret is area51\n", @response.body
   end
 
   def test_update_page

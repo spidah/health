@@ -1,3 +1,4 @@
+--- 
 vendor/rails: 
   local_branch: braid/git/vendor/rails/master
   type: git
