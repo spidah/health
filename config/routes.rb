@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
     meal.resources :food_items
   end
   map.resources :foods
+  map.resource :calendar,                         :controller => 'calendar'
 
   map.admin             '/admin',                 :controller => 'admin/admin',         :action => 'index'
   map.namespace(:admin) do |admin|
