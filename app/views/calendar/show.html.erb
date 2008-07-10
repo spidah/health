@@ -15,7 +15,7 @@
     <div class="days">
       <div class="week">
         <% 0.upto(5) do |day| -%>
-        <%= render :partial => 'weekheader', :locals => {:day => WEEKDAYS[day], :extra => ''} -%>
+        <%= render :partial => 'weekheader', :locals => {:day => WEEKDAYS[day]} -%>
         <% end -%>
         <%= render :partial => 'weekheader', :locals => {:day => WEEKDAYS[6], :extra => ' last'} -%>
       </div>
@@ -31,11 +31,15 @@
         <% @weekindex += 1 -%>
         <% end -%>
       </div>
-      <% while @dayindex <= @daysinmonth do |day| -%>
+      <% while @dayindex <= @monthdays do -%>
       <div class="week">
         <% @weekindex = 1 -%>
         <% 1.upto(7) do |dayi| -%>
+        <% if @dayindex <= @monthdays -%>
         <%= render :partial => 'weekday', :locals => {:day => @dayindex, :extra => @weekindex == 7 ? ' last' : ''} -%>
+        <% else -%>
+        <%= render :partial => 'blankday', :locals => {:extra => @weekindex == 7 ? ' last' : ''} -%>
+        <% end -%>
         <% @dayindex += 1 -%>
         <% @weekindex += 1 -%>
         <% end -%>

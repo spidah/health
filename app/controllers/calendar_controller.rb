@@ -6,7 +6,6 @@ class CalendarController < ApplicationController
     @date = current_date
     @weekday = convert_week_day_number(@date.wday)
     @monthstart = convert_week_day_number(@date.beginning_of_month.wday)
-    logger.warn "@monthstart: #{@monthstart}"
     @monthdays = @date.end_of_month.day
     @monthend = convert_week_day_number(@date.end_of_month.wday)
     @prevmonth = @date - 1.month
