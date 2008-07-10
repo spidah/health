@@ -1,11 +1,7 @@
 module ActionView #:nodoc:
   class Template #:nodoc:
-    include Renderer
-
-    class << self
-      # TODO: Deprecate
-      delegate :register_template_handler, :to => 'ActionView::Base'
-    end
+    extend TemplateHandlers
+    include Renderable
 
     attr_reader :path, :extension
 
@@ -23,9 +19,9 @@ module ActionView #:nodoc:
 
       set_extension_and_file_name
 
-      @method_key = @filename
-      @locals = locals || {}
-      @handler = Base.handler_class_for_extension(@extension).new(@view)
+      @method_segment = compiled_method_name_file_path_segment
+      @locals = (locals && locals.dup) || {}
+      @handler = self.class.handler_class_for_extension(@extension).new(@view)
     end
 
     def render_template
@@ -41,7 +37,7 @@ module ActionView #:nodoc:
     end
 
     def source
-      @source ||= File.read(self.filename)
+      @source ||= File.read(@filename)
     end
 
     def base_path_for_exception
@@ -74,6 +70,13 @@ module ActionView #:nodoc:
         display_paths = @paths.join(':')
         template_type = (@original_path =~ /layouts/i) ? 'layout' : 'template'
         raise MissingTemplate, "Missing #{template_type} #{full_template_path} in view path #{display_paths}"
+      end
+
+      def compiled_method_name_file_path_segment
+        s = File.expand_path(@filename)
+        s.sub!(/^#{Regexp.escape(File.expand_path(RAILS_ROOT))}/, '') if defined?(RAILS_ROOT)
+        s.gsub!(/([^a-zA-Z0-9_])/) { $1.ord }
+        s
       end
   end
 end
