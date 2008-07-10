@@ -1,5 +1,13 @@
 *Edge*
 
+* Do not stat template files in production mode before rendering. You will no longer be able to modify templates in production mode without restarting the server [Josh Peek]
+
+* Deprecated TemplateHandler line offset [Josh Peek]
+
+* Allow caches_action to accept cache store options. #416. [José Valim]. Example:
+  
+  caches_action :index, :redirected, :if => Proc.new { |c| !c.request.format.json? }, :expires_in => 1.hour
+
 * Remove define_javascript_functions, javascript_include_tag and friends are far superior. [Michael Koziarski]
 
 * Deprecate :use_full_path render option. The supplying the option no longer has an effect [Josh Peek]
@@ -13,6 +21,16 @@
 * time_zone_select: support for regexp matching of priority zones. Resolves #195 [Ernie Miller]
 
 * Made ActionView::Base#render_file private [Josh Peek]
+
+* Refactor and simplify the implementation of assert_redirected_to.  Arguments are now normalised relative to the controller being tested,  not the root of the application.  [Michael Koziarski]
+
+  This could cause some erroneous test failures if you were redirecting between controllers
+  in different namespaces and wrote your assertions relative to the root of the application.
+
+* Remove follow_redirect from controller functional tests.
+
+	If you want to follow redirects you can use integration tests.  The functional test
+	version was only useful if you were using redirect_to :id=>...
 
 * Fix polymorphic_url with singleton resources.  #461 [Tammer Saleh]
 

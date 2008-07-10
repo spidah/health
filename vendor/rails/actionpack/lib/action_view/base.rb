@@ -151,7 +151,6 @@ module ActionView #:nodoc:
   #
   # See the ActionView::Helpers::PrototypeHelper::GeneratorMethods documentation for more details.
   class Base
-    extend TemplateHandlers
     include ERB::Util
 
     attr_accessor :base_path, :assigns, :template_extension, :first_render
@@ -166,7 +165,7 @@ module ActionView #:nodoc:
       delegate :erb_trim_mode=, :to => 'ActionView::TemplateHandlers::ERB'
     end
 
-    # Specify whether file modification times should be checked to see if a template needs recompilation
+    # Specify whether templates should be cached. Otherwise the file we be read everytime it is accessed.
     @@cache_template_loading = false
     cattr_accessor :cache_template_loading
 
@@ -189,12 +188,6 @@ module ActionView #:nodoc:
       # holds compiled template code
     end
     include CompiledTemplates
-
-    # Maps inline templates to their method names
-    cattr_accessor :method_names
-    @@method_names = {}
-    # Map method names to the names passed in local assigns so far
-    @@template_args = {}
 
     # Cache public asset paths
     cattr_reader :computed_public_paths
