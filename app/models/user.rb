@@ -23,7 +23,8 @@ class User < ActiveRecord::Base
   validates_inclusion_of :measurement_units, :in => %w(inches cm), :message => 'Please pick a valid measurement unit.'
 
   def get_date
-    Time.zone.now
+    Time.zone = timezone
+    Time.zone.now.to_date
   end
 
   def get_weights(meth = :all, direction = 'DESC', conditions = nil, limit = nil)

@@ -2,7 +2,7 @@
           <span>Logged in as <%= link_to h(@current_user.loginname), profile_path(@current_user.loginname) -%>.</span>
           <% form_tag(change_date_path, :id => 'date_picker_form') do %>
             <span>Display date: <%= format_date(session[:displaydate] || @current_user.get_date) -%>
-            <input type="text" id="date_picker" name="date_picker" readonly="readonly" value="<%= format_date(session[:displaydate] || @current_user.get_date) -%>" />
+            <!--<input type="text" id="date_picker" name="date_picker" readonly="readonly" value="<%= format_date(session[:displaydate] || @current_user.get_date) -%>" />-->
             </span>
           <% end -%>
       <% end -%>

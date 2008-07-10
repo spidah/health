@@ -1,0 +1,45 @@
+#calendar {
+  width: 632px;
+}
+
+  #calendar div.header {
+    overflow: none;
+  }
+
+    #calendar div.header div.prev-month {
+      float: left;
+    }
+
+    #calendar div.header div.next-month {
+      float: right;
+    }
+
+    #calendar div.header div.month {
+      text-align: center;
+    }
+
+  #calendar div.days {
+    border: 1px solid #838b8b;
+    overflow: auto;
+  }
+
+    #calendar div.days div.week {
+      clear: both;
+    }
+
+      #calendar div.days div.week div.day {
+        float: left;
+        text-align: center;
+        width: 89px;
+        border-right: 1px solid #838b8b;
+      }
+
+      #calendar div.days div.week div.last {
+        border: 0;
+      }
+
+      #calendar div.days div.week div.data {
+        height: 89px;
+        border-top: 1px solid #838b8b;
+        text-align: left;
+      }

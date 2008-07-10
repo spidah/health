@@ -48,3 +48,5 @@ SELECT_QUANTITY = Array[]
 1.upto(112) {|i| SELECT_INCHES << [i.to_s, i.to_s]}
 1.upto(300) {|c| SELECT_CM << [c.to_s, c.to_s]}
 1.upto(50)  {|q| SELECT_QUANTITY << [q.to_s, q.to_s]}
+
+WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']

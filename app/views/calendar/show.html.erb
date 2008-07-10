@@ -1,0 +1,48 @@
+<div class="block">
+<h2>Activity Calendar</h2>
+<%= print_flash(flash[:error], 'error', 'Error') -%>
+<%= print_flash(flash[:info], 'info') -%>
+</div>
+
+<div class="block">
+
+  <div id="calendar">
+    <div class="header">
+      <div class="prev-month"><< <%= month_name(@prevmonth) -%></div>
+      <div class="next-month"><%= month_name(@nextmonth) -%> >></div>
+      <div class="month"><%= month_name(@date) -%></div>
+    </div>
+    <div class="days">
+      <div class="week">
+        <% 0.upto(5) do |day| -%>
+        <%= render :partial => 'weekheader', :locals => {:day => WEEKDAYS[day], :extra => ''} -%>
+        <% end -%>
+        <%= render :partial => 'weekheader', :locals => {:day => WEEKDAYS[6], :extra => ' last'} -%>
+      </div>
+      <% if @monthstart > 1 -%>
+      <div class="week">
+        <% 1.upto(@monthstart - 1) do |day| -%>
+        <%= render :partial => 'blankday' -%>
+        <% @weekindex += 1 -%>
+        <% end -%>
+        <% @weekindex.upto(7) do |day| -%>
+        <%= render :partial => 'weekday', :locals => {:day => @dayindex, :extra => @weekindex == 7 ? ' last' : ''} -%>
+        <% @dayindex += 1 -%>
+        <% @weekindex += 1 -%>
+        <% end -%>
+      </div>
+      <% while @dayindex <= @daysinmonth do |day| -%>
+      <div class="week">
+        <% @weekindex = 1 -%>
+        <% 1.upto(7) do |dayi| -%>
+        <%= render :partial => 'weekday', :locals => {:day => @dayindex, :extra => @weekindex == 7 ? ' last' : ''} -%>
+        <% @dayindex += 1 -%>
+        <% @weekindex += 1 -%>
+        <% end -%>
+      </div>
+      <% end -%>
+      <% end -%>
+    </div>
+  </div>
+
+</div>
