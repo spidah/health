@@ -22,7 +22,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.home              '',                       :controller => 'home',                :action => 'index'
   map.dashboard         '/dashboard',             :controller => 'users',               :action => 'index'
-  map.change_date       '/changedate',            :controller => 'users',               :action => 'change_date'
+  map.change_date       '/calendar/changedate',   :controller => 'calendar',            :action => 'change_date'
+  map.change_month      '/calendar/changemonth',  :controller => 'calendar',            :action => 'change_month'
   map.login             '/login',                 :controller => 'sessions',            :action => 'new'
   map.logout            '/logout',                :controller => 'sessions',            :action => 'destroy'
   map.signup            '/signup',                :controller => 'sessions',            :action => 'signup'

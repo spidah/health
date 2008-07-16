@@ -8,8 +8,8 @@
 
   <div id="calendar">
     <div class="month-header">
-      <div class="prev-month"><< <%= month_name(@prevmonth) -%></div>
-      <div class="next-month"><%= month_name(@nextmonth) -%> >></div>
+      <div class="prev-month"><%= link_month(@prevmonth, "<< #{month_name(@prevmonth)}") -%></div>
+      <div class="next-month"><%= link_month(@nextmonth, "#{month_name(@nextmonth)} >>") -%></div>
       <div class="month"><%= month_name(@date) -%></div>
     </div>
     <div class="days">
@@ -25,7 +25,7 @@
 <% @weekindex += 1 -%>
 <% end -%>
 <% @weekindex.upto(7) do |day| -%>
-        <%= render :partial => 'weekday', :locals => {:day => @dayindex, :current => @date, :extra => @weekindex == 7 ? ' last' : ''} -%>
+        <%= render :partial => 'weekday', :locals => {:day => @dayindex, :date => replace_day(@date, @dayindex), :today => @today, :extra => @weekindex == 7 ? ' last' : ''} -%>
 <% @dayindex += 1 -%>
 <% @weekindex += 1 -%>
 <% end -%>
@@ -36,7 +36,7 @@
 <% @weekindex = 1 -%>
 <% 1.upto(7) do |dayi| -%>
 <% if @dayindex <= @monthdays -%>
-        <%= render :partial => 'weekday', :locals => {:day => @dayindex, :current => @date, :extra => @weekindex == 7 ? ' last' : ''} -%>
+        <%= render :partial => 'weekday', :locals => {:day => @dayindex, :date => replace_day(@date, @dayindex), :today => @today, :extra => @weekindex == 7 ? ' last' : ''} -%>
 <% else -%>
         <%= render :partial => 'blankday', :locals => {:extra => @weekindex == 7 ? ' last' : ''} -%>
 <% end -%>

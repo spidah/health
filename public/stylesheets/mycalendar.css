@@ -66,3 +66,9 @@
         border-right: 1px solid #838b8b;
         border-bottom: 1px solid #838b8b;
       }
+
+      #calendar div.days div.week div.data div a {
+        float: left;
+        padding-left: 10px;
+        padding-top: 2px;
+      }

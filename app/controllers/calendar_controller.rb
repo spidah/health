@@ -3,7 +3,8 @@ class CalendarController < ApplicationController
   before_filter :include_stylesheet
 
   def show
-    @date = current_date
+    @today = current_date
+    @date = session[:calendar_date] || @today
     @weekday = convert_week_day_number(@date.wday)
     @monthstart = convert_week_day_number(@date.beginning_of_month.wday)
     @monthdays = @date.end_of_month.day
@@ -12,6 +13,19 @@ class CalendarController < ApplicationController
     @nextmonth = @date + 1.month
     @dayindex = 1
     @weekindex = 1
+  end
+
+  def change_date
+    session[:displaydate] = Date.parse(params[:date_picker]) rescue session[:displaydate]
+    session[:calendar_date] = nil
+
+    redirect_path = eval("#{params[:section]}_path") rescue dashboard_path
+    redirect_to redirect_path
+  end
+
+  def change_month
+    session[:calendar_date] = Date.parse(params[:date_picker]) rescue session[:displaydate]
+    redirect_to calendar_path
   end
 
   protected

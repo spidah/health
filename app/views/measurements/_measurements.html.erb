@@ -3,6 +3,6 @@ date = nil
 for measurement in measurements do -%>
 <% if date != measurement.taken_on
      date = measurement.taken_on -%>
-<tr class="measurement-date"><td class="date" colspan="5"><%= link_date(date) -%></td></tr><% end -%>
+<tr class="measurement-date"><td class="date" colspan="5"><%= link_date(date, 'measurements') -%></td></tr><% end -%>
 <%= render :partial => 'measurement_item', :locals => {:units => units, :measurement => measurement} -%>
 <% end -%>
