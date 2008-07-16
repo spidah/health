@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   session :session_key => '_health_session_id'
   protect_from_forgery :secret => '22bf5f741da2673a5d144122a3af97f9da94d417'
   before_filter :get_user
-  #before_filter :set_time_zone
   helper_method :current_date
 
   # filters used through the app
@@ -20,10 +19,6 @@ class ApplicationController < ActionController::Base
       @current_user = nil
     end
   end
-
-  #def set_time_zone
-  #  Time.zone = @current_user.timezone if @current_user
-  #end
 
   # other methods
 
