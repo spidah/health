@@ -1,3 +1,6 @@
-<div class="day<%= extra if defined?(extra) -%> data">
-<%= day -%>
+
+<div class="day<%= ' today' if current.day == day -%><%= extra if defined?(extra) -%>">
+  <div class="data">
+    <span class="number"><%= day -%></span>
+  </div>
 </div>

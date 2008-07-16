@@ -1,29 +1,33 @@
 #calendar {
-  width: 632px;
+  width: 631px;
 }
 
-  #calendar div.header {
+  #calendar div.month-header {
     overflow: none;
+    border: 1px solid #838b8b;
   }
 
-    #calendar div.header div.prev-month {
+    #calendar div.month-header div.prev-month {
       float: left;
     }
 
-    #calendar div.header div.next-month {
+    #calendar div.month-header div.next-month {
       float: right;
     }
 
-    #calendar div.header div.month {
+    #calendar div.month-header div.month {
       text-align: center;
     }
 
   #calendar div.days {
-    border: 1px solid #838b8b;
+    /*border: 1px solid #838b8b;*/
+    /*border-top: 0;*/
     overflow: auto;
+    clear: both;
   }
 
     #calendar div.days div.week {
+      overflow: auto;
       clear: both;
     }
 
@@ -31,15 +35,34 @@
         float: left;
         text-align: center;
         width: 89px;
-        border-right: 1px solid #838b8b;
+        border-left: 1px solid #838b8b;
+        border-bottom: 1px solid #838b8b;
+        /*border-right: 1px solid #838b8b;*/
+      }
+
+      #calendar div.days div.week div.day-name {
+      
       }
 
       #calendar div.days div.week div.last {
-        border: 0;
+        border-right: 1px solid #838b8b;
+      }
+
+      #calendar div.days div.week div.blank {
+        background-color: #c1cdcd;
       }
 
       #calendar div.days div.week div.data {
         height: 89px;
-        border-top: 1px solid #838b8b;
         text-align: left;
+      }
+
+      #calendar div.days div.week div.today {
+        background-color: #87ceeb;
+      }
+
+      #calendar div.days div.week div.data span.number {
+        font-size: 85%;
+        border-right: 1px solid #838b8b;
+        border-bottom: 1px solid #838b8b;
       }
