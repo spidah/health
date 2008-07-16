@@ -8,7 +8,7 @@ module ActionView
       @view = view
     end
 
-    def render(template)
+    def render(template, local_assigns = {})
     end
 
     def compile(template)
@@ -16,10 +16,6 @@ module ActionView
 
     def compilable?
       self.class.compilable?
-    end
-
-    # Called by CacheHelper#cache
-    def cache_fragment(block, name = {}, options = nil)
     end
   end
 end

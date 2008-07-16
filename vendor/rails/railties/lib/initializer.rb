@@ -98,7 +98,7 @@ module Rails
     #   Rails::Initializer.run(:set_load_path)
     #
     # This is useful if you only want the load path initialized, without
-    # incuring the overhead of completely loading the entire environment.
+    # incurring the overhead of completely loading the entire environment.
     def self.run(command = :process, configuration = Configuration.new)
       yield configuration if block_given?
       initializer = new configuration
@@ -137,12 +137,12 @@ module Rails
       initialize_logger
       initialize_framework_logging
 
-      initialize_framework_views
       initialize_dependency_mechanism
       initialize_whiny_nils
       initialize_temporary_session_directory
       initialize_time_zone
       initialize_framework_settings
+      initialize_framework_views
 
       add_support_load_paths
 
@@ -266,11 +266,16 @@ module Rails
         @gems_dependencies_loaded = false
         # don't print if the gems rake tasks are being run
         unless $rails_gem_installer
-          puts %{These gems that this application depends on are missing:}
-          unloaded_gems.each do |gem|
-            puts " - #{gem.name}"
-          end
-          puts %{Run "rake gems:install" to install them.}
+          abort <<-end_error
+Missing these required gems:
+  #{unloaded_gems.map { |gem| "#{gem.name}  #{gem.requirement}" } * "\n  "}
+
+You're running:
+  ruby #{Gem.ruby_version} at #{Gem.ruby}
+  rubygems #{Gem::RubyGemsVersion} at #{Gem.path * ', '}
+
+Run `rake gems:install` to install the missing gems.
+          end_error
         end
       else
         @gems_dependencies_loaded = true
@@ -409,8 +414,11 @@ module Rails
     # paths have already been set, it is not changed, otherwise it is
     # set to use Configuration#view_path.
     def initialize_framework_views
-      ActionMailer::Base.template_root ||= configuration.view_path  if configuration.frameworks.include?(:action_mailer)
-      ActionController::Base.view_paths = [configuration.view_path] if configuration.frameworks.include?(:action_controller) && ActionController::Base.view_paths.empty?
+      ActionView::PathSet::Path.eager_load_templates! if configuration.cache_classes
+      view_path = ActionView::PathSet::Path.new(configuration.view_path)
+
+      ActionMailer::Base.template_root ||= view_path if configuration.frameworks.include?(:action_mailer)
+      ActionController::Base.view_paths = view_path if configuration.frameworks.include?(:action_controller) && ActionController::Base.view_paths.empty?
     end
 
     # If Action Controller is not one of the loaded frameworks (Configuration#frameworks)
@@ -523,7 +531,7 @@ module Rails
     # A stub for setting options on ActiveRecord::Base.
     attr_accessor :active_record
 
-    # A stub for setting options on ActiveRecord::Base.
+    # A stub for setting options on ActiveResource::Base.
     attr_accessor :active_resource
 
     # A stub for setting options on ActiveSupport.
