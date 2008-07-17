@@ -245,6 +245,16 @@ class HashExtTest < Test::Unit::TestCase
     assert(!indiff.keys.any? {|k| k.kind_of? String}, "A key was converted to a string!")
   end
 
+  def test_deep_merge
+    hash_1 = { :a => "a", :b => "b", :c => { :c1 => "c1", :c2 => "c2", :c3 => { :d1 => "d1" } } }
+    hash_2 = { :a => 1, :c => { :c1 => 2, :c3 => { :d2 => "d2" } } }
+    expected = { :a => 1, :b => "b", :c => { :c1 => 2, :c2 => "c2", :c3 => { :d1 => "d1", :d2 => "d2" } } }
+    assert_equal expected, hash_1.deep_merge(hash_2)
+
+    hash_1.deep_merge!(hash_2)
+    assert_equal expected, hash_1
+  end
+
   def test_reverse_merge
     defaults = { :a => "x", :b => "y", :c => 10 }.freeze
     options  = { :a => 1, :b => 2 }
@@ -279,6 +289,20 @@ class HashExtTest < Test::Unit::TestCase
 
     # Should replace the hash with only the given keys.
     assert_equal expected, original.slice!(:a, :b)
+    assert_equal expected, original
+  end
+
+  # This is needed for something like hash.slice!(hash.keys.sort_by {rand} [0..4])
+  def test_slice_with_array_keys
+    original = { :a => 'x', :b => 'y', :c => 10 }
+    expected = { :a => 'x', :b => 'y' }
+
+    # Should return a new hash with only the given keys, when given an array of keys.
+    assert_equal expected, original.slice([:a, :b])
+    assert_not_equal expected, original
+
+    # Should replace the hash with only the given keys, when given an array of keys.
+    assert_equal expected, original.slice!([:a, :b])
     assert_equal expected, original
   end
 
@@ -469,12 +493,12 @@ class HashToXmlTest < Test::Unit::TestCase
     EOT
 
     expected_topic_hash = {
-      :title      => nil, 
+      :title      => nil,
       :id         => nil,
       :approved   => nil,
       :written_on => nil,
       :viewed_at  => nil,
-      :content    => nil, 
+      :content    => nil,
       :parent_id  => nil
     }.stringify_keys
 
@@ -552,7 +576,7 @@ class HashToXmlTest < Test::Unit::TestCase
 
     assert_equal expected_topic_hash, Hash.from_xml(topic_xml)["rsp"]["photos"]["photo"]
   end
-  
+
   def test_empty_array_from_xml
     blog_xml = <<-XML
       <blog>
@@ -650,13 +674,13 @@ class HashToXmlTest < Test::Unit::TestCase
 
     assert_equal expected_bacon_hash, Hash.from_xml(bacon_xml)["bacon"]
   end
-  
+
   def test_type_trickles_through_when_unknown
     product_xml = <<-EOT
     <product>
       <weight type="double">0.5</weight>
       <image type="ProductImage"><filename>image.gif</filename></image>
-      
+
     </product>
     EOT
 
@@ -665,7 +689,7 @@ class HashToXmlTest < Test::Unit::TestCase
       :image => {'type' => 'ProductImage', 'filename' => 'image.gif' },
     }.stringify_keys
 
-    assert_equal expected_product_hash, Hash.from_xml(product_xml)["product"]    
+    assert_equal expected_product_hash, Hash.from_xml(product_xml)["product"]
   end
 
   def test_should_use_default_value_for_unknown_key
@@ -699,41 +723,41 @@ class HashToXmlTest < Test::Unit::TestCase
       assert_equal expected, hash.to_xml(@xml_options)
     end
   end
-  
-  def test_empty_string_works_for_typecast_xml_value    
+
+  def test_empty_string_works_for_typecast_xml_value
     assert_nothing_raised do
       Hash.send!(:typecast_xml_value, "")
     end
   end
-  
+
   def test_escaping_to_xml
-    hash = { 
-      :bare_string        => 'First & Last Name', 
+    hash = {
+      :bare_string        => 'First & Last Name',
       :pre_escaped_string => 'First &amp; Last Name'
     }.stringify_keys
-    
+
     expected_xml = '<person><bare-string>First &amp; Last Name</bare-string><pre-escaped-string>First &amp;amp; Last Name</pre-escaped-string></person>'
     assert_equal expected_xml, hash.to_xml(@xml_options)
   end
-  
+
   def test_unescaping_from_xml
     xml_string = '<person><bare-string>First &amp; Last Name</bare-string><pre-escaped-string>First &amp;amp; Last Name</pre-escaped-string></person>'
-    expected_hash = { 
-      :bare_string        => 'First & Last Name', 
+    expected_hash = {
+      :bare_string        => 'First & Last Name',
       :pre_escaped_string => 'First &amp; Last Name'
     }.stringify_keys
     assert_equal expected_hash, Hash.from_xml(xml_string)['person']
   end
-  
+
   def test_roundtrip_to_xml_from_xml
-    hash = { 
-      :bare_string        => 'First & Last Name', 
+    hash = {
+      :bare_string        => 'First & Last Name',
       :pre_escaped_string => 'First &amp; Last Name'
     }.stringify_keys
 
     assert_equal hash, Hash.from_xml(hash.to_xml(@xml_options))['person']
   end
-  
+
   def test_datetime_xml_type_with_utc_time
     alert_xml = <<-XML
       <alert>
@@ -744,7 +768,7 @@ class HashToXmlTest < Test::Unit::TestCase
     assert alert_at.utc?
     assert_equal Time.utc(2008, 2, 10, 15, 30, 45), alert_at
   end
-  
+
   def test_datetime_xml_type_with_non_utc_time
     alert_xml = <<-XML
       <alert>
@@ -755,7 +779,7 @@ class HashToXmlTest < Test::Unit::TestCase
     assert alert_at.utc?
     assert_equal Time.utc(2008, 2, 10, 15, 30, 45), alert_at
   end
-  
+
   def test_datetime_xml_type_with_far_future_date
     alert_xml = <<-XML
       <alert>
