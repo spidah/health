@@ -1,7 +1,7 @@
 
 <div class="day<%= ' today' if date == today -%><%= extra if defined?(extra) -%>">
   <div class="data">
-    <span class="number"><%= day -%></span>
+    <span class="number"><%= link_date(date, 'calendar', day) -%></span>
     <div>
     </div>
   </div>
