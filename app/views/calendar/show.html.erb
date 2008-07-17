@@ -8,8 +8,8 @@
 
   <div id="calendar">
     <div class="month-header">
-      <div class="prev-month"><%= link_month(@prevmonth, "<< #{month_name(@prevmonth)}") -%></div>
-      <div class="next-month"><%= link_month(@nextmonth, "#{month_name(@nextmonth)} >>") -%></div>
+      <div class="prev-month"><%= link_month(@prevmonth, "&lt;&lt; #{month_name(@prevmonth)}") -%></div>
+      <div class="next-month"><%= link_month(@nextmonth, "#{month_name(@nextmonth)} &gt;&gt;") -%></div>
       <div class="month"><%= month_name(@date) -%></div>
     </div>
     <div class="days">
