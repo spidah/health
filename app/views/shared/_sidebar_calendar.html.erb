@@ -1,0 +1,5 @@
+      <% menu_side_bar do -%>
+<% if session[:displaydate] && session[:displaydate] != @current_user.get_date -%>
+        <div><%= link_date(@current_user.get_date, controller.controller_name, 'Switch to today') -%></div>
+<% end -%>
+      <% end -%>

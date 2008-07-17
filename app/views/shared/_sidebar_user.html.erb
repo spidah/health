@@ -1,7 +1,4 @@
       <% menu_side_bar do -%>
-          <div>Logged in as <%= link_to(h(@current_user.loginname), profile_path(@current_user.loginname)) -%>.</div>
-          <div>Display date: <%= link_to(format_date(session[:displaydate] || @current_user.get_date), calendar_path) -%></div>
-<% if session[:displaydate] && session[:displaydate] != @current_user.get_date -%>
-          <div><%= link_date(@current_user.get_date, controller.controller_name, 'Switch to today') -%></div>
-<% end -%>
+        <div>Logged in as <%= link_to(h(@current_user.loginname), profile_path(@current_user.loginname)) -%>.</div>
+        <div>Display date: <%= link_to(format_date(session[:displaydate] || @current_user.get_date), calendar_path) -%></div>
       <% end -%>
