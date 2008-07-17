@@ -72,3 +72,29 @@
         padding-left: 10px;
         padding-top: 2px;
       }
+
+/* sidebar key stuff */
+
+div#side-bar div.container div.calendar-key {
+  height: 32px;
+  line-height: 32px;
+  text-indent: 42px;
+  clear: both;
+  background-repeat: no-repeat;
+}
+
+div#side-bar div.container div.weights-ball {
+  background-image: url(/images/weights-ball.gif);
+}
+
+div#side-bar div.container div.measurements-ball {
+  background-image: url(/images/measurements-ball.gif);
+}
+
+div#side-bar div.container div.meals-ball {
+  background-image: url(/images/meals-ball.gif);
+}
+
+div#side-bar div.container div.exercise-ball {
+  background-image: url(/images/exercise-ball.gif);
+}
