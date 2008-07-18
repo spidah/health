@@ -1,4 +1,4 @@
     <div id="side-bar">
-<% if @current_user -%><%= render :partial => 'shared/sidebar_user' -%><% else -%><%= render :partial => 'shared/sidebar_home' -%><% end -%>
+<% if @current_user -%><%= render :partial => 'shared/sidebar_user' -%><% end -%>
     <% begin -%><%= render :partial => "shared/sidebar_#{@overridden_controller || controller.controller_name}" -%><% rescue -%><% end -%>
     </div>
