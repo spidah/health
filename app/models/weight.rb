@@ -38,6 +38,10 @@ class Weight < ActiveRecord::Base
     find :first, :order => 'taken_on DESC'
   end
 
+  def self.get_count(date)
+    count('id', :conditions => "taken_on = '#{date}'")
+  end
+
   def update_difference
     date = self[:taken_on]
     w = user.weights.find_first(['taken_on < ?', date], 'taken_on DESC')

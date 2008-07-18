@@ -16,6 +16,10 @@ class Meal < ActiveRecord::Base
     find(:all, :conditions => {:created_on => date})
   end
 
+  def self.get_count(date)
+    count('id', :conditions => "created_on = '#{date}'")
+  end
+
   protected
     def after_find
       self[:total_calories] = self[:total_calories] / 100

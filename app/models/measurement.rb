@@ -29,6 +29,10 @@ class Measurement < ActiveRecord::Base
     find(:first, :order => order ? order : 'taken_on ASC', :conditions => conditions)
   end
 
+  def self.get_count(date)
+    count('id', :conditions => "taken_on = '#{date}'")
+  end
+
   def update_difference(location, changed_location = nil)
     date = self[:taken_on]
     m = self.user.measurements.find_first(['taken_on < ? AND location = ?', date, location], 'taken_on DESC')

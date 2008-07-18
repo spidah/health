@@ -10,4 +10,11 @@ module CalendarHelper
   def replace_day(date, day)
     date.beginning_of_month + day.days - 1
   end
+
+  def day_counts(date)
+    @weights = Weight.get_count(date)
+    @measurements = Measurement.get_count(date)
+    @meals = Meal.get_count(date)
+    # @exercises = Exercise.get_count(date)
+  end
 end
