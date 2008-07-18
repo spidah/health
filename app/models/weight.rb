@@ -35,7 +35,7 @@ class Weight < ActiveRecord::Base
   end
 
   def self.get_latest
-    find :first, :order => 'taken_on DESC'
+    find(:first, :order => 'taken_on DESC')
   end
 
   def self.get_count(date)
