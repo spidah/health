@@ -6,7 +6,7 @@
         <li><%= link_to('Dashboard', dashboard_path) -%></li>
         <li><%= link_to('Settings', edit_user_path) -%></li>
         <li><%= link_to('Admin', admin_path, :class => 'break-above') if @current_user.admin -%></li>
-        <li><%= link_to('Logout', edit_user_path, :class => 'break-above') -%></li>
+        <li><%= link_to('Logout', logout_path, :class => 'break-above') -%></li>
       </ul>
     </li>
     <li><%= link_to('Weights', weights_path, :id => 'menu-weights') -%>
