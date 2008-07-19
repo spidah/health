@@ -16,8 +16,8 @@
       <td class="weight"><%= h(food.weight) -%></td>
       <td class="add">
         <% form_tag(meal_food_items_path(@meal)) do -%>
-        <%= hidden_field_tag 'food_id', food.id -%>
-        <div><input type="image" src="/images/add.gif" border="0" alt="Add Food" /></div>
+          <div><%= hidden_field_tag('food_id', food.id, :id => nil) -%></div>
+          <div><input type="image" src="/images/add.gif" alt="Add Food" /></div>
         <% end -%>
       </td>
     </tr>
