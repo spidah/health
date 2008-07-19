@@ -3,8 +3,8 @@
 }
 
   #calendar div.month-header {
-    overflow: none;
     border: 1px solid #838b8b;
+    overflow: none;
   }
 
     #calendar div.month-header div.prev-month {
@@ -20,25 +20,21 @@
     }
 
   #calendar div.days {
-    overflow: auto;
     clear: both;
+    overflow: auto;
   }
 
     #calendar div.days div.week {
-      overflow: auto;
       clear: both;
+      overflow: auto;
     }
 
       #calendar div.days div.week div.day {
+        border-bottom: 1px solid #838b8b;
+        border-left: 1px solid #838b8b;
         float: left;
         text-align: center;
         width: 89px;
-        border-left: 1px solid #838b8b;
-        border-bottom: 1px solid #838b8b;
-      }
-
-      #calendar div.days div.week div.day-name {
-      
       }
 
       #calendar div.days div.week div.last {
@@ -59,9 +55,9 @@
       }
 
       #calendar div.days div.week div.data span.number {
-        font-size: 85%;
-        border-right: 1px solid #838b8b;
         border-bottom: 1px solid #838b8b;
+        border-right: 1px solid #838b8b;
+        font-size: 85%;
       }
 
       #calendar div.days div.week div.data div a {
@@ -73,11 +69,11 @@
 /* sidebar key stuff */
 
 div#side-bar div.container div.calendar-key {
+  background-repeat: no-repeat;
+  clear: both;
   height: 32px;
   line-height: 32px;
   text-indent: 42px;
-  clear: both;
-  background-repeat: no-repeat;
 }
 
 div#side-bar div.container div.weights-ball {
