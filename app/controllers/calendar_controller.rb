@@ -38,6 +38,6 @@ class CalendarController < ApplicationController
     end
 
     def include_stylesheet
-      include_extra_stylesheet :mycalendar
+      include_extra_stylesheet :calendar
     end
 end
