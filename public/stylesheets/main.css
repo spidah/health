@@ -7,12 +7,10 @@ thead, tr, th, td {
   margin: 0;
   padding: 0;
   border: 0;
-  outline: 0;
   font-weight: inherit;
   font-style: inherit;
   font-size: 100%;
   font-family: inherit;
-  vertical-align: baseline;
 }
 
 /* global tags */
@@ -264,9 +262,7 @@ span.openid {
 table {
   background-color: #fafafa;
   border: 1px #6699cc solid;
-  border-collapse: collapse;
   border-spacing: 0px;
-  font-size: 95%;
 }
 
   table th {
@@ -288,7 +284,6 @@ table {
 
     table tr td.add, table tr td.delete, table tr td.edit {
       text-align: center;
-      width: 50px;
     }
 
     table tr td.number {
@@ -300,7 +295,7 @@ table {
     }
 
   table tr.today {
-    background-color: #FFB90F;
+    background-color: #ffb90f;
   }
 
   table tr.even {
@@ -309,6 +304,15 @@ table {
 
   table tr.odd {
     background-color: #f1edc2;
+  }
+  
+  #content table tr.food-item td.add form {
+    padding: 0;
+    margin: 0;
+  }
+  
+  #content table tr.food-item td.add input {
+    vertical-align: middle;
   }
 
 /* other */
