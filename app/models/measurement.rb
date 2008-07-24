@@ -16,6 +16,7 @@ class Measurement < ActiveRecord::Base
 
   def self.get_multiple_measurements(direction, condition, limit)
     found_dates = find(:all, :select => 'taken_on', :conditions => condition, :order => "taken_on #{direction}", :group => 'taken_on', :limit => limit)
+    return nil if found_dates.size == 0
     dates = found_dates.collect{|date| "'#{date.taken_on}'"}.join(', ')
     find(:all, :conditions => "taken_on IN (#{dates})", :order => 'taken_on DESC, location ASC')
   end
