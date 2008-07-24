@@ -84,7 +84,7 @@ class FoodItemsController < ApplicationController
     end
 
     def get_all_foods
-      @foods = @current_user.foods.pagination(params[:page], params[:sort], params[:dir] ? 'DESC' : 'ASC')
+      @foods = @current_user.foods.pagination(params[:page], params[:sort] || 'name', params[:dir] ? 'DESC' : 'ASC')
     end
 
     def get_meal(meal_id)
