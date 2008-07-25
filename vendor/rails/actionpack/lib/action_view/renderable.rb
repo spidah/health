@@ -3,11 +3,11 @@ module ActionView
     # NOTE: The template that this mixin is beening include into is frozen
     # So you can not set or modify any instance variables
 
+    extend ActiveSupport::Memoizable
+
     def self.included(base)
       @@mutex = Mutex.new
     end
-
-    include ActiveSupport::Memoizable
 
     def filename
       'compiled-template'
@@ -19,16 +19,19 @@ module ActionView
     memoize :handler
 
     def compiled_source
-      handler.new(nil).compile(self) if handler.compilable?
+      handler.call(self)
     end
     memoize :compiled_source
 
     def render(view, local_assigns = {})
+      compile(local_assigns)
+
       view._first_render ||= self
       view._last_render = self
+
       view.send(:evaluate_assigns)
-      compile(local_assigns) if handler.compilable?
-      handler.new(view).render(self, local_assigns)
+      view.send(:set_controller_content_type, mime_type) if respond_to?(:mime_type)
+      view.send(:execute, method(local_assigns), local_assigns)
     end
 
     def method(local_assigns)

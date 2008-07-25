@@ -379,8 +379,14 @@ module ActionView #:nodoc:
         @assigns.each { |key, value| instance_variable_set("@#{key}", value) }
       end
 
-      def execute(template, local_assigns = {})
-        send(template.method(local_assigns), local_assigns) do |*names|
+      def set_controller_content_type(content_type)
+        if controller.respond_to?(:response)
+          controller.response.content_type ||= content_type
+        end
+      end
+
+      def execute(method, local_assigns = {})
+        send(method, local_assigns) do |*names|
           instance_variable_get "@content_for_#{names.first || 'layout'}"
         end
       end

@@ -1,7 +1,7 @@
 module ActionView #:nodoc:
   class Template
     extend TemplateHandlers
-    include ActiveSupport::Memoizable
+    extend ActiveSupport::Memoizable
     include Renderable
 
     attr_accessor :filename, :load_path, :base_path, :name, :format, :extension
@@ -21,6 +21,11 @@ module ActionView #:nodoc:
       (extensions = [format, extension].compact.join(".")).blank? ? nil : extensions
     end
     memoize :format_and_extension
+
+    def mime_type
+      Mime::Type.lookup_by_extension(format) if format
+    end
+    memoize :mime_type
 
     def path
       [base_path, [name, format, extension].compact.join('.')].compact.join('/')
