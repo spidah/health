@@ -12,9 +12,9 @@ module CalendarHelper
   end
 
   def day_counts(date)
-    @weights = Weight.get_count(date)
-    @measurements = Measurement.get_count(date)
-    @meals = Meal.get_count(date)
-    # @exercises = Exercise.get_count(date)
+    @weights_count = @current_user.weights.get_count(date)
+    @measurements_count = @current_user.measurements.get_count(date)
+    @meals_count = @current_user.meals.get_count(date)
+    # @exercises_count = @current_user.exercises.get_count(date)
   end
 end

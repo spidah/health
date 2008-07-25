@@ -3,9 +3,9 @@
   <div class="data">
     <span class="number"><%= link_date(date, 'calendar', day) -%></span>
     <div>
-<% if @weights > 0 -%><%= link_date(date, 'weights', image_tag('weights-ball.gif', :alt => 'Weight entry', :title => 'Weight entry')) -%><% end -%>
-<% if @measurements > 0 -%><%= link_date(date, 'measurements', image_tag('measurements-ball.gif', :alt => "Measurements: #{@measurements}", :title => "Measurements: #{@measurements}")) -%><% end -%>
-<% if @meals > 0 -%><%= link_date(date, 'meals', image_tag('meals-ball.gif', :alt => "Meals: #{@meals}", :title => "Meals: #{@meals}")) -%><% end -%>
+<% if @weights_count > 0 -%><%= link_date(date, 'weights', image_tag('weights-ball.gif', :alt => 'Weight entry', :title => 'Weight entry')) -%><% end -%>
+<% if @measurements_count > 0 -%><%= link_date(date, 'measurements', image_tag('measurements-ball.gif', :alt => "Measurements: #{@measurements_count}", :title => "Measurements: #{@measurements_count}")) -%><% end -%>
+<% if @meals_count > 0 -%><%= link_date(date, 'meals', image_tag('meals-ball.gif', :alt => "Meals: #{@meals_count}", :title => "Meals: #{@meals_count}")) -%><% end -%>
     </div>
   </div>
 </div>
