@@ -38,6 +38,10 @@ class Weight < ActiveRecord::Base
     find(:first, :order => 'taken_on DESC')
   end
 
+  def self.get_for_date(date)
+    find(:first, :conditions => {:taken_on => date})
+  end
+
   def self.get_count(date)
     count('id', :conditions => "taken_on = '#{date}'")
   end
