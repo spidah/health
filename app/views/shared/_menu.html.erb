@@ -12,30 +12,34 @@
     <li><%= link_to('Weights', weights_path, :id => 'menu-weights') -%>
       <ul>
         <li><%= link_to('View Weights', weights_path) -%></li>
-        <li><%= link_to('New Weight', new_weight_path) -%></li>
+<% if @current_user.weights.get_count(current_date) == 0 -%>
+        <li><%= link_to('Add Weight', new_weight_path) -%></li>
+<% else -%>
+        <li><%= link_to('Edit Weight', edit_weight_path(@current_user.weights.get_for_date(current_date))) -%></li>
+<% end -%>
         <li><%= link_to('Target Weight', targetweights_path, :class => 'break-above') -%></li>
       </ul>
     </li>
     <li><%= link_to('Measurements', measurements_path, :id => 'menu-measurements') -%>
       <ul>
         <li><%= link_to('View Measurements', measurements_path) -%></li>
-        <li><%= link_to('New Measurement', new_measurement_path) -%></li>
+        <li><%= link_to('Add Measurement', new_measurement_path) -%></li>
       </ul>
     </li>
     <li><%= link_to('Meals', meals_path, :id => 'menu-meals') -%>
       <ul>
         <li><%= link_to('View Meals', meals_path) -%></li>
-        <li><%= link_to('New Meal', new_meal_path) -%></li>
+        <li><%= link_to('Add Meal', new_meal_path) -%></li>
         <li><%= link_to('View Foods', foods_path, :class => 'break-above') -%></li>
-        <li><%= link_to('New Food', foods_path) -%></li>
+        <li><%= link_to('Add Food', foods_path) -%></li>
       </ul>
     </li>
     <li><%= link_to('Exercise', meals_path, :id => 'menu-exercise') -%>
       <ul>
         <li><%= link_to('View Exercises', meals_path) -%></li>
-        <li><%= link_to('New Exercise', new_meal_path) -%></li>
+        <li><%= link_to('Add Exercise', new_meal_path) -%></li>
         <li><%= link_to('View Activities', foods_path, :class => 'break-above') -%></li>
-        <li><%= link_to('New Activity', foods_path) -%></li>
+        <li><%= link_to('Add Activity', foods_path) -%></li>
       </ul>
     </li>
 <% else -%>
