@@ -172,13 +172,15 @@ module ActionView #:nodoc:
     end
 
     def self.cache_template_loading=(*args)
-      ActiveSupport::Deprecation.warn("config.action_view.cache_template_loading option has been deprecated and has no affect. " <<
-                                       "Please remove it from your config files.", caller)
+      ActiveSupport::Deprecation.warn(
+        "config.action_view.cache_template_loading option has been deprecated" +
+        "and has no effect. Please remove it from your config files.", caller)
     end
 
     def self.cache_template_extensions=(*args)
-      ActiveSupport::Deprecation.warn("config.action_view.cache_template_extensions option has been deprecated and has no effect. " <<
-                                       "Please remove it from your config files.", caller)
+      ActiveSupport::Deprecation.warn(
+        "config.action_view.cache_template_extensions option has been" +
+        "deprecated and has no effect. Please remove it from your config files.", caller)
     end
 
     # Specify whether RJS responses should be wrapped in a try/catch block
@@ -321,14 +323,17 @@ module ActionView #:nodoc:
         if self.class.warn_cache_misses && logger = ActionController::Base.logger
           logger.debug "[PERFORMANCE] Rendering a template that was " +
             "not found in view path. Templates outside the view path are " +
-            "not cached and result in expensive disk operations. Move this " + 
-            "file into #{view_paths.join(':')} or add the folder to your " + 
+            "not cached and result in expensive disk operations. Move this " +
+            "file into #{view_paths.join(':')} or add the folder to your " +
             "view path list"
         end
 
         template
       end
     end
+
+    extend ActiveSupport::Memoizable
+    memoize :pick_template
 
     private
       # Renders the template present at <tt>template_path</tt>. The hash in <tt>local_assigns</tt>

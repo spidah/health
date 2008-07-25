@@ -354,6 +354,15 @@ module ActionController #:nodoc:
     class_inheritable_accessor :allow_forgery_protection
     self.allow_forgery_protection = true
 
+    # If you are deploying to a subdirectory, you will need to set
+    # <tt>config.action_controller.relative_url_root</tt>
+    # This defaults to ENV['RAILS_RELATIVE_URL_ROOT']
+    cattr_writer :relative_url_root
+
+    def self.relative_url_root
+      @@relative_url_root || ENV['RAILS_RELATIVE_URL_ROOT']
+    end
+
     # Holds the request object that's primarily used to get environment variables through access like
     # <tt>request.env["REQUEST_URI"]</tt>.
     attr_internal :request
@@ -1261,6 +1270,8 @@ module ActionController #:nodoc:
       def template_exempt_from_layout?(template_name = default_template_name)
         template_name = @template.pick_template(template_name).to_s if @template
         @@exempt_from_layout.any? { |ext| template_name =~ ext }
+      rescue ActionView::MissingTemplate
+        false
       end
 
       def default_template_name(action_name = self.action_name)
