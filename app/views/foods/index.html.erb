@@ -5,7 +5,7 @@
   <p>You have <%= pluralize(@foods.size, 'food') -%>. Would you like to <a href="#" onclick="changeVisibility('foods_form', 'block'); return false;">add another</a>?</p>
   <div id="foods_form" style="display:none">
     <% form_for(@food) do |f| -%>
-    <%= render :partial => 'food_form', :locals => {:f => f, :action => 'Add'} -%>
+    <%= render :partial => 'food_form', :locals => {:f => f, :action => 'Add', :no_cancel  => true} -%>
     <% end -%>
   </div>
   <% content_for :extrajavascript do -%>
