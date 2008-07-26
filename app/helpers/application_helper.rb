@@ -53,4 +53,8 @@ module ApplicationHelper
   def dateselect(date)
     select_day(date) + select_month(date) + select_year(date)
   end
+
+  def cancel_button
+    '<input name="cancel" type="button" value="Cancel" onclick="history.go(-1)" />'
+  end
 end
