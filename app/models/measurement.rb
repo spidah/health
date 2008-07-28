@@ -30,8 +30,12 @@ class Measurement < ActiveRecord::Base
     find(:first, :order => order ? order : 'taken_on ASC', :conditions => conditions)
   end
 
+  def self.get_latest_date
+    find(:first, :select => 'taken_on', :order => 'taken_on DESC').taken_on || nil
+  end
+
   def self.get_count(date)
-    count('id', :conditions => "taken_on = '#{date}'")
+    count('id', :conditions => {:taken_on => date})
   end
 
   def update_difference(location, changed_location = nil)
