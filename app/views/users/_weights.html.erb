@@ -1,5 +1,5 @@
 <% if current_weight -%><div class="form-row"><span class="label">Current weight:</span><span class="data"><%= current_weight.format(units) -%> (from <%= format_date(current_weight.taken_on, nil, today) -%>)</span></div><% end -%>
-<% if target_weight -%><div class="form-row"><span class="label">Target weight:</span><span class="data"><%= target_weight.format(units) -%></span></div><% end -%>
+<% if target_weight -%><div class="form-row"><span class="label">Target weight:</span><span class="data"><%= target_weight.format(units) -%> (added <%= format_date(target_weight.created_on, nil, today) -%>)</span></div><% end -%>
 <% if current_weight && target_weight -%>
 <% if target_weight.achieved_on -%>
 <div class="form-row"><span class="label">Achieved on:</span><span class="data"><%= format_date(target_weight.achieved_on) -%></span></div>
