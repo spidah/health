@@ -4,10 +4,12 @@ class UsersController < ApplicationController
   helper :measurements, :weights, :target_weights
 
   def index
-    @measurements = @current_user.measurements.get_multiple_measurements('DESC', nil, 7)
+    @measurements = @current_user.measurements.get_latest_measurements
+    @measurements_date = @measurements[0].taken_on if @measurements.size > 0
     @weights = @current_user.get_weights(:all, 'DESC', nil, 7)
     @target_weight = @current_user.target_weights.get_latest
     @current_weight = @current_user.weights.get_latest
+    @today = @current_user.get_date
   end
 
   def show
