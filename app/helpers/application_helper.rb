@@ -38,8 +38,12 @@ module ApplicationHelper
     concat("\t</div>\r\n\t\t\t</div>")
   end
   
-  def format_date(date, format = nil)
-    date.strftime(format || '%d %B %Y')
+  def format_date(date, format = nil, current = nil)
+    if current && current == date
+      'today'
+    else
+      date.strftime(format || '%d %B %Y')
+    end
   end
 
   def format_fixed_number(number)
