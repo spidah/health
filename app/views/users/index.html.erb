@@ -17,20 +17,11 @@ if @new_openid_links and @new_openid_links.size > 0
 -%>
 <%= print_flash(messages, 'openid', 'Linked Accounts') -%>
 <% end -%>
-<p>Welcome to your dashboard. From here you will be able to view your latest entries and check
-your target weight, if you have entered any.</p>
+<p>Welcome to your dashboard. The data displayed below is an overview of your latest entries, if you have entered any.</p>
 </div>
-<% if @target_weight -%>
 <div class="block">
-<h2>Target Weight</h2>
-<%= render :partial => 'target_weight', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
-  :units => @current_user.weight_units} -%>
+<%= render :partial => 'weights_list', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
+  :units => @current_user.weight_units, :today => @today} -%>
+<%= render :partial => 'measurements_list', :locals => {
+  :measurements => @measurements, :measurements_date => @measurements_date, :today => @today} -%>
 </div>
-<% end -%>
-<% if @weights.size > 0 or @measurements.size > 0 -%>
-<div class="block">
-<h2>Latest Entries</h2>
-<%= render :partial => 'weights_list', :locals => {:weights => @weights, :units => @current_user.weight_units} if @weights.size > 0 -%>
-<%= render :partial => 'measurements_list', :locals => {:measurements => @measurements, :units => @current_user.measurement_units} if @measurements.size > 0 -%>
-</div>
-<% end -%>
