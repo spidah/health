@@ -1,23 +1,5 @@
-<div class="measurements">
-<h3>Measurements</h3>
-<table class="measurements-list" cellspacing="0">
-  <tr class="measurement-header">
-    <th class="location-header">Location</th>
-    <th class="measurement-header">Measurement</th>
-    <th class="difference-header">Difference</th>
-  </tr>
-<%
-date = nil
-for measurement in measurements do -%>
-<% if date != measurement.taken_on
-     date = measurement.taken_on -%>
-  <tr class="measurement-date"><td class="date" colspan="3"><%= format_date(date) -%></td></tr>
-<% end -%>
-  <tr class="measurement-data <%= cycle('odd', 'even') -%> <%= "#{measurement.taken_on.year}-#{measurement.taken_on.month}-#{measurement.taken_on.day} #{measurement.location.split(' ').join('-')}" -%>">
-    <td class="location"><%= h measurement.location -%></td>
-    <td class="measurement"><%= format_measurement(units, measurement) -%></td>
-    <td class="difference"><%= measurement_difference(units, measurement.difference) -%></td>
-  </tr>
-<% end -%>
-</table>
+<% if measurements.size > 0 -%>
+<div class="form-row"><span class="label">Measurements:</span><span class="data"><%= measurements.size -%>
+(from <%= format_date(measurements_date, nil, today) -%>)</span>
 </div>
+<% end -%>
