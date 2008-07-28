@@ -155,6 +155,7 @@ fieldset {
         float: left;
         text-align: right;
         width: 150px;
+        font-size: 95%;
       }
 
       #content span.data {
