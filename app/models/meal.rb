@@ -16,13 +16,22 @@ class Meal < ActiveRecord::Base
     find(:all, :conditions => {:created_on => date})
   end
 
+  def self.get_latest_date
+    latest = first(:select => 'created_on', :order => 'created_on DESC')
+    latest ? latest.created_on : nil
+  end
+
   def self.get_count(date)
-    count('id', :conditions => "created_on = '#{date}'")
+    count('id', :conditions => {:created_on => date})
+  end
+
+  def self.calories_for_day(date)
+    sum('total_calories', :conditions => {:created_on => date})
   end
 
   protected
     def after_find
-      self[:total_calories] = self[:total_calories] / 100
+      self[:total_calories] = self[:total_calories] / 100 if self[:total_calories]
     end
 
     def before_save
