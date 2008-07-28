@@ -1,18 +1,8 @@
 <div class="block">
   <h2>Foods</h2>
   <%= print_flash(flash[:info], 'info') -%>
-  <% if @foods.size > 0 -%>
-  <p>You have <%= pluralize(@foods.size, 'food') -%>. Would you like to <a href="#" onclick="changeVisibility('foods_form', 'block'); return false;">add another</a>?</p>
-  <div id="foods_form" style="display:none">
-    <% form_for(@food) do |f| -%>
-    <%= render :partial => 'food_form', :locals => {:f => f, :action => 'Add', :no_cancel  => true} -%>
-    <% end -%>
-  </div>
-  <% content_for :extrajavascript do -%>
-  function changeVisibility(element, visibility) {
-    document.getElementById(element).style.display = visibility;
-  }
-  <% end -%>
+<% if @foods.size > 0 -%>
+  <p>You have <%= pluralize(@foods.size, 'food') -%>. Would you like to <%= link_to('add another', new_food_path) -%>?</p>
 </div>
 <div class="block">
   <table class="foods-list">
@@ -31,12 +21,12 @@
   <% end -%>
   </table>
   <%= will_paginate(@foods) -%>
-  <% else -%>
-  <p>You have not entered any foods yet. You can only add items to a meal after you have added a food for it.</p>
+<% else -%>
+  <p>You have not entered any foods yet. Before adding items to a meal you will need to add some foods.</p>
   <div id="foods_form">
     <% form_for(@food) do |f| -%>
       <%= render :partial => 'food_form', :locals => {:f => f, :action => 'Add'} -%>
     <% end -%>
   </div>
-  <% end -%>
+<% end -%>
 </div>

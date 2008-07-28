@@ -6,14 +6,17 @@ class FoodsController < ApplicationController
     @food = Food.new
   end
 
+  def new
+    @food = Food.new
+  end
+
   def create
     @food = Food.new(params[:food])
     if @current_user.foods << @food
       redirect_to(foods_path)
     else
       flash[:error] = @food.errors
-      get_all_foods
-      render :action => 'index'
+      render :action => 'new'
     end
   end
 
