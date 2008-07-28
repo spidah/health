@@ -4,11 +4,14 @@ class UsersController < ApplicationController
   helper :measurements, :weights, :target_weights
 
   def index
-    @measurements = @current_user.measurements.get_latest_measurements
-    @measurements_date = @measurements[0].taken_on if @measurements.size > 0
     @weights = @current_user.get_weights(:all, 'DESC', nil, 7)
     @target_weight = @current_user.target_weights.get_latest
     @current_weight = @current_user.weights.get_latest
+    @measurements_date = @current_user.measurements.get_latest_date
+    @measurements = @current_user.measurements.get_count(@measurements_date)
+    @meals_date = @current_user.meals.get_latest_date
+    @meals = @current_user.meals.get_count(@meals_date)
+    @meals_calories = @current_user.meals.calories_for_day(@meals_date) / 100
     @today = @current_user.get_date
   end
 

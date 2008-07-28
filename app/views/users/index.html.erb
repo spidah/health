@@ -24,4 +24,6 @@ if @new_openid_links and @new_openid_links.size > 0
   :units => @current_user.weight_units, :today => @today} -%>
 <%= render :partial => 'measurements_list', :locals => {
   :measurements => @measurements, :measurements_date => @measurements_date, :today => @today} -%>
+<%= render :partial => 'meals', :locals => {:meals => @meals, :meals_date => @meals_date,
+  :meals_calories => @meals_calories, :today => @today} -%>
 </div>
