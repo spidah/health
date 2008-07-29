@@ -36,10 +36,10 @@
     </li>
     <li><%= link_to('Exercise', meals_path, :id => 'menu-exercise') -%>
       <ul>
-        <li><%= link_to('View Exercises', meals_path) -%></li>
-        <li><%= link_to('Add Exercise', new_meal_path) -%></li>
-        <li><%= link_to('View Activities', foods_path, :class => 'break-above') -%></li>
-        <li><%= link_to('Add Activity', foods_path) -%></li>
+        <li><%= link_to('View Exercises', exercises_path) -%></li>
+        <li><%= link_to('Add Exercise', new_exercise_path) -%></li>
+        <li><%= link_to('View Activities', activities_path, :class => 'break-above') -%></li>
+        <li><%= link_to('Add Activity', new_activity_path) -%></li>
       </ul>
     </li>
 <% else -%>
