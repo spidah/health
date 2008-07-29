@@ -49,6 +49,7 @@ body {
   position: absolute;
   text-align: left;
   width: 196px;
+  z-index: 50;
 }
 
 #menu li ul li {
