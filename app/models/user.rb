@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   has_many :measurements
   has_many :meals
   has_many :foods
+  has_many :exercises
+  has_many :activities
 
   # 0.393700 inches to a cm
   # 2.204622 lbs to a kg
