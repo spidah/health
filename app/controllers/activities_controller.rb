@@ -19,17 +19,39 @@ class ActivitiesController < ApplicationController
       redirect_to(activities_path)
     else
       flash[:error] = @activity.errors
-      render :action => 'new'
+      render(:action => 'new')
     end
   end
 
   def edit
+    @activity = @current_user.activities.find(params[:id])
+  rescue
+    flash[:error] = 'Unable to edit the selected activity.'
+    redirect_to(activities_path)
   end
 
   def update
+    begin
+      @activity = @current_user.activities.find(params[:id])
+    rescue
+      flash[:error] = 'Unable to update the selected activity.'
+      redirect_to(activitiess_path) and return
+    end
+    
+    if !@activity.update_attributes(params[:activity])
+      flash[:error] = @activity.errors
+    end
+    redirect_to(activities_path)
   end
 
   def destroy
+    begin
+      @activity = @current_user.activities.find(params[:id])
+      @activity.destroy
+    rescue
+      flash[:error] = 'Unable to delete the selected activity.'
+    end
+    redirect_to(activities_path)
   end
 
   protected
