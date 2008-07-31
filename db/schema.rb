@@ -9,7 +9,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080612103756) do
+ActiveRecord::Schema.define(:version => 20080729201122) do
+
+  create_table "activities", :force => true do |t|
+    t.integer "user_id"
+    t.string  "name"
+    t.string  "type"
+    t.integer "duration", :default => 0
+    t.integer "calories", :default => 0
+  end
+
+  create_table "exercises", :force => true do |t|
+    t.integer "user_id"
+    t.integer "activity_id"
+    t.string  "activity_name"
+    t.string  "activity_type"
+    t.integer "duration",      :default => 0
+    t.integer "calories",      :default => 0
+    t.date    "taken_on"
+  end
 
   create_table "food_items", :force => true do |t|
     t.string  "name"
