@@ -1,1 +1,10 @@
+<div class="block">
+  <h2>Edit Exercise</h2>
+  <%= print_flash(flash[:info], 'info') -%>
+  <div id="exercises_form">
+    <% form_for(@exercise) do |f| -%>
+      <%= render :partial => 'exercise_form', :locals => {:f => f, :action => 'Update', :activity_id => @exercise.activity_id, :activities => @activities} -%>
+    <% end -%>
+  </div>
+</div>
 

@@ -1,1 +1,14 @@
-
+<div class="block">
+  <h2>Today's Exercises</h2>
+<% if @exercises.size > 0 -%>
+  <table>
+    <%= render :partial => 'exercise_header' -%>
+    <% for exercise in @exercises do -%>
+    <%= render :partial => 'exercise_item', :locals => {:exercise => exercise} -%>
+    <% end -%>
+    <%= render :partial => 'exercise_footer', :locals => {:total_duration => @total_duration, :total_calories => @total_calories} -%>
+  </table>
+<% else -%>
+  <p>You have not entered any exercises for today.</p>
+<% end -%>
+</div>
