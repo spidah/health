@@ -35,7 +35,7 @@ class ActivitiesController < ApplicationController
       @activity = @current_user.activities.find(params[:id])
     rescue
       flash[:error] = 'Unable to update the selected activity.'
-      redirect_to(activitiess_path) and return
+      redirect_to(activities_path) and return
     end
     
     if !@activity.update_attributes(params[:activity])
