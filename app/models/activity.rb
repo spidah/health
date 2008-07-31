@@ -11,7 +11,7 @@ class Activity < ActiveRecord::Base
   validates_presence_of :calories, :message => 'Please enter the calories for the activity.'
 
   def self.pagination(page, sort = nil, dir = 'ASC')
-    paginate :page => page, :per_page => 50, :order => sort ? "#{sort} #{dir}" : 'id ASC'
+    paginate :page => page, :per_page => 50, :order => sort ? "#{sort} #{dir}" : 'name ASC'
   end
 
   protected
