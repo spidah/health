@@ -3,7 +3,7 @@
       <%= print_flash(flash[:error], 'error', 'Error saving exercise') -%>
       <div class="form-row">
         <span class="label">Exercise</span>
-        <span class="data"><%= select_tag('activity_activity', activities_to_options(activities, defined?(:activity_id) ? activity_id : -1), :name => 'exercise[activity]') -%></span>
+        <span class="data"><%= select_tag('activity_activity', activities_to_options(activities, defined?(activity_id) ? activity_id : -1), :name => 'exercise[activity]') -%></span>
       </div>
       <div class="form-row">
         <span class="label">Duration</span>
