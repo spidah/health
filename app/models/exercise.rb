@@ -15,11 +15,20 @@ class Exercise < ActiveRecord::Base
     find(:all, :conditions => {:taken_on => date})
   end
 
+  def self.get_latest_date
+    latest = first(:select => 'taken_on', :order => 'taken_on DESC')
+    latest ? latest.taken_on : nil
+  end
+
+  def self.get_count(date)
+    count('id', :conditions => {:taken_on => date})
+  end
+
   def self.calories_for_day(date)
-    sum('calories', :conditions => {:taken_on => date})
+    sum('calories', :conditions => {:taken_on => date}) / 100
   end
 
   def self.duration_for_day(date)
-    sum('duration', :conditions => {:taken_on => date})
+    sum('duration', :conditions => {:taken_on => date}) / 100
   end
 end
