@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
   self.inheritance_column = 'unused'
 
   # only allow these attributes to be changeable
-  attr_accessible :name, :type, :duration, :calories
+  attr_accessible :name, :description, :type, :duration, :calories
 
   validates_presence_of :name, :message => 'Please enter a name for the activity.'
   validates_presence_of :type, :message => 'Please select a type for the activity.'

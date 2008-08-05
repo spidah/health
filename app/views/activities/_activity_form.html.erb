@@ -6,6 +6,10 @@
         <span class="data"><%= f.text_field(:name) -%></span>
       </div>
       <div class="form-row">
+        <span class="label">Description</span>
+        <span class="data"><%= f.text_field(:description) -%></span>
+      </div>
+      <div class="form-row">
         <span class="label">Type</span>
         <span class="data"><%= f.select(:type, ['Aerobic', 'Anaerobic', 'Flexibility', 'Strengthening', 'Other']) -%></span>
       </div>
