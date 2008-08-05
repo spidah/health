@@ -31,4 +31,19 @@ class Exercise < ActiveRecord::Base
   def self.duration_for_day(date)
     sum('duration', :conditions => {:taken_on => date}) / 100
   end
+
+  protected
+    def after_find
+      self[:duration] /= 100 if self[:duration]
+      self[:calories] /= 100 if self[:calories]
+    end
+
+    def before_save
+      self[:duration] *= 100
+      self[:calories] *= 100
+    end
+
+    def validate
+      errors.add(:duration, 'Please enter a valid duration for the exercise.') if self[:duration].to_i <= 0
+    end
 end
