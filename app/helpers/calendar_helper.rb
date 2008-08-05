@@ -15,6 +15,6 @@ module CalendarHelper
     @weights_count = @current_user.weights.get_count(date)
     @measurements_count = @current_user.measurements.get_count(date)
     @meals_count = @current_user.meals.get_count(date)
-    # @exercises_count = @current_user.exercises.get_count(date)
+    @exercises_count = @current_user.exercises.get_count(date)
   end
 end
