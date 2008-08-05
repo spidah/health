@@ -12,6 +12,9 @@ class UsersController < ApplicationController
     @meals_date = @current_user.meals.get_latest_date
     @meals = @current_user.meals.get_count(@meals_date)
     @meals_calories = @current_user.meals.calories_for_day(@meals_date) / 100
+    @exercises_date = @current_user.exercises.get_latest_date
+    @exercises = @current_user.exercises.get_count(@exercises_date)
+    @exercises_calories = @current_user.exercises.calories_for_day(@exercises_date)
     @today = @current_user.get_date
   end
 
