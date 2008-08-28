@@ -253,7 +253,14 @@ class IntegrationProcessTest < ActionController::IntegrationTest
     session :off
 
     def get
-      render :text => "OK", :status => 200
+      respond_to do |format|
+        format.html { render :text => "OK", :status => 200 }
+        format.js { render :text => "JS OK", :status => 200 }
+      end
+    end
+
+    def get_with_params
+      render :text => "foo: #{params[:foo]}", :status => 200
     end
 
     def post
@@ -320,9 +327,12 @@ class IntegrationProcessTest < ActionController::IntegrationTest
       assert_equal ["410 Gone"], headers["status"]
       assert_response 410
       assert_response :gone
-      assert_equal nil, response.headers["Set-Cookie"]
+      assert_equal ["cookie_1=; path=/", "cookie_3=chocolate; path=/"], response.headers["Set-Cookie"]
       assert_equal ["cookie_1=; path=/", "cookie_3=chocolate; path=/"], headers['set-cookie']
-      assert_equal [[], ["chocolate"]], response.headers["cookie"]
+      assert_equal [
+        CGI::Cookie::new("name" => "cookie_1", "value" => ""),
+        CGI::Cookie::new("name" => "cookie_3", "value" => "chocolate")
+      ], response.headers["cookie"]
       assert_equal [], headers["cookie"]
       assert_equal({"cookie_1"=>"", "cookie_2"=>"oatmeal", "cookie_3"=>"chocolate"}, cookies)
       assert_equal "Gone", response.body
@@ -342,6 +352,48 @@ class IntegrationProcessTest < ActionController::IntegrationTest
       assert_equal "<html><body>You are being <a href=\"http://www.example.com/get\">redirected</a>.</body></html>", response.body
       assert_kind_of HTML::Document, html_document
       assert_equal 1, request_count
+    end
+  end
+
+  def test_xml_http_request_get
+    with_test_route_set do
+      xhr :get, '/get'
+      assert_equal 200, status
+      assert_equal "OK", status_message
+      assert_equal "200 OK", response.headers["Status"]
+      assert_equal ["200 OK"], headers["status"]
+      assert_response 200
+      assert_response :success
+      assert_response :ok
+      assert_equal "JS OK", response.body
+    end
+  end
+
+  def test_get_with_query_string
+    with_test_route_set do
+      get '/get_with_params?foo=bar'
+      assert_equal '/get_with_params?foo=bar', request.env["REQUEST_URI"]
+      assert_equal '/get_with_params?foo=bar', request.request_uri
+      assert_equal nil, request.env["QUERY_STRING"]
+      assert_equal 'foo=bar', request.query_string
+      assert_equal 'bar', request.parameters['foo']
+
+      assert_equal 200, status
+      assert_equal "foo: bar", response.body
+    end
+  end
+
+  def test_get_with_parameters
+    with_test_route_set do
+      get '/get_with_params', :foo => "bar"
+      assert_equal '/get_with_params', request.env["REQUEST_URI"]
+      assert_equal '/get_with_params', request.request_uri
+      assert_equal 'foo=bar', request.env["QUERY_STRING"]
+      assert_equal 'foo=bar', request.query_string
+      assert_equal 'bar', request.parameters['foo']
+
+      assert_equal 200, status
+      assert_equal "foo: bar", response.body
     end
   end
 
