@@ -298,7 +298,7 @@ module ActionView
             ""
           else
             textilized = RedCloth.new(text, [ :hard_breaks ])
-            textilized.hard_breaks = true if textilized.respond_to?("hard_breaks=")
+            textilized.hard_breaks = true if textilized.respond_to?(:hard_breaks=)
             textilized.to_html
           end
         end
@@ -507,7 +507,7 @@ module ActionView
       #   @items = [1,2,3,4]
       #   <% @items.each do |item| %>
       #     <div style="background-color:<%= cycle("red","white","blue") %>">
-      #       <span style="background-color:<%= current_cycle %><%= item %></span>
+      #       <span style="background-color:<%= current_cycle %>"><%= item %></span>
       #     </div>
       #   <% end %>
       def current_cycle(name = "default")
