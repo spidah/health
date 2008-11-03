@@ -273,12 +273,13 @@ module ActiveSupport
 
     # Replaces accented characters with their ascii equivalents.
     def transliterate(string)
-      Iconv.iconv('ascii//translit//IGNORE', 'utf-8', string).to_s
+      Iconv.iconv('ascii//ignore//translit', 'utf-8', string).to_s
     end
 
     # The iconv transliteration code doesn't function correctly
     # on some platforms, but it's very fast where it does function.
     if "foo" != Inflector.transliterate("föö")
+      undef_method :transliterate
       def transliterate(string)
         string.mb_chars.normalize(:kd). # Decompose accented characters
           gsub(/[^\x00-\x7F]+/, '')     # Remove anything non-ASCII entirely (e.g. diacritics).

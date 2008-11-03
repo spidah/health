@@ -49,8 +49,10 @@ module Rails
     end
 
     def env
-      require 'active_support/string_inquirer'
-      ActiveSupport::StringInquirer.new(RAILS_ENV)
+      @_env ||= begin
+        require 'active_support/string_inquirer'
+        ActiveSupport::StringInquirer.new(RAILS_ENV)
+      end
     end
 
     def cache
@@ -265,6 +267,7 @@ module Rails
     end
 
     def add_gem_load_paths
+      Rails::GemDependency.add_frozen_gem_path
       unless @configuration.gems.empty?
         require "rubygems"
         @configuration.gems.each { |gem| gem.add_load_paths }

@@ -18,11 +18,14 @@ module Rails
 
     def self.add_frozen_gem_path
       @@paths_loaded ||= begin
-        Gem.source_index = Rails::VendorGemSourceIndex.new(Gem.source_index)
+        source_index = Rails::VendorGemSourceIndex.new(Gem.source_index)
+        Gem.clear_paths
+        Gem.source_index = source_index
         # loaded before us - we can't change them, so mark them
         Gem.loaded_specs.each do |name, spec|
           @@framework_gems[name] = spec
         end
+        true
       end
     end
 
@@ -80,6 +83,10 @@ module Rails
 
     def gem_dir(base_directory)
       File.join(base_directory, specification.full_name)
+    end
+
+    def spec_filename(base_directory)
+      File.join(gem_dir(base_directory), '.specification')
     end
 
     def load
@@ -146,14 +153,47 @@ module Rails
         Gem::GemRunner.new.run(unpack_command)
       end
 
+      # Gem.activate changes the spec - get the original
+      real_spec = Gem::Specification.load(specification.loaded_from)
+      write_spec(directory, real_spec)
+
+    end
+
+    def write_spec(directory, spec)
       # copy the gem's specification into GEMDIR/.specification so that
       # we can access information about the gem on deployment systems
       # without having the gem installed
-      spec_filename = File.join(gem_dir(directory), '.specification')
-      # Gem.activate changes the spec - get the original
-      spec = Gem::Specification.load(specification.loaded_from)
-      File.open(spec_filename, 'w') do |file|
+      File.open(spec_filename(directory), 'w') do |file|
         file.puts spec.to_yaml
+      end
+    end
+
+    def refresh_spec(directory)
+      real_gems = Gem.source_index.installed_source_index
+      exact_dep = Gem::Dependency.new(name, "= #{specification.version}")
+      matches = real_gems.search(exact_dep)
+      installed_spec = matches.first
+      if File.exist?(File.dirname(spec_filename(directory)))
+        if installed_spec
+          # we have a real copy
+          # get a fresh spec - matches should only have one element
+          # note that there is no reliable method to check that the loaded
+          # spec is the same as the copy from real_gems - Gem.activate changes
+          # some of the fields
+          real_spec = Gem::Specification.load(matches.first.loaded_from)
+          write_spec(directory, real_spec)
+          puts "Reloaded specification for #{name} from installed gems."
+        else
+          # the gem isn't installed locally - write out our current specs
+          write_spec(directory, specification)
+          puts "Gem #{name} not loaded locally - writing out current spec."
+        end
+      else
+        if framework_gem?
+          puts "Gem directory for #{name} not found - check if it's loading before rails."
+        else
+          puts "Something bad is going on - gem directory not found for #{name}."
+        end
       end
     end
 
