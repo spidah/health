@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   # 2.204622 lbs to a kg
 
   # only allow these attributes to be changeable
-  attr_accessible :email, :loginname, :gender, :dob, :timezone, :isdst, :weight_units, :measurement_units,
+  attr_accessible :email, :loginname, :gender, :dob, :timezone, :weight_units, :measurement_units,
     :profile_aboutme, :profile_targetweight, :profile_weights, :profile_measurements, :profile_foods, :profile_exercise
 
   validates_presence_of :loginname, :message => 'You need to enter a login name.'
