@@ -16,8 +16,7 @@ class Exercise < ActiveRecord::Base
   end
 
   def self.get_latest_date
-    latest = first(:select => 'taken_on', :order => 'taken_on DESC')
-    latest ? latest.taken_on : nil
+    first(:select => 'taken_on', :order => 'taken_on DESC').taken_on rescue nil
   end
 
   def self.get_count(date)
