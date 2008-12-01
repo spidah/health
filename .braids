@@ -3,5 +3,6 @@ vendor/plugins/open_id_authentication:
   squashed: true
   url: git://github.com/rails/open_id_authentication.git
   type: git
+  revision: 00d8bc7f97b9a3113e004475b63dbf84f5397237
   branch: master
   remote: braid/git/vendor/plugins/open-id-authentication/master
