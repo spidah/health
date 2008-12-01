@@ -61,7 +61,8 @@ module MyExtensions #:nodoc:
         end
  
         def sanitize
-          TextHelperSingleton.instance.sanitize(self)
+          @white_list_sanitizer ||= HTML::WhiteListSanitizer.new
+          @white_list_sanitizer.sanitize(self)
         end
 
         def simple_format
@@ -69,7 +70,8 @@ module MyExtensions #:nodoc:
         end
 
         def strip_tags
-          TextHelperSingleton.instance.strip_tags(self)
+          @full_sanitizer ||= HTML::FullSanitizer.new
+          @full_sanitizer.sanitize(self)
         end
 
         def truncate(length = 30, truncate_string = "…")
