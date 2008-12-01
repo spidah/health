@@ -31,7 +31,7 @@ class Measurement < ActiveRecord::Base
   end
 
   def self.get_latest_date
-    find(:first, :select => 'taken_on', :order => 'taken_on DESC').taken_on || nil
+    find(:first, :select => 'taken_on', :order => 'taken_on DESC').taken_on rescue nil
   end
 
   def self.get_count(date)
