@@ -1,13 +1,7 @@
 --- 
-vendor/rails: 
-  squashed: true
-  type: git
-  url: git://github.com/rails/rails.git
-  branch: master
-  remote: braid/git/vendor/rails/master
 vendor/plugins/open_id_authentication: 
   squashed: true
-  type: git
   url: git://github.com/rails/open_id_authentication.git
+  type: git
   branch: master
   remote: braid/git/vendor/plugins/open-id-authentication/master
