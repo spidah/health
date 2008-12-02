@@ -37,6 +37,13 @@ class User < ActiveRecord::Base
     paginate :page => page, :per_page => 20, :order => 'id ASC'
   end
 
+  def timezone=(value)
+    Time.zone = value
+    Time.zone.now
+    self[:timezone] = value
+  rescue
+  end
+
   protected
     def before_validation
       # make sure the gender is lowercase
