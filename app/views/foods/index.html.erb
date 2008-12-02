@@ -1,5 +1,6 @@
 <div class="block">
   <h2>Foods</h2>
+  <%= print_flash(flash[:error], 'error') -%>
   <%= print_flash(flash[:info], 'info') -%>
 <% if @foods.size > 0 -%>
   <p>You have <%= pluralize(@foods.size, 'food') -%>. Would you like to <%= link_to('add another', new_food_path) -%>?</p>
