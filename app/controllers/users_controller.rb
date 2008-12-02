@@ -22,11 +22,12 @@ class UsersController < ApplicationController
     @activemenuitem = ''
     @overridden_controller = 'blank'
     if @user = User.find(:first, :conditions => {:loginname => params[:loginname]}) rescue nil
+      @target_weight = @current_weight = nil
       if @user.profile_targetweight
         @target_weight = @user.target_weights.get_latest
         @current_weight = @user.weights.get_latest
       end
-      @weight = @user.weights.get_latest if @user.profile_weights
+      @current_weight = @user.weights.get_latest if @user.profile_weights
       @measurements = @user.measurements.get_latest_measurements if @user.profile_measurements
     else
       redirect_to dashboard_path

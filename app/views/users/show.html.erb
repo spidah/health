@@ -11,17 +11,8 @@ Unfortunately, <%= @user.loginname -%> is a bit shy and has not written anything
 <% end -%>
 </p>
 </div>
-<% if @user.profile_targetweight && @target_weight -%>
+<% if @user.profile_targetweight || @user.profile_weights -%>
 <div class="block">
-<h2>Target Weight</h2>
-<%= render :partial => 'target_weight', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
-  :units => @user.weight_units} -%>
-</div>
-<% end -%>
-<% if @user.profile_weights or @user.profile_measurements or @user.profile_meals or @user.profile_exercise -%>
-<div class="block">
-<h2>Latest Entries</h2>
-<%= render(:partial => 'weights_list', :locals => {:weights => [@weight], :units => @user.weight_units}) if @user.profile_weights && @weight -%>
-<%= render(:partial => 'measurements_list', :locals => {:measurements => @measurements, :units => @user.measurement_units}) if @user.profile_measurements && @measurements -%>
+<%= render(:partial => 'weights', :locals => {:target_weight => @target_weight, :current_weight => @current_weight, :units => @user.weight_units, :today => @user.get_date}) if (@user.profile_targetweight && @targer_weight) || (@user.profile_weights && @current_weight) -%>
 </div>
 <% end -%>
