@@ -1,8 +1,12 @@
 class SessionsController < ApplicationController
   before_filter :set_menu_item
 
+  verify :method => :get, :only => :new, :redirect_to => 'new'
+  verify :method => [:get, :post], :only => [:create, :signup], :redirect_to => 'new'
+  verify :method => :delete, :only => :destroy, :redirect_to => 'new'
+
   def new
-    redirect_to dashboard_path and return if @current_user && @current_user.valid?
+    redirect_to(dashboard_path) and return if (@current_user && @current_user.valid?)
     @user = UserLogin.new
   end
 

@@ -1,6 +1,11 @@
 class FoodItemsController < ApplicationController
   before_filter :login_required, :set_menu_item
 
+  verify :method => :get, :only => [:new, :edit], :redirect_to => 'index'
+  verify :method => :post, :only => [:create], :redirect_to => 'index'
+  verify :method => :put, :only => [:update], :redirect_to => 'index'
+  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+
   def new
     @meal = @current_user.meals.find(params[:meal_id])
     get_all_foods

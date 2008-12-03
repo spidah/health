@@ -1,6 +1,10 @@
 class MealsController < ApplicationController
   before_filter :login_required, :set_menu_item
 
+  verify :method => :get, :only => [:index, :new, :edit, :show], :redirect_to => 'index'
+  verify :method => :post, :only => [:create], :redirect_to => 'index'
+  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+
   def index
     @meals = @current_user.meals.find_for_day(current_date)
   end
@@ -42,9 +46,6 @@ class MealsController < ApplicationController
   rescue
     flash[:error] = 'Unable to edit the selected meal.'
     redirect_to meals_path
-  end
-
-  def update
   end
 
   protected

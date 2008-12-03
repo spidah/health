@@ -1,4 +1,9 @@
 class OpenidLinksController < ApplicationController
+  before_filter :login_required
+
+  verify :method => [:get, :post], :only => :create, :redirect_to => {:controller => 'users', :action => 'edit'}
+  verify :method => :delete, :only => :destroy, :redirect_to => {:controller => 'users', :action => 'edit'}
+
   # action for adding an OpenID account link
   def create
     if params[:openid_link] && oid = UserLogin.get(OpenIdAuthentication.normalize_url(params[:openid_link]))

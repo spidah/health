@@ -2,6 +2,11 @@ class WeightsController < ApplicationController
   before_filter :login_required
   before_filter :set_menu_item
 
+  verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
+  verify :method => :post, :only => [:create], :redirect_to => 'index'
+  verify :method => :put, :only => [:update], :redirect_to => 'index'
+  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+
   # GET /weights
   def index
     @weight = @current_user.get_weights(:first, 'DESC', ['taken_on = ?', current_date])

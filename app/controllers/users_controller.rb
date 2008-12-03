@@ -3,6 +3,11 @@ class UsersController < ApplicationController
   before_filter :set_menu_item
   helper :measurements, :weights, :target_weights
 
+  verify :method => :get, :only => [:index, :new, :edit, :show, :change_date], :redirect_to => 'index'
+  verify :method => :post, :only => [:create], :redirect_to => 'index'
+  verify :method => :put, :only => [:update], :redirect_to => 'index'
+  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+
   def index
     @weights = @current_user.get_weights(:all, 'DESC', nil, 7)
     @target_weight = @current_user.target_weights.get_latest

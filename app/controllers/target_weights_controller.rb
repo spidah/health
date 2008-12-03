@@ -4,6 +4,10 @@ class TargetWeightsController < ApplicationController
 
   helper :weights
 
+  verify :method => :get, :only => [:index, :new], :redirect_to => 'index'
+  verify :method => :post, :only => [:create], :redirect_to => 'index'
+  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+
   def index
     @target_weight = @current_user.target_weights.get_latest
     @current_weight = @current_user.weights.get_latest

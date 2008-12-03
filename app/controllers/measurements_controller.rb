@@ -1,6 +1,11 @@
 class MeasurementsController < ApplicationController
   before_filter :login_required, :set_menu_item
 
+  verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
+  verify :method => :post, :only => [:create], :redirect_to => 'index'
+  verify :method => :put, :only => [:update], :redirect_to => 'index'
+  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+
   # GET measurements
   def index
     @measurements = @current_user.measurements.get_single_measurements('DESC', "taken_on = '#{current_date}'")
