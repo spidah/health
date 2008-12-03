@@ -4,15 +4,15 @@ class IntegrationUserTest < ActionController::IntegrationTest
   def test_user
     spidah = new_session
     spidah.login(user_logins(:spidah).openid_url)
-    spidah.check_settings('m', 16, 8, 1982, 0, 1, 'lbs', 'inches')
-    spidah.should_update_settings('f', 2, 2, 2002, 60, 0, 'kg', 'cm')
-    spidah.cant_update_invalid_settings('f', 2, 2, 2002, 60, 0, 'kg', 'cm',
-      'a', 31, 6, 2000, 1, -1, 'ar', 'lk')
+    spidah.check_settings('m', 16, 8, 1982, 'London', 'lbs', 'inches')
+    spidah.should_update_settings('f', 2, 2, 2002, 'Stockholm', 'kg', 'cm')
+    spidah.cant_update_invalid_settings('f', 2, 2, 2002, 'Stockholm', 'kg', 'cm',
+      'a', 31, 6, 2000, 'Invalid', 'ar', 'lk')
     spidah.change_dates
-    spidah.should_update_settings('m', 16, 8, 1982, 0, 1, 'lbs', 'inches')
+    spidah.should_update_settings('m', 16, 8, 1982, 'London', 'lbs', 'inches')
     spidah.should_view_profile('spidah', {:about_me => 'Spidah.'})
     spidah.add_data(users(:spidah))
-    spidah.should_view_profile('spidah', {:about_me => 'Spidah.', :target_weight => true, :weights => true, :measurements => true})
+    spidah.should_view_profile('spidah', {:about_me => 'Spidah.', :target_weight => true, :weight => true})
     spidah.cant_view_invalid_profile('nonexistingusername')
     spidah.logout
 
@@ -43,18 +43,15 @@ class IntegrationUserTest < ActionController::IntegrationTest
       assert_select "select[id=user_dob_3i][name='user[dob(3i)]']>option", 31
       assert_select "select[id=user_dob_2i][name='user[dob(2i)]']>option", 12
       assert_select "select[id=user_dob_1i][name='user[dob(1i)]']>option", 121
-      assert_select "select[id=user_timezone][name='user[timezone]']>option", 32
-      assert_select "input[id=user_isdst][name='user[isdst]'][type=checkbox]", 1
+      assert_select "select[id=user_timezone][name='user[timezone]']>option", :minimum => 1
     end
 
-    def assert_user_data_values(gender, dob_day, dob_month, dob_year, timezone, dst)
+    def assert_user_data_values(gender, dob_day, dob_month, dob_year, timezone)
       assert_select "select[id=user_gender][name='user[gender]']>option[value=?][selected=selected]", gender
       assert_select "select[id=user_dob_3i][name='user[dob(3i)]']>option[value=?][selected=selected]", dob_day
       assert_select "select[id=user_dob_2i][name='user[dob(2i)]']>option[value=?][selected=selected]", dob_month
       assert_select "select[id=user_dob_1i][name='user[dob(1i)]']>option[value=?][selected=selected]", dob_year
-      assert_select "select[id=user_timezone][name='user[timezone]']>option[value=?][selected=selected]", timezone
-      assert_select "input[id=user_isdst][name='user[isdst]'][type=checkbox]", 1
-      assert_select "input[id=user_isdst][name='user[isdst]'][type=checkbox][checked=checked]", dst
+      assert_select "select[id=user_timezone][name='user[timezone]']>option[selected=selected]", /#{timezone}/
     end
 
     def assert_user_units_tags
@@ -94,56 +91,56 @@ class IntegrationUserTest < ActionController::IntegrationTest
       assert_response :success
 
       if valid
-        assert_select "input[id=date_picker][value=?]", format_date(Date.new(new_year, new_month, new_day))
+        assert_select "a", format_date(Date.new(new_year, new_month, new_day))
       else
-        assert_select "input[id=date_picker][value=?]", format_date(Date.new(existing_year, existing_month, existing_day))
+        assert_select "a", format_date(Date.new(existing_year, existing_month, existing_day))
       end
     end
 
-    def check_settings(gender, dob_day, dob_month, dob_year, timezone, dst, weight_units, measurement_units)
+    def check_settings(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
       get edit_user_path
 
       assert_success('users/edit')
 
       assert_user_data_tags
-      assert_user_data_values(gender, dob_day, dob_month, dob_year, timezone, dst)
+      assert_user_data_values(gender, dob_day, dob_month, dob_year, timezone)
 
       assert_user_units_tags
       assert_user_units_values(weight_units, measurement_units)
     end
 
-    def update_user(gender, dob_day, dob_month, dob_year, timezone, isdst, weight_units, measurement_units)
+    def update_user(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
       put user_path, "user[gender]" => gender, "user[dob(3i)]" => dob_day,
         "user[dob(2i)]" => dob_month, "user[dob(1i)]" => dob_year, "user[timezone]" => timezone,
-        "user[isdst]" => isdst, "user[weight_units]" => weight_units, "user[measurement_units]" => measurement_units
+        "user[weight_units]" => weight_units, "user[measurement_units]" => measurement_units
     end
 
-    def should_update_settings(gender, dob_day, dob_month, dob_year, timezone, dst, weight_units, measurement_units)
-      update_user(gender, dob_day, dob_month, dob_year, timezone, dst, weight_units, measurement_units)
+    def should_update_settings(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
+      update_user(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
 
       assert_and_follow_redirect(edit_user_path, 'users/edit')
 
       assert_flash('info', 'Your settings have been updated.')
 
       assert_user_data_tags
-      assert_user_data_values(gender, dob_day, dob_month, dob_year, timezone, dst)
+      assert_user_data_values(gender, dob_day, dob_month, dob_year, timezone)
 
       assert_user_units_tags
       assert_user_units_values(weight_units, measurement_units)
     end
 
     def cant_update_invalid_settings(expected_gender, expected_dob_day, expected_dob_month, expected_dob_year, expected_timezone,
-        expected_dst, expected_weight_units, expected_measurement_units, new_gender, new_dob_day, new_dob_month, new_dob_year, new_timezone,
-        new_dst, new_weight_units, new_measurement_units)
-      update_user(new_gender, new_dob_day, new_dob_month, new_dob_year, new_timezone, new_dst, new_weight_units, new_measurement_units)
+        expected_weight_units, expected_measurement_units, new_gender, new_dob_day, new_dob_month, new_dob_year, new_timezone,
+        new_weight_units, new_measurement_units)
+      update_user(new_gender, new_dob_day, new_dob_month, new_dob_year, new_timezone, new_weight_units, new_measurement_units)
 
       assert_and_follow_redirect(edit_user_path, 'users/edit')
 
       assert_flash('error', nil, 'Unable to update your settings')
-      assert_select 'div[class=error][id=error-flash]>p>span[class=error-msg]', 5
+      assert_select 'div[class=error][id=error-flash]>p>span[class=error-msg]', 4
 
       assert_user_data_tags
-      assert_user_data_values(expected_gender, expected_dob_day, expected_dob_month, expected_dob_year, expected_timezone, expected_dst)
+      assert_user_data_values(expected_gender, expected_dob_day, expected_dob_month, expected_dob_year, expected_timezone)
 
       assert_user_units_tags
       assert_user_units_values(expected_weight_units, expected_measurement_units)
@@ -178,7 +175,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def should_view_profile(username, profile_parts)
-      get profile_path(:loginname => username)
+      get profile_path(username)
       assert_success('users/show')
 
       assert_select 'h2', "#{username}'s Profile"
@@ -187,19 +184,8 @@ class IntegrationUserTest < ActionController::IntegrationTest
 
       assert_select 'p[class=profile-about-me]', profile_parts[:about_me] ? profile_parts[:about_me] : "Unfortunately, #{@user.loginname} is a bit shy and has not written anything about themself."
 
-      tw_count = profile_parts[:target_weight] ? 1 : 0
-      assert_select 'h2', {:text => 'Target Weight', :count => tw_count}
-      assert_select 'div[class=target-weight]', tw_count
-
-      assert_select 'h2', 'Latest Entries', profile_parts[:weights] || profile_parts[:measurements] ? 1 : 0
-
-      w_count = profile_parts[:weights] ? 1 : 0
-      assert_select 'h3', {:text => 'Weights', :count => w_count}
-      assert_select 'div[class=weights]', w_count
-
-      m_count = profile_parts[:measurements] ? 1 : 0
-      assert_select 'h3', {:text => 'Measurements', :count => m_count}
-      assert_select 'div[class=measurements]', m_count
+      assert_select 'span', {:text => 'Target weight:', :count => profile_parts[:target_weight] ? 1 : 0}
+      assert_select 'span', {:text => 'Current weight:', :count => profile_parts[:weight] ? 1 : 0}
     end
 
     def cant_view_invalid_profile(username)
