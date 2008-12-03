@@ -46,7 +46,7 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
 
     def assert_food_form(food)
       assert_select 'div[id=food_form] form', 1
-      assert_select 'legend', 'Food'
+      assert_select 'legend', 'Food Details'
       assert_select 'input[type=text][value=?]', food.name
       assert_select 'input[type=text][value=?]', food.description
       assert_select 'input[type=text][value=?]', food.manufacturer
@@ -66,9 +66,6 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
         assert_select 'td[class=description]', food.description
         assert_select 'td[class=manufacturer]', food.manufacturer
         assert_select 'td[class=weight]', food.weight
-        assert_select 'td[class=fat]', "#{food.fat}g"
-        assert_select 'td[class=protein]', "#{food.protein}g"
-        assert_select 'td[class=carbs]', "#{food.carbs}g"
         assert_select 'td[class=calories]', "#{food.calories}"
       end
     end
@@ -86,7 +83,7 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
     def cant_add_invalid_food
       post foods_path, :food => {:name => '', :description => '', :manufacturer => '', :weight => '', :fat => '', :protein => '',
         :carbs => '', :calories => ''}
-      assert_success('foods/index')
+      assert_success('foods/new')
       assert_flash('error', 'Please enter a name for the food.')
     end
 
