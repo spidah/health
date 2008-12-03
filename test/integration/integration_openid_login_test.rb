@@ -3,13 +3,13 @@ require "#{File.dirname(__FILE__)}/../test_helper"
 class IntegrationOpenidLoginTest < ActionController::IntegrationTest
   def test_openid_links
     newbie1 = new_session
-    newbie1.login_new_openid('http://newbie1.myopenid.com/', 'newbie1', 'newbie1@gmail.com', 'm', Date.new(1982, 8, 16), 'Europe/London')
+    newbie1.login_new_openid('http://newbie1.myopenid.com/', 'newbie1', 'newbie1@gmail.com', 'm', Date.new(1982, 8, 16), 'London')
     newbie1.signup('newbie1', 'apassword')
     newbie1.logout
     newbie1.login_existing_openid('http://newbie1.myopenid.com/', 'newbie1')
 
     newbie2 = new_session
-    newbie2.login_new_openid('http://newbie2.myopenid.com/', 'newbie2', 'newbie2@gmail.com', 'f', Date.new(1982, 8, 16), 'Europe/London')
+    newbie2.login_new_openid('http://newbie2.myopenid.com/', 'newbie2', 'newbie2@gmail.com', 'f', Date.new(1982, 8, 16), 'London')
     newbie2.cant_signup_with_existing_loginname('newbie1', 'apassword')
     newbie2.signup('newbie2', 'apassword')
     newbie2.cant_link_invalid_openid('http://failed.myopenid.com/')
@@ -28,7 +28,7 @@ class IntegrationOpenidLoginTest < ActionController::IntegrationTest
     newbie2.assert_openid_not_linked('http://newbie2.myopenid.com/')
 
     newbie3 = new_session
-    newbie3.cant_login_bad_openid('http://failed.myopenid.com/', 'Sorry, the OpenID verification failed')
+    newbie3.cant_login_bad_openid('http://failed.myopenid.com/', 'OpenID verification failed')
     newbie3.cant_login_bad_openid('http://missing.myopenid.com/', "Sorry, the OpenID server couldn't be found")
     newbie3.cant_login_bad_openid('http://cancelled.myopenid.com/', 'OpenID verification was canceled')
   end
@@ -37,7 +37,7 @@ class IntegrationOpenidLoginTest < ActionController::IntegrationTest
     attr_accessor :openid_url
 
     def assert_logged_in_as(loginname)
-      assert_select "p", "Logged in as #{loginname}. Logout?"
+      assert_select "div", /Logged in as #{loginname}./
     end
 
     def assert_user_data_values(gender, dob, timezone)
@@ -45,7 +45,7 @@ class IntegrationOpenidLoginTest < ActionController::IntegrationTest
       assert_select "select[id=user_dob_3i][name='user[dob(3i)]']>option[value=?][selected=selected]", dob.day
       assert_select "select[id=user_dob_2i][name='user[dob(2i)]']>option[value=?][selected=selected]", dob.month
       assert_select "select[id=user_dob_1i][name='user[dob(1i)]']>option[value=?][selected=selected]", dob.year
-      assert_select "select[id=user_timezone][name='user[timezone]']>option[value=?][selected=selected]", timezone
+      assert_select "select[id=user_timezone][name='user[timezone]']>option[selected=selected]", /#{timezone}/
     end
 
     def assert_linked_openid(openid_url, count = 1)
@@ -101,7 +101,7 @@ class IntegrationOpenidLoginTest < ActionController::IntegrationTest
       post signup_path, {:loginname => loginname, :password => password, :password_confirmation => password}
       assert_user_settings_redirect
       assert_no_flash('error')
-      assert_user_data_values($mockuser[:gender], $mockuser[:dob], 0)
+      assert_user_data_values($mockuser[:gender], $mockuser[:dob], $mockuser[:timezone])
       assert_linked_openid(self.openid_url)
     end
 
