@@ -13,21 +13,21 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     spidah.add_target_weight(spidah.lbs_weight_params(12, 0))
     spidah.check_target_weights_count(1)
     spidah.goto_index_when_add_with_existing_target_weight(spidah.lbs_weight_params(10, 10))
-    spidah.check_target_weights('12 stone 0 lbs', 'No entry', '12 stone 0 lbs')
+    spidah.check_target_weights('12 stone 0 lbs', nil, '12 stone 0 lbs')
     spidah.add_weight(2007, 6, 1, spidah.lbs_weight_params(14, 4))
     spidah.check_target_weight('12 stone 0 lbs', '14 stone 4 lbs', '2 stone 4 lbs')
     spidah.add_weight(2007, 6, 2, spidah.lbs_weight_params(11, 13))
-    spidah.check_target_weights('12 stone 0 lbs', '11 stone 13 lbs', '1 lbs', "Target reached on #{format_date(Date.new(2007, 6, 2))}!")
+    spidah.check_target_weights('12 stone 0 lbs', '11 stone 13 lbs', '1 lbs', Date.new(2007, 6, 2))
     spidah.add_target_weight(spidah.lbs_weight_params(11, 0))
     spidah.check_target_weights_count(2)
     spidah.check_target_weights('11 stone 0 lbs', '11 stone 13 lbs', '13 lbs')
     spidah.delete_target_weight(spidah.get_latest_target_weight)
     spidah.check_target_weights_count(1)
-    spidah.check_target_weights('12 stone 0 lbs', '11 stone 13 lbs', '1 lbs', "Target reached on #{format_date(Date.new(2007, 6, 2))}!")
+    spidah.check_target_weights('12 stone 0 lbs', '11 stone 13 lbs', '1 lbs', Date.new(2007, 6, 2))
     spidah.delete_weight(2007, 6, 2)
     spidah.check_target_weights('12 stone 0 lbs', '14 stone 4 lbs', '2 stone 4 lbs')
     spidah.delete_weight(2007, 6, 1)
-    spidah.check_target_weights('12 stone 0 lbs', 'No entry', '12 stone 0 lbs')
+    spidah.check_target_weights('12 stone 0 lbs', nil, '12 stone 0 lbs')
     spidah.delete_target_weight(spidah.get_latest_target_weight)
     spidah.check_no_target_weights
     spidah.cant_delete_invalid_target_weight_id(1000)
@@ -45,21 +45,21 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     jimmy.check_no_target_weights
     jimmy.add_target_weight(jimmy.kg_weight_params(50))
     jimmy.check_target_weights_count(1)
-    jimmy.check_target_weights('50 kg', 'No entry', '50 kg')
+    jimmy.check_target_weights('50 kg', nil, '50 kg')
     jimmy.add_weight(2007, 6, 1, jimmy.kg_weight_params(75))
     jimmy.check_target_weights('50 kg', '75 kg', '25 kg')
     jimmy.add_weight(2007, 6, 2, jimmy.kg_weight_params(25))
-    jimmy.check_target_weights('50 kg', '25 kg', '25 kg', "Target reached on #{format_date(Date.new(2007, 6, 2))}!")
+    jimmy.check_target_weights('50 kg', '25 kg', '25 kg', Date.new(2007, 6, 2))
     jimmy.add_target_weight(jimmy.kg_weight_params(20))
     jimmy.check_target_weights_count(2)
     jimmy.check_target_weights('20 kg', '25 kg', '5 kg')
     jimmy.delete_target_weight(jimmy.get_latest_target_weight)
     jimmy.check_target_weights_count(1)
-    jimmy.check_target_weights('50 kg', '25 kg', '25 kg', "Target reached on #{format_date(Date.new(2007, 6, 2))}!")
+    jimmy.check_target_weights('50 kg', '25 kg', '25 kg', Date.new(2007, 6, 2))
     jimmy.delete_weight(2007, 6, 2)
     jimmy.check_target_weights('50 kg', '75 kg', '25 kg')
     jimmy.delete_weight(2007, 6, 1)
-    jimmy.check_target_weights('50 kg', 'No entry', '50 kg')
+    jimmy.check_target_weights('50 kg', nil, '50 kg')
     jimmy.delete_target_weight(jimmy.get_latest_target_weight)
     jimmy.check_no_target_weights
     jimmy.cant_delete_another_users_target_weight(spidah_target_weight)
@@ -102,12 +102,41 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
       end
     end
 
+    def assert_dashboard_target_weight_item(target_weight, current_weight, difference, achieved_on = nil)
+      assert_select "div[class=form-row]" do
+        assert_select "span[class=label]", "Target weight:"
+        assert_select "span[class=data]", /#{target_weight}/
+      end
+
+      if current_weight
+        assert_select "div[class=form-row]" do
+          assert_select "span[class=label]", "Current weight:"
+          assert_select "span[class=data]", /#{current_weight}/
+        end
+      end
+
+      if achieved_on
+        assert_select "div[class=form-row]" do
+          assert_select "span[class=label]", "Achieved on:"
+          assert_select "span[class=data]", format_date(achieved_on)
+        end
+      else
+        if current_weight
+          assert_select "div[class=form-row]" do
+            assert_select "span[class=label]", "Remaining:"
+            assert_select "span[class=data]", difference
+          end
+        end
+      end
+    end
+
     def assert_target_weight_item(target_weight, current_weight, difference, achieved_on = nil)
+      current_weight = 'No entry' if !current_weight
       assert_select "table[id=target-weight]", 1
       assert_select "table[id=target-weight] td[class=target-weight-target]", target_weight
       assert_select "table[id=target-weight] td[class=target-weight-current]", current_weight
       if achieved_on
-        assert_select "table[id=target-weight] td[class=target-weight-completed]", achieved_on
+        assert_select "table[id=target-weight] td[class=target-weight-completed]", "Target reached on #{format_date(achieved_on)}!"
       else
         assert_select "table[id=target-weight] td[class=target-weight-difference]", difference
       end
@@ -120,7 +149,7 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
       follow_redirect!
       assert_response :success
 
-      assert_select "input[id=date_picker][value=?]", format_date(Date.new(year, month, day))
+      assert_select "a", format_date(Date.new(year, month, day))
     end
 
     def get_latest_target_weight
@@ -130,8 +159,8 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     def check_dashboard(target_weight, current_weight, difference, achieved_on = nil)
       get dashboard_path
       assert_success 'users/index'
-      assert_select 'h2', 'Target Weight'
-      assert_target_weight_item(target_weight, current_weight, difference, achieved_on)
+      assert_select 'h2', 'Your Dashboard'
+      assert_dashboard_target_weight_item(target_weight, current_weight, difference, achieved_on)
     end
 
     def check_target_weight(target_weight, current_weight, difference, achieved_on = nil)
