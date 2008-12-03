@@ -69,7 +69,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
       self.openid_url = openid_url
       get login_path
       post session_path, :openid_url => openid_url
-      get session_path, :openid_url => openid_url, :open_id_complete => 1
+      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
       assert_dashboard_redirect
     end
 
@@ -80,7 +80,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def logout
-      get logout_path
+      delete logout_path
     end
 
     def change_date(new_year, new_month, new_day, valid = true, existing_year = nil, existing_month = nil, existing_day = nil)

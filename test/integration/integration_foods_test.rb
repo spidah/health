@@ -36,7 +36,7 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
     def login(openid_url)
       $mockuser = user
       post session_path, :openid_url => openid_url
-      get session_path, :openid_url => openid_url, :open_id_complete => 1
+      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
       assert_dashboard_redirect
     end
 

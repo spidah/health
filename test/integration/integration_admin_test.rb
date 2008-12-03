@@ -14,7 +14,7 @@ class IntegrationAdminTest < ActionController::IntegrationTest
   module AdminTestDSL
     def login_openid(openid_url)
       post session_path, :openid_url => openid_url
-      get session_path, :openid_url => openid_url, :open_id_complete => 1
+      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
     end
 
     def cant_access_admin_page

@@ -95,7 +95,7 @@ class IntegrationOtherTest < ActionController::IntegrationTest
       get page
       assert_and_follow_redirect(login_path, 'sessions/new')
       post session_path, :openid_url => openid_url
-      get session_path, :openid_url => openid_url, :open_id_complete => 1
+      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
       assert_and_follow_redirect(page, template)
     end
   end

@@ -108,7 +108,7 @@ class IntegrationNormalLoginTest < ActionController::IntegrationTest
     end
 
     def logout
-      get logout_path
+      delete logout_path
     end
   end
 

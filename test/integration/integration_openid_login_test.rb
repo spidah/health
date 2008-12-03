@@ -74,7 +74,7 @@ class IntegrationOpenidLoginTest < ActionController::IntegrationTest
       self.openid_url = openid_url
       $mockuser = {:loginname => loginname, :email => email, :gender => gender, :dob => dob, :timezone => timezone}
       post session_path, :openid_url => openid_url
-      get session_path, :openid_url => openid_url, :open_id_complete => 1
+      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
       assert_and_follow_redirect(signup_path, 'sessions/signup')
 
       assert_select 'input[type=text][name=loginname][value=?]', loginname
@@ -83,14 +83,14 @@ class IntegrationOpenidLoginTest < ActionController::IntegrationTest
     def login_existing_openid(openid_url, loginname)
       self.openid_url = openid_url
       post session_path, :openid_url => openid_url
-      get session_path, :openid_url => openid_url, :open_id_complete => 1
+      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
       assert_dashboard_redirect
       assert_logged_in_as(loginname)
     end
 
     def cant_login_bad_openid(openid_url, message)
       post session_path, :openid_url => openid_url
-      get session_path, :openid_url => openid_url, :open_id_complete => 1
+      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
       assert_and_follow_redirect(login_path, 'sessions/new')
 
       assert_flash('error', nil, 'Login error')
@@ -106,7 +106,7 @@ class IntegrationOpenidLoginTest < ActionController::IntegrationTest
     end
 
     def logout
-      get logout_path
+      delete logout_path
     end
     
     def perform_openid_link(openid_url, flash_type, flash_message)
