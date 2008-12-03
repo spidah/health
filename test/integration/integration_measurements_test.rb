@@ -135,7 +135,7 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
       follow_redirect!
       assert_response :success
 
-      assert_select "input[id=date_picker][value=?]", format_date(Date.new(year, month, day))
+      assert_select "a", format_date(Date.new(year, month, day))
     end
 
     def check_measurement_difference(weight, difference)
