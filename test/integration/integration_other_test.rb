@@ -47,14 +47,15 @@ class IntegrationOtherTest < ActionController::IntegrationTest
       get contact_path
       assert_success('home/contact')
 
-      assert_select 'form', 1
-      assert_select 'div[class=form-row]', 6
-      assert_select 'input[type=submit]', 1
-      assert_select 'input[type=text][id=name]', 1
-      assert_select 'input[type=text][id=email]', 1
-      assert_select 'input[type=text][id=subject]', 1
-      assert_select 'select[id=category]', 1
-      assert_select 'textarea[id=comment]', 1
+      assert_select 'form[action=?]', contact_path do
+        assert_select 'div[class=form-row]', 6
+        assert_select 'input[type=submit]', 1
+        assert_select 'input[type=text][id=name]', 1
+        assert_select 'input[type=text][id=email]', 1
+        assert_select 'input[type=text][id=subject]', 1
+        assert_select 'select[id=category]', 1
+        assert_select 'textarea[id=comment]', 1
+      end
     end
 
     def post_failing_contact_form
