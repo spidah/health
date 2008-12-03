@@ -13,7 +13,7 @@ class IntegrationMealsTest < ActionController::IntegrationTest
     spidah.cant_add_invalid_meal
     spidah.check_meal_count(1)
 
-    spidah.check_sort_action(lunch, 'weight')
+    spidah.check_sort_action(lunch, 'name')
 
     spidah.check_food_listings(lunch, [bread, ham])
 
@@ -91,11 +91,11 @@ class IntegrationMealsTest < ActionController::IntegrationTest
     def check_sort_action(meal, action)
       get new_meal_food_item_path(meal)
       assert_success('food_items/new')
-      assert_select 'th a[href=?]', CGI.escapeHTML(new_meal_food_item_path(:meal => meal, :sort => action))
+      assert_select 'th a[href=?]', CGI.escapeHTML(new_meal_food_item_path(meal, :sort => action))
 
-      get new_meal_food_item_path(:meal => meal, :sort => action)
+      get new_meal_food_item_path(meal, :sort => action)
       assert_success('food_items/new')
-      assert_select 'th a[href=?]', CGI.escapeHTML(new_meal_food_item_path(:meal => meal, :sort => action, :dir => 'down'))
+      assert_select 'th a[href=?]', CGI.escapeHTML(new_meal_food_item_path(meal, :sort => action, :dir => 'down'))
     end
 
     def check_cant_find_food_item(food_item)
