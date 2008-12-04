@@ -38,39 +38,37 @@ class Measurement < ActiveRecord::Base
   end
 
   def update_difference
-    m = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC')
+    prev_m = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC')
 
-    # m is the previous measurement
-    self[:difference] = m ? self[:measurement] - m.measurement : 0
+    self[:difference] = prev_m ? self[:measurement] - prev_m.measurement : 0
 
     if location_changed?
-      m1 = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC')
-      m2 = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location], 'taken_on ASC')
+      prev_m = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC')
+      next_m = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location], 'taken_on ASC')
 
-      if m2
-        m2.difference = m1 ? m1.measurement - m2.measurement : 0
-        m2.save
+      if next_m
+        next_m.difference = prev_m ? prev_m.measurement - next_m.measurement : 0
+        next_m.save
       end
     end
   end
 
   def update_next_difference
-    m1 = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location], 'taken_on ASC')
-    if m1
-      m2 = frozen? ? self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC') : self
+    next_m = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location], 'taken_on ASC')
+    if next_m
+      prev_m = frozen? ? self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC') : self
 
-      # m1 is the next measurement, m2 is the current or previous measurement
-      m1.difference = m2 ? m1.measurement - m2.measurement : 0
-      m1.save
+      next_m.difference = prev_m ? next_m.measurement - prev_m.measurement : 0
+      next_m.save
     end
 
     if location_changed?
-      m1 = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location_was], 'taken_on ASC')
+      next_m = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location_was], 'taken_on ASC')
 
-      if m1
-        m2 = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location_was], 'taken_on DESC')
-        m1.difference = m2 ? m1.measurement - m2.measurement : 0
-        m1.save
+      if next_m
+        prev_m = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location_was], 'taken_on DESC')
+        next_m.difference = prev_m ? next_m.measurement - prev_m.measurement : 0
+        next_m.save
       end
     end
   end
