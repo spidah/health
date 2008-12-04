@@ -1,7 +1,6 @@
 class Measurement < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessor :stop, :old_location
   # only allow these attributes to be changeable
   attr_accessible :measurement, :location, :taken_on
 
@@ -38,45 +37,39 @@ class Measurement < ActiveRecord::Base
     count('id', :conditions => {:taken_on => date})
   end
 
-  def update_difference(location, changed_location = nil)
-    date = self[:taken_on]
-    m = self.user.measurements.find_first(['taken_on < ? AND location = ?', date, location], 'taken_on DESC')
+  def update_difference
+    m = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC')
 
     # m is the previous measurement
     self[:difference] = m ? self[:measurement] - m.measurement : 0
 
-    if changed_location
-      m1 = self.user.measurements.find_first(['taken_on < ? AND location = ?', date, location], 'taken_on DESC')
-      m2 = self.user.measurements.find_first(['taken_on > ? AND location = ?', date, location], 'taken_on ASC')
+    if location_changed?
+      m1 = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC')
+      m2 = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location], 'taken_on ASC')
 
       if m2
         m2.difference = m1 ? m1.measurement - m2.measurement : 0
-        m2.stop = :stop
         m2.save
       end
     end
   end
 
-  def update_next_difference(location, changed_location = nil)
-    date = self[:taken_on]
-    m1 = self.user.measurements.find_first(['taken_on > ? AND location = ?', date, location], 'taken_on ASC')
+  def update_next_difference
+    m1 = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location], 'taken_on ASC')
     if m1
-      m2 = self.frozen? || (location != self[:location]) ? nil : self
-      m2 = self.user.measurements.find_first(['taken_on < ? AND location = ?', date, location], 'taken_on DESC') if !m2
+      m2 = frozen? ? self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC') : self
 
       # m1 is the next measurement, m2 is the current or previous measurement
       m1.difference = m2 ? m1.measurement - m2.measurement : 0
-      m1.stop = :stop
       m1.save
     end
 
-    if changed_location
-      m1 = self.user.measurements.find_first(['taken_on > ? AND location = ?', date, changed_location], 'taken_on ASC')
+    if location_changed?
+      m1 = self.user.measurements.find_first(['taken_on > ? AND location = ?', taken_on, location_was], 'taken_on ASC')
 
       if m1
-        m2 = self.user.measurements.find_first(['taken_on < ? AND location = ?', date, changed_location], 'taken_on DESC')
+        m2 = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location_was], 'taken_on DESC')
         m1.difference = m2 ? m1.measurement - m2.measurement : 0
-        m1.stop = :stop
         m1.save
       end
     end
@@ -87,23 +80,16 @@ class Measurement < ActiveRecord::Base
       self[:location] = self[:location].capitalize if self[:location]
     end
 
-    def after_find
-      @old_location = self[:location]
-    end
-
     def before_save
-      return if stop == :stop
-      update_difference(self[:location], @old_location != self[:location] ? @old_location : nil)
-      update_next_difference(self[:location], @old_location != self[:location] ? @old_location : nil)
+      update_difference if location_changed? || measurement_changed?
     end
 
     def after_save
-      update_next_difference(@old_location) if !@old_location.blank? && @old_location != self[:location]
-      @old_location = self[:location]
+      update_next_difference if location_changed? || measurement_changed?
     end
 
     def after_destroy
-      update_next_difference(self[:location])
+      update_next_difference
     end
 
     # my validation method
