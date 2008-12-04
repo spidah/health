@@ -75,11 +75,11 @@ class Measurement < ActiveRecord::Base
     end
   end
 
-  protected
-    def before_validation
-      self[:location] = self[:location].capitalize if self[:location]
-    end
+  def location=(value)
+    self[:location] = value.capitalize if value
+  end
 
+  protected
     def before_save
       update_difference if location_changed? || measurement_changed?
     end

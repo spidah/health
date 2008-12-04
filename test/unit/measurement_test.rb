@@ -64,6 +64,13 @@ class MeasurementTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_capitalise_location
+    assert_difference Measurement, :count do
+      m = create_measurement(Date.today, 10, 'left leg')
+      assert 'Left leg', m.location
+    end
+  end
+
   def test_should_update_difference
     m1 = create_measurement(Date.today, 10, 'Left leg')
     m2 = create_measurement(m1.taken_on + 1.day, 20, 'Left leg')
