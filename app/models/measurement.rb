@@ -8,6 +8,8 @@ class Measurement < ActiveRecord::Base
   validates_presence_of :taken_on, :message => 'Please pick a valid date.'
   validates_presence_of :location, :message => 'Please enter a valid location.'
   validates_uniqueness_of :location, :scope => [:user_id, :taken_on], :message => 'You have already entered a measurement for this location.'
+  validates_numericality_of :measurement, :only_integer => true, :allow_nil => true, :greater_than => 0,
+    :message => 'Please enter a valid measurement.'
 
   def self.get_single_measurements(direction = 'DESC', conditions = nil, limit = nil)
     find(:all, :order => "taken_on #{direction}, location ASC", :conditions => conditions, :limit => limit)
@@ -88,10 +90,5 @@ class Measurement < ActiveRecord::Base
 
     def after_destroy
       update_next_difference
-    end
-
-    # my validation method
-    def validate
-      errors.add(:measurement, 'Please enter a valid measurement.') if self[:measurement].to_i <= 0
     end
 end
