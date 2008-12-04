@@ -40,7 +40,7 @@ class Measurement < ActiveRecord::Base
   def update_difference
     prev_m = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC')
 
-    self[:difference] = prev_m ? self[:measurement] - prev_m.measurement : 0
+    self[:difference] = prev_m ? measurement - prev_m.measurement : 0
 
     if location_changed?
       prev_m = self.user.measurements.find_first(['taken_on < ? AND location = ?', taken_on, location], 'taken_on DESC')
