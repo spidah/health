@@ -14,10 +14,6 @@ class WeightsController < ApplicationController
     @before = @current_user.get_weights(:all, 'DESC', ['taken_on < ?', current_date], 6 - @after.size)
   end
 
-  # GET /weights/1
-  #def show
-  #end
-
   # GET /weights/new
   def new
     if existing = @current_user.get_weights(:first, 'DESC', {:taken_on => current_date})
