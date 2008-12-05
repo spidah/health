@@ -37,7 +37,7 @@ class WeightsController < ApplicationController
 
   # GET /weights/edit/1
   def edit
-    @weight = @current_user.weights.find(params[:id])
+    @weight = @current_user.weights.find(params[:id].to_i)
   rescue
     flash[:error] = 'Unable to edit the selected weight.'
     redirect_to(weights_path)
@@ -45,7 +45,7 @@ class WeightsController < ApplicationController
 
   # PUT /weights/1
   def update
-    @weight = @current_user.weights.find(params[:id])
+    @weight = @current_user.weights.find(params[:id].to_i)
     @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight]))
 
     redirect_to(weights_path)
@@ -59,7 +59,7 @@ class WeightsController < ApplicationController
 
   # DESTROY /weights/1
   def destroy
-    @weight = @current_user.weights.find(params[:id])
+    @weight = @current_user.weights.find(params[:id].to_i)
     @weight.destroy
   rescue
     flash[:error] = 'Unable to delete the selected weight.'
