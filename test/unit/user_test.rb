@@ -34,13 +34,20 @@ class UserTest < Test::Unit::TestCase
     assert u.errors.on(:loginname)
   end
 
-  def test_should_require_valid_gender
+  def test_should_convert_invalid_gender_to_m
     u = User.create(@valid_attributes.merge({:gender => 'a'}))
-    assert u.errors.on(:gender)
-
-    u.update_attributes(:gender => 'm')
-    assert u.valid?
+    assert u.valid?, u.errors.full_messages.to_sentence
     assert_equal 'm', u.gender
+  end
+
+  def test_should_downcase_gender
+    u = User.create(@valid_attributes.merge({:gender => 'M'}))
+    assert u.valid?, u.errors.full_messages.to_sentence
+    assert_equal 'm', u.gender
+
+    u.update_attributes(:gender => 'F')
+    assert u.valid?, u.errors.full_messages.to_sentence
+    assert_equal 'f', u.gender
   end
 
   def test_should_require_valid_units

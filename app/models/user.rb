@@ -44,15 +44,15 @@ class User < ActiveRecord::Base
   rescue
   end
 
+  def gender=(value)
+    if value && !value.blank?
+      value.downcase!
+      self[:gender] = (value == 'm' || value == 'f') ? value : 'm'
+    end
+  end
+
   protected
     def before_validation
-      # make sure the gender is lowercase
-      if self[:gender] && !self[:gender].blank?
-        self[:gender] = self[:gender].downcase
-      else
-        self[:gender] = 'm'
-      end
-
       # strip any html tags and sanitize the aboutme text
       self[:profile_aboutme] = self[:profile_aboutme].strip_tags.sanitize if !self [:profile_aboutme].nil?
     end
