@@ -51,9 +51,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  protected
-    def before_validation
-      # strip any html tags and sanitize the aboutme text
-      self[:profile_aboutme] = self[:profile_aboutme].strip_tags.sanitize if !self [:profile_aboutme].nil?
-    end
+  def profile_aboutme=(value)
+    self[:profile_aboutme] = value.strip_tags.sanitize if value && !value.blank?
+  end
 end
