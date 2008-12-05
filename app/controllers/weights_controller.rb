@@ -37,41 +37,35 @@ class WeightsController < ApplicationController
 
   # GET /weights/edit/1
   def edit
-    begin
-      @weight = @current_user.weights.find(params[:id])
-    rescue
-      flash[:error] = 'Unable to edit the selected weight.'
-      redirect_to weights_path
-    end
+    @weight = @current_user.weights.find(params[:id])
+  rescue
+    flash[:error] = 'Unable to edit the selected weight.'
+    redirect_to weights_path
   end
 
   # PUT /weights/1
   def update
-    begin
-      @weight = @current_user.weights.find(params[:id])
-      @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight].except(:taken_on)))
+    @weight = @current_user.weights.find(params[:id])
+    @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight].except(:taken_on)))
 
+    redirect_to weights_path
+  rescue
+    if @weight
+      flash[:error] = @weight.errors
+      redirect_to edit_weight_path(@weight)
+    else
+      flash[:error] = 'Unable to update the selected weight.'
       redirect_to weights_path
-    rescue
-      if @weight
-        flash[:error] = @weight.errors
-        redirect_to edit_weight_path(@weight)
-      else
-        flash[:error] = 'Unable to update the selected weight.'
-        redirect_to weights_path
-      end
     end
   end
 
   # DESTROY /weights/1
   def destroy
-    begin
-      @weight = @current_user.weights.find(params[:id])
-      @weight.destroy
-    rescue
-      flash[:error] = 'Unable to delete the selected weight.'
-    end
-
+    @weight = @current_user.weights.find(params[:id])
+    @weight.destroy
+  rescue
+    flash[:error] = 'Unable to delete the selected weight.'
+  ensure
     redirect_to weights_path
   end
 
