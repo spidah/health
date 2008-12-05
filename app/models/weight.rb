@@ -53,23 +53,19 @@ class Weight < ActiveRecord::Base
   end
 
   def update_difference
-    date = self[:taken_on]
-    w = user.weights.find_first(['taken_on < ?', date], 'taken_on DESC')
+    w = user.weights.find_first(['taken_on < ?', taken_on], 'taken_on DESC')
 
     # w is the previous weight
     self[:difference] = w ? self[:weight] - w.weight : 0
   end
 
   def update_next_difference
-    date = self[:taken_on]
-    w1 = user.weights.find_first(['taken_on > ?', date], 'taken_on ASC')
-    return if !w1
-    w2 = self.frozen? ? nil : self
-    w2 = user.weights.find_first(['taken_on < ?', date], 'taken_on DESC') if !w2
+    next_w = user.weights.find_first(['taken_on > ?', taken_on], 'taken_on ASC')
+    return if !next_w
+    prev_w = self.frozen? ? user.weights.find_first(['taken_on < ?', taken_on], 'taken_on DESC') : self
 
-    # w1 is the next weight, w2 is the current/previous weight
-    w1.difference = w2 ? w1.weight - w2.weight : 0
-    w1.save
+    next_w.difference = prev_w ? next_w.weight - prev_w.weight : 0
+    next_w.save
   end
 
   protected
