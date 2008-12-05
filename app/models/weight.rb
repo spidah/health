@@ -3,7 +3,7 @@ class Weight < ActiveRecord::Base
   belongs_to :user
 
   # only allow these attributes to be changeable
-  attr_accessor :weight_units, :stone, :lbs, :stop
+  attr_accessor :weight_units, :stone, :lbs
   attr_accessible :weight, :weight_units, :stone, :lbs
 
   validates_presence_of :taken_on, :message => 'Please pick a valid date.'
@@ -69,19 +69,18 @@ class Weight < ActiveRecord::Base
 
     # w1 is the next weight, w2 is the current/previous weight
     w1.difference = w2 ? w1.weight - w2.weight : 0
-    w1.stop = :stop
     w1.save
   end
 
   protected
     def before_save
-      return if stop == :stop
+      return if !weight_changed?
       update_difference
       update_next_difference
     end
     
     def after_save
-      return if stop == :stop
+      return if !weight_changed?
       TargetWeight.update_difference(self.user)
     end
 
