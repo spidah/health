@@ -6,40 +6,36 @@ class UserTest < Test::Unit::TestCase
       :timezone => 'London', :weight_units => 'lbs', :measurement_units => 'inches'}
   end
 
-  def create_user(params)
-    User.create(params)
-  end
-
   def test_should_create_user
-    u = create_user(@valid_attributes)
+    u = User.create(@valid_attributes)
     assert !u.new_record?, "#{u.errors.full_messages.to_sentence}"
 
-    u = create_user(@valid_attributes.merge({:loginname => 'newuser1', :weight_units => 'kg', :measurement_units => 'cm'}))
+    u = User.create(@valid_attributes.merge({:loginname => 'newuser1', :weight_units => 'kg', :measurement_units => 'cm'}))
     assert !u.new_record?, "#{u.errors.full_messages.to_sentence}"
   end
 
   def test_should_require_loginname
-    u = create_user(@valid_attributes.except(:loginname))
+    u = User.create(@valid_attributes.except(:loginname))
     assert !u.valid?
     assert u.errors.on(:loginname)
   end
 
   def test_should_require_unique_loginname
-    u = create_user(@valid_attributes)
+    u = User.create(@valid_attributes)
     assert u.valid?, "#{u.errors.full_messages.to_sentence}"
 
-    u = create_user(@valid_attributes)
+    u = User.create(@valid_attributes)
     assert u.new_record?
     assert u.errors.on(:loginname)
   end
 
   def test_should_require_valid_loginname
-    u = create_user(@valid_attributes.merge({:loginname => 'newuser!'}))
+    u = User.create(@valid_attributes.merge({:loginname => 'newuser!'}))
     assert u.errors.on(:loginname)
   end
 
   def test_should_require_valid_gender
-    u = create_user(@valid_attributes.merge({:gender => 'a'}))
+    u = User.create(@valid_attributes.merge({:gender => 'a'}))
     assert u.errors.on(:gender)
 
     u.update_attributes(:gender => 'm')
@@ -48,13 +44,13 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_should_require_valid_units
-    u = create_user(@valid_attributes.merge({:weight_units => 'a', :measurement_units => 'b'}))
+    u = User.create(@valid_attributes.merge({:weight_units => 'a', :measurement_units => 'b'}))
     assert u.errors.on(:weight_units)
     assert u.errors.on(:measurement_units)
   end
 
   def test_should_strip_html_from_aboutme_text
-    u = create_user(@valid_attributes.merge({:profile_aboutme => 'This is just some <b>sample</b> <script type="javascript">text</script>.'}))
+    u = User.create(@valid_attributes.merge({:profile_aboutme => 'This is just some <b>sample</b> <script type="javascript">text</script>.'}))
     assert_equal 'This is just some sample text.', u.profile_aboutme
   end
 
@@ -64,7 +60,7 @@ class UserTest < Test::Unit::TestCase
     assert_equal 4, users.size
 
     (1..20).each { |i|
-      create_user(@valid_attributes.merge({:loginname => "newuser#{i}", :email => "spidahman#{i}@gmail.com"}))
+      User.create(@valid_attributes.merge({:loginname => "newuser#{i}", :email => "spidahman#{i}@gmail.com"}))
     }
 
     users = User.admin_pagination(1)
@@ -77,7 +73,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_should_update
-    u = create_user(@valid_attributes)
+    u = User.create(@valid_attributes)
     
     assert_equal 'spidahman@gmail.com', u.email
     assert_equal 'm', u.gender
@@ -99,7 +95,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_should_return_correct_user_date
-    u = create_user(@valid_attributes.merge({:timezone => "Nuku'alofa"}))
+    u = User.create(@valid_attributes.merge({:timezone => "Nuku'alofa"}))
     assert_equal (Time.now + 13.hours).to_date, u.get_date
 
     u.update_attributes(:timezone => 'Samoa')
@@ -118,7 +114,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_should_destroy
-    user = create_user(@valid_attributes)
+    user = User.create(@valid_attributes)
     user.destroy
     assert_raise(ActiveRecord::RecordNotFound) {User.find(user.id)}
   end
