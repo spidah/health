@@ -40,6 +40,8 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
 
     spidah_weight = spidah.get_weight(2007, 6, 1)
 
+    spidah.cant_change_taken_on_date('2007-06-08', spidah_weight)
+
     bob = new_session_as(get_user(users(:bob)))
     bob.login(user_logins(:bob).openid_url)
 
@@ -137,6 +139,15 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
       end
     end
 
+    def assert_weight_list_data_from_weight(weight, date, difference = nil)
+      weight.weight_units = user.weight_units
+      assert_select "table[class=weights-list] tr[class=?] td", /weight-data.*/ do
+        assert_select 'td[class=date]', format_date(weight.taken_on)
+        assert_select 'td[class=weight]', weight.format
+        assert_select 'td[class=difference]', difference if difference
+      end
+    end
+
     def change_date(year, month, day)
       post change_date_path, {:date_picker => format_date(Date.new(year, month, day))}
 
@@ -214,6 +225,14 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
       put weight_path(id), params
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_flash('error', 'Unable to update the selected weight.', 'Error')
+    end
+
+    def cant_change_taken_on_date(date, weight)
+      put weight_path(weight), :weight => {:taken_on => date}
+
+      assert_and_follow_redirect(weights_path, 'weights/index')
+      assert_no_flash('error')
+      assert_weight_list_data_from_weight(weight, date)
     end
 
     def update_weight(weight, params, difference = nil)

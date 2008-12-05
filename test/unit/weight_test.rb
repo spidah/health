@@ -7,13 +7,15 @@ class WeightTest < Test::Unit::TestCase
   end
 
   def create_lbs_weight(taken_on = nil, stone = nil, lbs = nil)
-    w = Weight.new(:taken_on => taken_on, :stone => stone, :lbs => lbs, :weight_units => 'lbs')
+    w = Weight.new(:stone => stone, :lbs => lbs, :weight_units => 'lbs')
+    w.taken_on = taken_on
     @user_lbs.weights << w
     w
   end
 
   def create_kg_weight(taken_on = nil, weight = nil)
-    w = Weight.new(:taken_on => taken_on, :weight => weight, :weight_units => 'kg')
+    w = Weight.new(:weight => weight, :weight_units => 'kg')
+    w.taken_on = taken_on
     @user_kg.weights << w
     w
   end
@@ -52,6 +54,16 @@ class WeightTest < Test::Unit::TestCase
       w = create_kg_weight(nil, 50)
       assert w.errors.on(:taken_on)
     end
+  end
+
+  def test_cant_update_taken_on
+    w1 = create_lbs_weight(Date.today, 10, 0)
+    assert_equal Date.today, w1.taken_on
+
+    w1.update_attributes(:taken_on => Date.today + 1.day)
+    w1.reload
+
+    assert_equal Date.today, w1.taken_on
   end
 
   def test_should_require_valid_weight
@@ -129,9 +141,8 @@ class WeightTest < Test::Unit::TestCase
     assert_equal Date.today, w.taken_on
     assert_equal 10, w.stone
     assert_equal 11, w.lbs
-    w.update_attributes(:taken_on => Date.today + 1.day, :stone => 8, :lbs => 9)
+    w.update_attributes(:stone => 8, :lbs => 9)
     w.reload
-    assert_equal Date.today + 1.day, w.taken_on
     assert_equal 8, w.stone
     assert_equal 9, w.lbs
 
@@ -139,9 +150,8 @@ class WeightTest < Test::Unit::TestCase
     assert !w.new_record?
     assert_equal Date.today, w.taken_on
     assert_equal 20, w.weight
-    w.update_attributes(:taken_on => Date.today + 1.day, :weight => 40)
+    w.update_attributes(:weight => 40)
     w.reload
-    assert_equal Date.today + 1.day, w.taken_on
     assert_equal 40, w.weight
   end
 

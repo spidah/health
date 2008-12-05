@@ -29,7 +29,8 @@ class WeightsController < ApplicationController
 
   # POST /weights
   def create
-    @weight = Weight.new({:taken_on => current_date, :weight_units => @current_user.weight_units}.merge(params[:weight]))
+    @weight = Weight.new({:weight_units => @current_user.weight_units}.merge(params[:weight]))
+    @weight.taken_on = current_date
 
     if @current_user.weights << @weight
       redirect_to weights_path
@@ -53,7 +54,7 @@ class WeightsController < ApplicationController
   def update
     begin
       @weight = @current_user.weights.find(params[:id])
-      @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight]))
+      @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight].except(:taken_on)))
 
       redirect_to weights_path
     rescue

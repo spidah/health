@@ -4,7 +4,7 @@ class Weight < ActiveRecord::Base
 
   # only allow these attributes to be changeable
   attr_accessor :weight_units, :stone, :lbs, :stop
-  attr_accessible :weight, :taken_on, :weight_units, :stone, :lbs
+  attr_accessible :weight, :weight_units, :stone, :lbs
 
   validates_presence_of :taken_on, :message => 'Please pick a valid date.'
   validates_uniqueness_of :taken_on, :scope => :user_id, :message => 'You have already entered a weight for this day.'
