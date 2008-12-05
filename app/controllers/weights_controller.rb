@@ -46,17 +46,15 @@ class WeightsController < ApplicationController
   # PUT /weights/1
   def update
     @weight = @current_user.weights.find(params[:id])
-    @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight].except(:taken_on)))
+    @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight]))
 
     redirect_to weights_path
-  rescue
-    if @weight
-      flash[:error] = @weight.errors
-      redirect_to edit_weight_path(@weight)
-    else
-      flash[:error] = 'Unable to update the selected weight.'
-      redirect_to weights_path
-    end
+  rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
+    flash[:error] = @weight.errors
+    redirect_to edit_weight_path(@weight)
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = 'Unable to update the selected weight.'
+    redirect_to weights_path
   end
 
   # DESTROY /weights/1
