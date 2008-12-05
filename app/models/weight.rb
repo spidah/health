@@ -11,13 +11,19 @@ class Weight < ActiveRecord::Base
 
   # accessor methods for stone and lbs
   def stone
-    @stone = self[:weight] / 14 if !@stone
-    @stone.to_i
+    @stone ||= (weight / 14).to_i
+  end
+
+  def stone=(value)
+    @stone = value.to_i
   end
 
   def lbs
-    @lbs = self[:weight] % 14 if !@lbs
-    @lbs.to_i
+    @lbs ||= (weight % 14).to_i
+  end
+
+  def lbs=(value)
+    @lbs = value.to_i
   end
 
   def format(units = nil)
@@ -91,7 +97,7 @@ class Weight < ActiveRecord::Base
     # my validation method
     def validate
       if weight_units == 'lbs'
-        errors.add(:weight, 'Please enter a valid weight.') if (stone == 0 and lbs == 0) or (stone < 0 or lbs < 0)
+        errors.add(:weight, 'Please enter a valid weight.') if (stone == 0 && lbs == 0) || (stone < 0 || lbs < 0)
       else
         errors.add(:weight, 'Please enter a valid weight.') if self[:weight].to_i <= 0
       end
