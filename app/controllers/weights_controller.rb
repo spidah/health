@@ -25,15 +25,14 @@ class WeightsController < ApplicationController
 
   # POST /weights
   def create
-    @weight = Weight.new({:weight_units => @current_user.weight_units}.merge(params[:weight]))
+    @weight = @current_user.weights.build({:weight_units => @current_user.weight_units}.merge(params[:weight]))
     @weight.taken_on = current_date
 
-    if @current_user.weights << @weight
-      redirect_to weights_path
-    else
-      flash[:error] = @weight.errors
-      render :action => 'new'
-    end
+    @weight.save!
+    redirect_to weights_path
+  rescue
+    flash[:error] = @weight.errors
+    render :action => 'new'
   end
 
   # GET /weights/edit/1
