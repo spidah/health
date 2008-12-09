@@ -7,18 +7,18 @@ class FoodItemsController < ApplicationController
   verify :method => :delete, :only => :destroy, :redirect_to => 'index'
 
   def new
-    @meal = @current_user.meals.find(params[:meal_id])
+    @meal = @current_user.meals.find(params[:meal_id].to_i)
     get_all_foods
   rescue
     redirect_to meals_path
   end
 
   def create
-    if !@meal = get_meal(params[:meal_id])
+    if !@meal = get_meal(params[:meal_id].to_i)
       fail_to_meals_path('Unable to add a food item to an invalid meal.') and return
     end
 
-    if !@food = get_food(params[:food_id])
+    if !@food = get_food(params[:food_id].to_i)
       fail_to_meal_path(@meal, 'Unable to add the selected food item.') and return
     end
 
@@ -41,21 +41,21 @@ class FoodItemsController < ApplicationController
   end
 
   def edit
-    if !@meal = get_meal(params[:meal_id])
+    if !@meal = get_meal(params[:meal_id].to_i)
       fail_to_meals_path('Unable to edit a food item for an invalid meal.') and return
     end
 
-    if !@food_item = get_food_item(@meal, params[:id])
+    if !@food_item = get_food_item(@meal, params[:id].to_i)
       fail_to_meal_path(@meal, 'Unable to edit the selected food item.') and return
     end
   end
 
   def update
-    if !@meal = get_meal(params[:meal_id])
+    if !@meal = get_meal(params[:meal_id].to_i)
       fail_to_meals_path('Unable to edit a food item for an invalid meal.') and return
     end
 
-    if !@food_item = get_food_item(@meal, params[:id])
+    if !@food_item = get_food_item(@meal, params[:id].to_i)
       fail_to_meal_path(@meal, 'Unable to edit the selected food item.') and return
     end
 
@@ -70,11 +70,11 @@ class FoodItemsController < ApplicationController
   end
 
   def destroy
-    if !@meal = get_meal(params[:meal_id])
+    if !@meal = get_meal(params[:meal_id].to_i)
       fail_to_meals_path('Unable to delete a food item for an invalid meal.') and return
     end
 
-    if !@food_item = get_food_item(@meal, params[:id])
+    if !@food_item = get_food_item(@meal, params[:id].to_i)
       fail_to_meal_path(@meal, 'Unable to delete the selected food item.') and return
     end
 
