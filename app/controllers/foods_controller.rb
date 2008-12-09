@@ -26,14 +26,14 @@ class FoodsController < ApplicationController
   end
 
   def edit
-    @food = @current_user.foods.find(params[:id])
+    @food = @current_user.foods.find(params[:id].to_i)
   rescue
     flash[:error] = 'Unable to edit the selected food.'
     redirect_to(foods_path)
   end
 
   def update
-    @food = @current_user.foods.find(params[:id])
+    @food = @current_user.foods.find(params[:id].to_i)
     @food.update_attributes!(params[:food])
   rescue ActiveRecord::RecordNotFound
     flash[:error] = 'Unable to update the selected food.'
@@ -45,7 +45,7 @@ class FoodsController < ApplicationController
 
   def destroy
     begin
-      @food = @current_user.foods.find(params[:id])
+      @food = @current_user.foods.find(params[:id].to_i)
       @food.destroy
     rescue
       flash[:error] = 'Unable to delete the selected food.'
