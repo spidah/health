@@ -2,8 +2,8 @@ class FoodsController < ApplicationController
   before_filter :login_required, :set_menu_item
 
   verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
-  verify :method => :post, :only => [:create], :redirect_to => 'index'
-  verify :method => :put, :only => [:update], :redirect_to => 'index'
+  verify :method => :post, :only => :create, :redirect_to => 'index'
+  verify :method => :put, :only => :update, :redirect_to => 'index'
   verify :method => :delete, :only => :destroy, :redirect_to => 'index'
 
   def index
