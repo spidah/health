@@ -27,7 +27,7 @@ class MealsController < ApplicationController
     redirect_to(meal_path(@meal))
   rescue
     flash[:error] = @meal.errors
-    render(action => 'new')
+    render(:action => 'new')
   end
 
   def destroy
