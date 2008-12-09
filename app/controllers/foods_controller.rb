@@ -33,16 +33,13 @@ class FoodsController < ApplicationController
   end
 
   def update
-    begin
-      @food = @current_user.foods.find(params[:id])
-    rescue
-      flash[:error] = 'Unable to update the selected food.'
-      redirect_to(foods_path) and return
-    end
-    
-    if !@food.update_attributes(params[:food])
-      flash[:error] = @food.errors
-    end
+    @food = @current_user.foods.find(params[:id])
+    @food.update_attributes!(params[:food])
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = 'Unable to update the selected food.'
+  rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
+    flash[:error] = @food.errors
+  ensure
     redirect_to(foods_path)
   end
 
