@@ -22,13 +22,12 @@ class MealsController < ApplicationController
   end
 
   def create
-    @meal = Meal.new(params[:meal])
-    if @current_user.meals << @meal
-      redirect_to meal_path(@meal)
-    else
-      flash[:error] = @meal.errors
-      render :action => 'new'
-    end
+    @meal = @current_user.meals.build(params[:meal])
+    @meal.save!
+    redirect_to(meal_path(@meal))
+  rescue
+    flash[:error] = @meal.errors
+    render(action => 'new')
   end
 
   def destroy
