@@ -27,14 +27,8 @@ class FoodItemsController < ApplicationController
       @food_item.quantity += 1
       @food_item.save
     rescue
-      @food_item = FoodItem.new
-      @food_item.food_id = @food.id
-      @food_item.name = @food.name
-      @food_item.description = @food.description
-      @food_item.calories = @food.calories
-      @food_item.quantity = 1
-
-      @meal.food_items << @food_item
+      @meal.food_items.create({:food_id => @food.id, :name => @food.name,
+        :description => @food.description, :calories => @food.calories, :quantity => 1})
     end
 
     redirect_to(meal_path(@meal))
