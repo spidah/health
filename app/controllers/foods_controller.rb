@@ -21,7 +21,7 @@ class FoodsController < ApplicationController
       redirect_to(foods_path)
     else
       flash[:error] = @food.errors
-      render :action => 'new'
+      render(:action => 'new')
     end
   end
 
@@ -29,7 +29,7 @@ class FoodsController < ApplicationController
     @food = @current_user.foods.find(params[:id])
   rescue
     flash[:error] = 'Unable to edit the selected food.'
-    redirect_to foods_path
+    redirect_to(foods_path)
   end
 
   def update
@@ -37,13 +37,13 @@ class FoodsController < ApplicationController
       @food = @current_user.foods.find(params[:id])
     rescue
       flash[:error] = 'Unable to update the selected food.'
-      redirect_to foods_path and return
+      redirect_to(foods_path) and return
     end
     
     if !@food.update_attributes(params[:food])
       flash[:error] = @food.errors
     end
-    redirect_to foods_path
+    redirect_to(foods_path)
   end
 
   def destroy
