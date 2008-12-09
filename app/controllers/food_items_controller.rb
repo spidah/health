@@ -10,7 +10,7 @@ class FoodItemsController < ApplicationController
     @meal = @current_user.meals.find(params[:meal_id].to_i)
     get_all_foods
   rescue
-    redirect_to meals_path
+    redirect_to(meals_path)
   end
 
   def create
@@ -37,7 +37,7 @@ class FoodItemsController < ApplicationController
       @meal.food_items << @food_item
     end
 
-    redirect_to meal_path(@meal)
+    redirect_to(meal_path(@meal))
   end
 
   def edit
@@ -62,11 +62,11 @@ class FoodItemsController < ApplicationController
     @food_item.quantity = params[:food_item][:quantity]
     if !@food_item.save
       flash[:error] = @food_item.errors
-      redirect_to edit_meal_food_item_path(@meal, @food_item)
+      redirect_to(edit_meal_food_item_path(@meal, @food_item))
       return
     end
 
-    redirect_to meal_path(@meal)
+    redirect_to(meal_path(@meal))
   end
 
   def destroy
@@ -79,7 +79,7 @@ class FoodItemsController < ApplicationController
     end
 
     @food_item.destroy
-    redirect_to meal_path(@meal)
+    redirect_to(meal_path(@meal))
   end
 
   protected
@@ -106,11 +106,11 @@ class FoodItemsController < ApplicationController
 
     def fail_to_meals_path(message)
       flash[:error] = message
-      redirect_to meals_path
+      redirect_to(meals_path)
     end
 
     def fail_to_meal_path(meal, message)
       flash[:error] = message
-      redirect_to meal_path(meal)
+      redirect_to(meal_path(meal))
     end
 end
