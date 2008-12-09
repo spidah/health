@@ -31,13 +31,12 @@ class MealsController < ApplicationController
   end
 
   def destroy
-    begin
-      @meal = @current_user.meals.find(params[:id].to_i)
-      @meal.destroy
-    rescue
-      flash[:error] = 'Unable to delete the selected meal.'
-    end
-    redirect_to meals_path
+    @meal = @current_user.meals.find(params[:id].to_i)
+    @meal.destroy
+  rescue
+    flash[:error] = 'Unable to delete the selected meal.'
+  ensure
+    redirect_to(meals_path)
   end
 
   def edit
