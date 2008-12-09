@@ -10,7 +10,7 @@ class MealsController < ApplicationController
   end
 
   def show
-    @meal = @current_user.meals.find(params[:id])
+    @meal = @current_user.meals.find(params[:id].to_i)
     redirect_to new_meal_food_item_path(@meal) and return if @meal.food_items.size == 0
   rescue
     flash[:error] = 'Unable to display the selected meal.'
@@ -33,7 +33,7 @@ class MealsController < ApplicationController
 
   def destroy
     begin
-      @meal = @current_user.meals.find(params[:id])
+      @meal = @current_user.meals.find(params[:id].to_i)
       @meal.destroy
     rescue
       flash[:error] = 'Unable to delete the selected meal.'
@@ -42,7 +42,7 @@ class MealsController < ApplicationController
   end
 
   def edit
-    @meal = @current_user.meals.find(params[:id])
+    @meal = @current_user.meals.find(params[:id].to_i)
   rescue
     flash[:error] = 'Unable to edit the selected meal.'
     redirect_to meals_path
