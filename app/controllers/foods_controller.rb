@@ -16,13 +16,12 @@ class FoodsController < ApplicationController
   end
 
   def create
-    @food = Food.new(params[:food])
-    if @current_user.foods << @food
-      redirect_to(foods_path)
-    else
-      flash[:error] = @food.errors
-      render(:action => 'new')
-    end
+    @food = @current_user.foods.build(params[:food])
+    @food.save!
+    redirect_to(foods_path)
+  rescue
+    flash[:error] = @food.errors
+    render(:action => 'new')
   end
 
   def edit
