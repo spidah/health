@@ -44,12 +44,11 @@ class FoodsController < ApplicationController
   end
 
   def destroy
-    begin
-      @food = @current_user.foods.find(params[:id].to_i)
-      @food.destroy
-    rescue
-      flash[:error] = 'Unable to delete the selected food.'
-    end
+    @food = @current_user.foods.find(params[:id].to_i)
+    @food.destroy
+  rescue
+    flash[:error] = 'Unable to delete the selected food.'
+  ensure
     redirect_to(foods_path)
   end
 
