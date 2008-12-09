@@ -23,9 +23,7 @@ class FoodItemsController < ApplicationController
     end
 
     begin
-      @food_item = @meal.food_items.find_by_food_id(@food.id)
-      @food_item.quantity += 1
-      @food_item.save
+      @meal.food_items.find_by_food_id(@food.id).increment!(:quantity)
     rescue
       @meal.food_items.create({:food_id => @food.id, :name => @food.name,
         :description => @food.description, :calories => @food.calories, :quantity => 1})
