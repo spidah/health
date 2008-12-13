@@ -17,8 +17,8 @@ class Exercise < ActiveRecord::Base
     first(:select => 'taken_on', :order => 'taken_on DESC').taken_on rescue nil
   end
 
-  def self.get_count(date)
-    for_day(date).count('id')
+  def self.get_count
+    count('id')
   end
 
   def self.calories
