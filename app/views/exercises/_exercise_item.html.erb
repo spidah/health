@@ -1,8 +1,8 @@
-    <tr>
+    <tr class="exercise-item">
       <td><%= exercise.activity_name -%></td>
       <td><%= exercise.activity_type -%></td>
-      <td><%= pluralize(exercise.duration, 'minute') -%></td>
-      <td class="number"><%= exercise.calories -%></td>
+      <td class="duration"><%= pluralize(exercise.duration, 'minute') -%></td>
+      <td class="number calories"><%= exercise.calories -%></td>
       <td class="edit"><%= link_to image_tag('/images/edit.gif'), edit_exercise_path(exercise) -%></td>
       <td class="delete"><%= link_to image_tag('/images/delete.gif'), exercise_path(exercise),
         :confirm => 'Are you sure you want to delete this exercise?', :method => :delete -%></td>

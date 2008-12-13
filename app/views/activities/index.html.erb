@@ -1,5 +1,6 @@
 <div class="block">
   <h2>Activities</h2>
+  <%= print_flash(flash[:error], 'error') -%>
   <%= print_flash(flash[:info], 'info') -%>
   <p>You have <%= pluralize(@activities.size, 'activity') -%>. Would you like to <%= link_to('add another', new_activity_path) -%>?</p>
 </div>

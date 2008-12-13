@@ -1,18 +1,16 @@
 class Exercise < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessible :duration, :calories
+  named_scope :for_day, lambda { |date| { :conditions => { :taken_on => date } } }
 
-  def set_values(params, activity)
+  validates_numericality_of :duration, :only_integer => true, :greater_than => 0, :message => 'Please enter a duration greater than 0.'
+
+  def set_values(duration, activity)
     self[:activity_id] = activity.id
     self[:activity_name] = activity.name
     self[:activity_type] = activity.type
-    self[:duration] = params["duration"]
+    self[:duration] = duration
     self[:calories] = ((activity.calories.to_f / activity.duration.to_f) * self[:duration]).to_i
-  end
-
-  def self.find_for_day(date)
-    find(:all, :conditions => {:taken_on => date})
   end
 
   def self.get_latest_date
@@ -20,15 +18,15 @@ class Exercise < ActiveRecord::Base
   end
 
   def self.get_count(date)
-    count('id', :conditions => {:taken_on => date})
+    for_day(date).count('id')
   end
 
-  def self.calories_for_day(date)
-    sum('calories', :conditions => {:taken_on => date}) / 100
+  def self.calories
+    sum('calories') / 100
   end
 
-  def self.duration_for_day(date)
-    sum('duration', :conditions => {:taken_on => date}) / 100
+  def self.duration
+    sum('duration') / 100
   end
 
   protected
@@ -40,9 +38,5 @@ class Exercise < ActiveRecord::Base
     def before_save
       self[:duration] *= 100
       self[:calories] *= 100
-    end
-
-    def validate
-      errors.add(:duration, 'Please enter a valid duration for the exercise.') if self[:duration].to_i <= 0
     end
 end

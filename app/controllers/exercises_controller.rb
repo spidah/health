@@ -12,34 +12,35 @@ class ExercisesController < ApplicationController
   end
 
   def new
-    new_exercise
+    @exercise = Exercise.new
     get_all_activities
   end
 
   def create
-    e_params = params[:exercise]
-    @exercise = Exercise.new
-
-    if !@activity = @current_user.activities.find(e_params["activity"])
-      flash[:error] = 'Unable to add the selected activity'
-      render(:action => 'new') and return
+    begin
+      @activity = @current_user.activities.find(params[:exercise]["activity"])
+    rescue ActiveRecord::RecordNotFound
+      flash[:error] = 'Unable to add the selected activity.'
+      redirect_to(new_exercise_path) and return
     end
 
+    @exercise = @current_user.exercises.build
     @exercise.taken_on = current_date
-    @exercise.set_values(e_params, @activity)
+    @exercise.set_values(params[:exercise]["duration"], @activity)
 
-    if @current_user.exercises << @exercise
+    begin
+      @exercise.save!
       redirect_to(exercises_path)
-    else
+    rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
       flash[:error] = @exercise.errors
-      render(:action => 'new')
+      redirect_to(new_exercise_path)
     end
   end
 
   def edit
     @exercise = @current_user.exercises.find(params[:id])
     get_all_activities
-  rescue
+  rescue ActiveRecord::RecordNotFound
     flash[:error] = 'Unable to edit the selected exercise.'
     redirect_to(exercises_path)
   end
@@ -47,54 +48,53 @@ class ExercisesController < ApplicationController
   def update
     begin
       @exercise = @current_user.exercises.find(params[:id])
-    rescue
+    rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Unable to update the selected exercise.'
       redirect_to(exercises_path) and return
     end
 
-    e_params = params[:exercise]
-
-    if !@activity = @current_user.activities.find(e_params["activity"])
-      flash[:error] = 'Unable to add the selected activity'
-      render(:action => 'new') and return
+    begin
+      @activity = @current_user.activities.find(params[:exercise]["activity"])
+    rescue ActiveRecord::RecordNotFound
+      flash[:error] = 'Unable to find the selected activity.'
+      redirect_to(edit_exercise_path(@exercise)) and return
     end
 
-    @exercise.set_values(e_params, @activity)
-    if !@exercise.save
+    @exercise.set_values(params[:exercise]["duration"], @activity)
+
+    begin
+      @exercise.save!
+      redirect_to(exercises_path)
+    rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
       flash[:error] = @exercise.errors
+      redirect_to(edit_exercise_path(@exercise))
     end
-    redirect_to(exercises_path)
   end
 
   def destroy
-    begin
-      @exercise = @current_user.exercises.find(params[:id])
-      @exercise.destroy
-    rescue
-      flash[:error] = 'Unable to delete the selected exercise.'
-    end
+    @exercise = @current_user.exercises.find(params[:id])
+    @exercise.destroy
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = 'Unable to delete the selected exercise.'
+  ensure
     redirect_to(exercises_path)
   end
 
   protected
-    def get_all_exercises
-      @exercises = @current_user.exercises.find_for_day(current_date)
-    end
+  def get_all_exercises
+    @exercises = @current_user.exercises.for_day(current_date)
+  end
 
-    def get_all_activities
-      @activities = @current_user.activities.find(:all)
-    end
+  def get_all_activities
+    @activities = @current_user.activities.find(:all)
+  end
 
-    def get_totals
-      @total_duration = @current_user.exercises.duration_for_day(current_date)
-      @total_calories = @current_user.exercises.calories_for_day(current_date)
-    end
+  def get_totals
+    @total_duration = @current_user.exercises.for_day(current_date).duration
+    @total_calories = @current_user.exercises.for_day(current_date).calories
+  end
 
-    def new_exercise
-      @exercise = Exercise.new
-    end
-
-    def set_menu_item
-      @activemenuitem = 'menu-exercise'
-    end
+  def set_menu_item
+    @activemenuitem = 'menu-exercise'
+  end
 end
