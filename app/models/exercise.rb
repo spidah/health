@@ -18,15 +18,15 @@ class Exercise < ActiveRecord::Base
   end
 
   def self.get_count
-    count('id')
+    count(:id)
   end
 
   def self.calories
-    sum('calories') / 100
+    sum(:calories) / 100
   end
 
   def self.duration
-    sum('duration') / 100
+    sum(:duration) / 100
   end
 
   protected
