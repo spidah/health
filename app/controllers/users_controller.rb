@@ -75,17 +75,18 @@ class UsersController < ApplicationController
   end
 
   protected
-    def set_menu_item
-      @activemenuitem = 'menu-account'
-    end
 
-    def failed_update(message)
-      flash[:error] = message
-      redirect_to(edit_user_path)
-    end
+  def set_menu_item
+    @activemenuitem = 'menu-account'
+  end
 
-    def successful_update(message)
-      flash[:info] = message
-      redirect_to(edit_user_path)
-    end
+  def failed_update(message)
+    flash[:error] = message
+    redirect_to(edit_user_path)
+  end
+
+  def successful_update(message)
+    flash[:info] = message
+    redirect_to(edit_user_path)
+  end
 end
