@@ -29,7 +29,7 @@ class ActivitiesController < ApplicationController
 
   def edit
     @activity = @current_user.activities.find(params[:id])
-  rescue
+  rescue ActiveRecord::RecordNotFound
     flash[:error] = 'Unable to edit the selected activity.'
     redirect_to(activities_path)
   end
@@ -37,7 +37,7 @@ class ActivitiesController < ApplicationController
   def update
     begin
       @activity = @current_user.activities.find(params[:id])
-    rescue
+    rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Unable to update the selected activity.'
       redirect_to(activities_path) and return
     end
@@ -53,7 +53,7 @@ class ActivitiesController < ApplicationController
     begin
       @activity = @current_user.activities.find(params[:id])
       @activity.destroy
-    rescue
+    rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Unable to delete the selected activity.'
     end
     redirect_to(activities_path)
