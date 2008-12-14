@@ -119,7 +119,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
 
     def should_not_add_invalid_activity
       post(activities_path, :activity => {:name => '', :description => '', :type => '', :duration => '', :calories => ''})
-      assert_success('activities/new')
+      assert_and_follow_redirect(new_activity_path, 'activities/new')
       assert_flash('error', nil, 'Error saving activity')
       assert_flash_item('error', 'Please enter a name for the activity.')
       assert_flash_item('error', 'Please select a type for the activity.')
@@ -127,7 +127,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
       assert_flash_item('error', 'Please enter the calories for the activity.')
 
       post(activities_path, :activity => {:name => 'a', :description => 'a', :type => 'a', :duration => -1, :calories => -1})
-      assert_success('activities/new')
+      assert_and_follow_redirect(new_activity_path, 'activities/new')
       assert_flash('error', nil, 'Error saving activity')
       assert_flash_item('error', 'Please enter a valid duration for the activity.')
       assert_flash_item('error', 'Please enter a valid calorie count for the activity.')

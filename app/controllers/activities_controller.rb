@@ -19,13 +19,12 @@ class ActivitiesController < ApplicationController
   end
 
   def create
-    @activity = Activity.new(params[:activity])
-    if @current_user.activities << @activity
-      redirect_to(activities_path)
-    else
-      flash[:error] = @activity.errors
-      render(:action => 'new')
-    end
+    @activity = @current_user.activities.build(params[:activity])
+    @activity.save!
+    redirect_to(activities_path)
+  rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
+    flash[:error] = @activity.errors
+    redirect_to(new_activity_path)
   end
 
   def edit
