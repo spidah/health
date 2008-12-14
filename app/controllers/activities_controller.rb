@@ -62,15 +62,15 @@ class ActivitiesController < ApplicationController
   end
 
   protected
-    def get_all_activities
-      @activities = @current_user.activities.pagination(params[:page], params[:sort], params[:dir] ? 'DESC' : 'ASC')
-    end
+  def get_all_activities
+    @activities = @current_user.activities.pagination(params[:page], params[:sort], params[:dir] ? 'DESC' : 'ASC')
+  end
 
-    def new_activity
-      @activity = Activity.new
-    end
+  def new_activity
+    @activity = Activity.new
+  end
 
-    def set_menu_item
-      @activemenuitem = 'menu-exercise'
-    end
+  def set_menu_item
+    @activemenuitem = 'menu-exercise'
+  end
 end
