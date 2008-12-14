@@ -45,7 +45,7 @@ class ActivitiesController < ApplicationController
     begin
       @activity.update_attributes!(params[:activity])
       redirect_to(activities_path)
-    rescue
+    rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
       flash[:error] = @activity.errors
       redirect_to(edit_activity_path(@activity))
     end
