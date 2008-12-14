@@ -41,12 +41,14 @@ class ActivitiesController < ApplicationController
       flash[:error] = 'Unable to update the selected activity.'
       redirect_to(activities_path) and return
     end
-    
-    if !@activity.update_attributes(params[:activity])
+
+    begin
+      @activity.update_attributes!(params[:activity])
+      redirect_to(activities_path)
+    rescue
       flash[:error] = @activity.errors
-      redirect_to(edit_activity_path(@activity)) and return
+      redirect_to(edit_activity_path(@activity))
     end
-    redirect_to(activities_path)
   end
 
   def destroy
