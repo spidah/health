@@ -61,6 +61,7 @@ class ActivitiesController < ApplicationController
   end
 
   protected
+
   def get_all_activities
     @activities = @current_user.activities.pagination(params[:page], params[:sort], params[:dir] ? 'DESC' : 'ASC')
   end
