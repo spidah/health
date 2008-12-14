@@ -15,8 +15,8 @@ class UsersController < ApplicationController
     @measurements_date = @current_user.measurements.get_latest_date
     @measurements = @current_user.measurements.get_count(@measurements_date)
     @meals_date = @current_user.meals.get_latest_date
-    @meals = @current_user.meals.get_count(@meals_date)
-    @meals_calories = @current_user.meals.calories_for_day(@meals_date) / 100
+    @meals = @current_user.meals.for_day(@meals_date).get_count
+    @meals_calories = @current_user.meals.for_day(@meals_date).calories
     @exercises_date = @current_user.exercises.get_latest_date
     @exercises = @current_user.exercises.for_day(@exercises_date).get_count
     @exercises_calories = @current_user.exercises.for_day(@exercises_date).calories
