@@ -6,7 +6,7 @@ class MealsController < ApplicationController
   verify :method => :delete, :only => :destroy, :redirect_to => 'index'
 
   def index
-    @meals = @current_user.meals.find_for_day(current_date)
+    @meals = @current_user.meals.for_day(current_date)
   end
 
   def show
