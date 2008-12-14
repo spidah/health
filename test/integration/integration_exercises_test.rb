@@ -121,16 +121,16 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
       post(activities_path, :activity => {:name => '', :description => '', :type => '', :duration => '', :calories => ''})
       assert_and_follow_redirect(new_activity_path, 'activities/new')
       assert_flash('error', nil, 'Error saving activity')
-      assert_flash_item('error', 'Please enter a name for the activity.')
-      assert_flash_item('error', 'Please select a type for the activity.')
-      assert_flash_item('error', 'Please enter a duration for the activity.')
-      assert_flash_item('error', 'Please enter the calories for the activity.')
+      assert_flash_item('error', 'Please enter a name.')
+      assert_flash_item('error', 'Please select a type.')
+      assert_flash_item('error', 'Please enter a duration.')
+      assert_flash_item('error', 'Please enter the calories.')
 
       post(activities_path, :activity => {:name => 'a', :description => 'a', :type => 'a', :duration => -1, :calories => -1})
       assert_and_follow_redirect(new_activity_path, 'activities/new')
       assert_flash('error', nil, 'Error saving activity')
-      assert_flash_item('error', 'Please enter a valid duration for the activity.')
-      assert_flash_item('error', 'Please enter a valid calorie count for the activity.')
+      assert_flash_item('error', 'Please enter a valid duration.')
+      assert_flash_item('error', 'Please enter a valid calorie count.')
     end
 
     def should_add_valid_activity(name, description, type, duration, calories)
@@ -163,10 +163,10 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
       put(activity_path(activity), :activity => {:name => '', :description => '', :type => '', :duration => '', :calories => ''})
       assert_and_follow_redirect(edit_activity_path(activity), 'activities/edit')
       assert_flash('error', nil, 'Error saving activity')
-      assert_flash_item('error', 'Please enter a name for the activity.')
-      assert_flash_item('error', 'Please select a type for the activity.')
-      assert_flash_item('error', 'Please enter a duration for the activity.')
-      assert_flash_item('error', 'Please enter the calories for the activity.')
+      assert_flash_item('error', 'Please enter a name.')
+      assert_flash_item('error', 'Please select a type.')
+      assert_flash_item('error', 'Please enter a duration.')
+      assert_flash_item('error', 'Please enter the calories.')
     end
 
     def should_not_update_invalid_activity
