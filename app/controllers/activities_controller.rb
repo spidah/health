@@ -52,12 +52,11 @@ class ActivitiesController < ApplicationController
   end
 
   def destroy
-    begin
-      @activity = @current_user.activities.find(params[:id])
-      @activity.destroy
-    rescue ActiveRecord::RecordNotFound
-      flash[:error] = 'Unable to delete the selected activity.'
-    end
+    @activity = @current_user.activities.find(params[:id])
+    @activity.destroy
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = 'Unable to delete the selected activity.'
+  ensure
     redirect_to(activities_path)
   end
 
