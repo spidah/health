@@ -7,8 +7,6 @@ class Activity < ActiveRecord::Base
 
   validates_presence_of :name, :message => 'Please enter a name.'
   validates_presence_of :type, :message => 'Please select a type.'
-  validates_presence_of :duration, :message => 'Please enter a duration.'
-  validates_presence_of :calories, :message => 'Please enter the calories.'
   validates_numericality_of :duration, :only_integer => true, :greater_than => 0, :message => 'Please enter a valid duration.'
   validates_numericality_of :calories, :only_integer => true, :greater_than => 0, :message => 'Please enter a valid calorie count.'
 
