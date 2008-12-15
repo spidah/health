@@ -14,15 +14,21 @@ class Activity < ActiveRecord::Base
     paginate :page => page, :per_page => 50, :order => sort ? "#{sort} #{dir}" : 'name ASC'
   end
 
-  protected
-
-  def after_find
-    self[:duration] /= 100 if self[:duration]
-    self[:calories] /= 100 if self[:calories]
+  def calories
+    @calories ||= self[:calories] / 100
   end
 
-  def before_save
-    self[:duration] *= 100
-    self[:calories] *= 100
+  def calories=(value)
+    self[:calories] = value.to_i * 100
+    @calories = value.to_i
+  end
+
+  def duration
+    @duration ||= self[:duration] / 100
+  end
+
+  def duration=(value)
+    self[:duration] = value.to_i * 100
+    @duration = value.to_i
   end
 end
