@@ -1,6 +1,7 @@
 jogging:
+  user: spidah
   name: Jogging
   description: Jogging
   type: Aerobic
-  duration: 10
-  calories: 10
+  duration: 1000
+  calories: 1000
