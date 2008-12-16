@@ -88,13 +88,15 @@ class TargetWeightTest < Test::Unit::TestCase
   def test_should_update_difference
     tw = create_lbs_target_weight(1, 4)
     assert_equal 18, tw.difference
-    w = Weight.new(:stone => 2, :lbs => 0, :taken_on => Date.today, :weight_units => 'lbs')
-    @user_lbs.weights << w
+    w = @user_lbs.weights.build(:stone => 2, :lbs => 0, :weight_units => 'lbs')
+    w.taken_on = Date.today
+    w.save
     tw.reload
     assert_equal 10, tw.difference
 
-    w = Weight.new(:stone => 1, :lbs => 8, :taken_on => Date.today + 1.day, :weight_units => 'lbs')
-    @user_lbs.weights << w
+    w = @user_lbs.weights.build(:stone => 1, :lbs => 8, :weight_units => 'lbs')
+    w.taken_on = Date.today + 1.day
+    w.save
     tw.reload
     assert_equal 4, tw.difference
   end
@@ -104,14 +106,16 @@ class TargetWeightTest < Test::Unit::TestCase
     assert_equal 18, tw.difference
     assert_equal nil, tw.achieved_on
     
-    w = Weight.new(:stone => 1, :lbs => 3, :taken_on => Date.today, :weight_units => 'lbs')
-    @user_lbs.weights << w
+    w = @user_lbs.weights.build(:stone => 1, :lbs => 3, :weight_units => 'lbs')
+    w.taken_on = Date.today
+    w.save
     tw.reload
     assert_equal -1, tw.difference
     assert_equal Date.today, tw.achieved_on
     
-    w = Weight.new(:stone => 1, :lbs => 2, :taken_on => Date.today + 1.day, :weight_units => 'lbs')
-    @user_lbs.weights << w
+    w = @user_lbs.weights.build(:stone => 1, :lbs => 2, :weight_units => 'lbs')
+    w.taken_on = Date.today + 1.day
+    w.save
     tw.reload
     assert_equal -2, tw.difference
     assert_equal Date.today, tw.achieved_on
