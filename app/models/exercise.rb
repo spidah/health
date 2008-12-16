@@ -9,8 +9,26 @@ class Exercise < ActiveRecord::Base
     self[:activity_id] = activity.id
     self[:activity_name] = activity.name
     self[:activity_type] = activity.type
-    self[:duration] = duration
-    self[:calories] = ((activity.calories.to_f / activity.duration.to_f) * self[:duration]).to_i
+    self.duration = duration
+    self.calories = ((activity.calories.to_f / activity.duration.to_f) * self.duration).to_i
+  end
+
+  def calories
+    @calories ||= self[:calories] / 100
+  end
+
+  def calories=(value)
+    self[:calories] = value.to_i * 100
+    @calories = value.to_i
+  end
+
+  def duration
+    @duration ||= self[:duration] / 100
+  end
+
+  def duration=(value)
+    self[:duration] = value.to_i * 100
+    @duration = value.to_i
   end
 
   def self.get_latest_date
@@ -27,17 +45,5 @@ class Exercise < ActiveRecord::Base
 
   def self.duration
     sum('duration / 100')
-  end
-
-  protected
-
-  def after_find
-    self[:duration] /= 100 if self[:duration]
-    self[:calories] /= 100 if self[:calories]
-  end
-
-  def before_save
-    self[:duration] *= 100
-    self[:calories] *= 100
   end
 end
