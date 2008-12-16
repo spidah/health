@@ -7,15 +7,11 @@ class TargetWeightTest < Test::Unit::TestCase
   end
 
   def create_lbs_target_weight(stone = nil, lbs = nil)
-    tw = TargetWeight.new(:stone => stone, :lbs => lbs, :weight_units => 'lbs')
-    @user_lbs.target_weights << tw
-    tw
+    @user_lbs.target_weights.create(:stone => stone, :lbs => lbs, :weight_units => 'lbs')
   end
 
   def create_kg_target_weight(weight = nil)
-    tw = TargetWeight.new(:weight => weight, :weight_units => 'kg')
-    @user_kg.target_weights << tw
-    tw
+    @user_kg.target_weights.create(:weight => weight, :weight_units => 'kg')
   end
 
   def test_should_create_target_weight
