@@ -24,7 +24,7 @@ class Meal < ActiveRecord::Base
   end
 
   def self.calories
-    sum("total_calories / 100")
+    sum("total_calories / 100").to_i
   end
 
   protected
