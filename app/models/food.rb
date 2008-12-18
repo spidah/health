@@ -48,18 +48,18 @@ class Food < ActiveRecord::Base
   end
 
   protected
-    def after_save
-      if @changed
-        @items = FoodItem.find(:all, :conditions => {:food_id => self[:id]})
-        if @items.size > 0
-          new_calories = self[:calories] / 100
-          for item in @items do
-            item.calories = new_calories
-            item.name = self[:name]
-            item.description = self[:description]
-            item.save
-          end
+
+  def after_save
+    if name_changed? || description_changed? || calories_changed?
+      @items = FoodItem.find(:all, :conditions => {:food_id => self[:id]})
+      if @items.size > 0
+        for item in @items do
+          item.calories = calories
+          item.name = self[:name]
+          item.description = self[:description]
+          item.save
         end
       end
     end
+  end
 end
