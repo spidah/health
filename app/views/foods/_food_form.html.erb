@@ -19,19 +19,19 @@
       </div>
       <div class="form-row">
         <span class="label">Fat</span>
-        <span class="data"><%= f.text_field(:fat, :size => 6) -%> grams</span>
+        <span class="data"><%= f.text_field(:fat, :size => 6, :value => @food.fat) -%> grams</span>
       </div>
       <div class="form-row">
         <span class="label">Protein</span>
-        <span class="data"><%= f.text_field(:protein, :size => 6) -%> grams</span>
+        <span class="data"><%= f.text_field(:protein, :size => 6, :value => @food.protein) -%> grams</span>
       </div>
       <div class="form-row">
         <span class="label">Carbohydrates</span>
-        <span class="data"><%= f.text_field(:carbs, :size => 6) -%> grams</span>
+        <span class="data"><%= f.text_field(:carbs, :size => 6, :value => @food.carbs) -%> grams</span>
       </div>
       <div class="form-row">
         <span class="label">Calories</span>
-        <span class="data"><%= text_field(:food, :calories, :size => 6) -%></span>
+        <span class="data"><%= text_field(:food, :calories, :size => 6, :value => @food.calories) -%></span>
       </div>
       <div class="form-row">
         <%= submit_tag(action, :class => 'submit') -%>
