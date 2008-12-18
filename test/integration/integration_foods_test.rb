@@ -18,7 +18,7 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
     spidah.assert_foods_count(2)
     chocolate = spidah.should_add_food('Chocolate Bar', 'Plain Chocolate', 'Tesco', '3g', '3.5', '6.2', '18.2', '24')
     spidah.should_update_food(chocolate, 'Chocolate Bar', 'Milk Chocolate', 'Nestle', '2g', '6.2', '2.1', '8.9', '12')
-    chocolate.reload
+    chocolate = Food.find(chocolate.id)
     spidah.check_food_listing(chocolate)
     spidah.cant_update_invalid_food(1000)
     spidah.cant_update_incorrect_food(chocolate)
