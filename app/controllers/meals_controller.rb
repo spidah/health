@@ -22,7 +22,7 @@ class MealsController < ApplicationController
   end
 
   def create
-    @meal = @current_user.meals.build(params[:meal])
+    @meal = @current_user.meals.build(params[:meal].merge(:created_on => current_date))
     @meal.save!
     redirect_to(meal_path(@meal))
   rescue
