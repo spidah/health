@@ -39,7 +39,13 @@ class IntegrationMealsTest < ActionController::IntegrationTest
     bob.cant_show_another_users_meal(lunch)
     bob.cant_update_another_users_meal(lunch)
     bob.cant_delete_another_users_meal(lunch)
-    
+
+    dinner = spidah.should_add_meal('Dinner')
+    ham = spidah.add_food('Sliced Ham', 'Single slice cooked ham', 'Tesco', '1g', '1', '1', '1', '15')
+    ham_fi = spidah.should_add_food_to_meal(dinner, ham)
+    spidah.should_update_food_item_when_food_updated(dinner, ham, ham_fi)
+    spidah.should_delete_meal(dinner)
+
     spidah.check_meal_count(1)
     spidah.should_delete_meal(lunch)
     spidah.check_meal_count(0)
@@ -75,6 +81,17 @@ class IntegrationMealsTest < ActionController::IntegrationTest
         assert_select 'td[class=manufacturer]', food.manufacturer
         assert_select 'td[class=weight]', food.weight
       }
+    end
+
+    def check_food_item(meal, food_item)
+      get meal_path(meal)
+      assert_success('meals/show')
+
+      assert_select "table tr td" do
+        assert_select 'td[class=name]', food_item.name
+        assert_select 'td[class*=quantity]', food_item.quantity.to_s
+        assert_select 'td[class*=calories]', food_item.calories.to_s
+      end
     end
 
     def check_food_quantity(meal, food, quantity)
@@ -150,6 +167,12 @@ class IntegrationMealsTest < ActionController::IntegrationTest
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
     end
 
+    def should_update_food_item_when_food_updated(meal, food, food_item)
+      put food_path(food), :food => {:name => 'Food', :description => 'Food', :calories => 1}
+      food_item = FoodItem.find(food_item.id)
+      check_food_item(meal, food_item)
+    end
+
     def should_remove_food_item(meal, food_item)
       delete meal_food_item_path(meal, food_item)
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
@@ -213,7 +236,7 @@ class IntegrationMealsTest < ActionController::IntegrationTest
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to display the selected meal.')
     end
-    
+
     def cant_show_another_users_meal(meal)
       get meal_path(meal)
       assert_and_follow_redirect(meals_path, 'meals/index')
