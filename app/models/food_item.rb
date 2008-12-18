@@ -9,7 +9,7 @@ class FoodItem < ActiveRecord::Base
 
   def calories=(value)
     self[:calories] = value.to_i * 100
-    @calories = self[:calories]
+    @calories = value.to_i
   end
 
   protected
