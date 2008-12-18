@@ -39,6 +39,21 @@ class FoodItemTest < Test::Unit::TestCase
     assert_equal(2, food_item.quantity)
   end
 
+  def test_should_update_when_food_updates
+    food_item = @meal.food_items.create(@valid_attributes)
+
+    assert_equal('Food', food_item.name)
+    assert_equal('Food', food_item.description)
+    assert_equal(1, food_item.calories)
+
+    @food.update_attributes(:name => 'Food 2', :description => 'Food 2', :calories => 2)
+    food_item = FoodItem.find(food_item.id)
+
+    assert_equal('Food 2', food_item.name)
+    assert_equal('Food 2', food_item.description)
+    assert_equal(2, food_item.calories)
+  end
+
   def test_should_destroy
     food_item = @meal.food_items.create(@valid_attributes)
     food_item.destroy
