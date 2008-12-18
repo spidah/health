@@ -12,30 +12,30 @@ class Food < ActiveRecord::Base
   end
 
   def fat
-    @fat ||= self[:fat] / 100
+    @fat ||= self[:fat].to_f / 100
   end
 
   def fat=(value)
-    self[:fat] = value.to_i * 100
-    @fat = value.to_i
+    self[:fat] = (value.to_f * 100).to_i
+    @fat = value.to_f
   end
 
   def protein
-    @protein ||= self[:protein] / 100
+    @protein ||= self[:protein].to_f / 100
   end
 
   def protein=(value)
-    self[:protein] = value.to_i * 100
-    @protein = value.to_i
+    self[:protein] = (value.to_f * 100).to_i
+    @protein = value.to_f
   end
 
   def carbs
-    @carbs ||= self[:carbs] / 100
+    @carbs ||= self[:carbs].to_f / 100
   end
 
   def carbs=(value)
-    self[:carbs] = value.to_i * 100
-    @carbs = value.to_i
+    self[:carbs] = (value.to_f * 100).to_i
+    @carbs = value.to_f
   end
 
   def calories
