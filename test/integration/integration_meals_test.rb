@@ -47,6 +47,13 @@ class IntegrationMealsTest < ActionController::IntegrationTest
     spidah.should_delete_meal(dinner)
 
     spidah.check_meal_count(1)
+    spidah.change_date(Date.yesterday)
+    spidah.check_meal_count(0)
+    spidah.should_add_meal('Lunch')
+    spidah.check_meal_count(1)
+    spidah.change_date(Date.today)
+
+    spidah.check_meal_count(1)
     spidah.should_delete_meal(lunch)
     spidah.check_meal_count(0)
     spidah.check_cant_find_food_item(bread_fi)
@@ -62,13 +69,24 @@ class IntegrationMealsTest < ActionController::IntegrationTest
       assert_dashboard_redirect
     end
 
+    def change_date(date)
+      post(change_date_path, {:date_picker => format_date(date)})
+
+      assert_response(:redirect)
+      follow_redirect!
+      assert_response(:success)
+
+      assert_select('a', format_date(date))
+    end
+
     def get_latest_meal
       user.meals.find(:first, :order => 'id DESC')
     end
 
     def check_meal_count(count)
-      user.meals.reload
-      assert_equal count, user.meals.size
+      get meals_path
+      assert_success('meals/index')
+      assert_select 'fieldset', count
     end
 
     def check_food_listings(meal, foods)
