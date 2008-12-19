@@ -10,8 +10,17 @@ class Meal < ActiveRecord::Base
     items = food_items.find(:all)
     tc = 0
     items.each {|item| tc += item.calories * item.quantity}
-    self[:total_calories] = tc
+    self.total_calories = tc
     save
+  end
+
+  def total_calories
+    @total_calories ||= self[:total_calories] / 100
+  end
+
+  def total_calories=(value)
+    self[:total_calories] = value.to_i * 100
+    @total_calories = value.to_i
   end
 
   def self.get_latest_date
@@ -26,15 +35,5 @@ class Meal < ActiveRecord::Base
 
   def self.calories
     sum("total_calories / 100").to_i
-  end
-
-  protected
-
-  def after_find
-    self[:total_calories] /= 100 if self[:total_calories]
-  end
-
-  def before_save
-    self[:total_calories] *= 100
   end
 end
