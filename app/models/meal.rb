@@ -15,8 +15,9 @@ class Meal < ActiveRecord::Base
   end
 
   def self.get_latest_date
-    latest = first(:select => 'created_on', :order => 'created_on DESC')
-    latest ? latest.created_on : nil
+    first(:select => 'created_on', :order => 'created_on DESC').created_on
+  rescue
+    nil
   end
 
   def self.get_count
