@@ -3,8 +3,8 @@ require "#{File.dirname(__FILE__)}/../test_helper"
 class IntegrationTargetWeightsTest < ActionController::IntegrationTest
   def test_target_weights
     # lbs
-    spidah = new_session_as(get_user(users(:spidah)))
-    spidah.login(user_logins(:spidah).openid_url)
+    spidah = new_session_as(:spidah)
+    spidah.login(spidah.user, spidah.openid_url)
     spidah.check_no_target_weights
     spidah.cant_add_incorrect_target_weight(spidah.lbs_weight_params(0, 0))
     spidah.cant_add_incorrect_target_weight(spidah.lbs_weight_params(-10, -10))
@@ -36,8 +36,8 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     spidah_target_weight = spidah.get_latest_target_weight
 
     # kg
-    jimmy = new_session_as(get_user(users(:jimmy)))
-    jimmy.login(user_logins(:jimmy).openid_url)
+    jimmy = new_session_as(:jimmy)
+    jimmy.login(jimmy.user, jimmy.openid_url)
     jimmy.check_no_target_weights
     jimmy.cant_add_incorrect_target_weight(jimmy.kg_weight_params(0))
     jimmy.cant_add_incorrect_target_weight(jimmy.kg_weight_params(-10))
@@ -66,14 +66,7 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
   end
 
   module TargetWeightTestDSL
-    attr_accessor :user, :current_date
-
-    def login(openid_url)
-      $mockuser = user
-      post session_path, :openid_url => openid_url
-      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
-      assert_dashboard_redirect
-    end
+    attr_accessor :user, :openid_url, :current_date
 
     def lbs_weight_params(stone, lbs)
       {:weight => {'stone' => stone, 'lbs' => lbs}}
@@ -142,16 +135,6 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
       end
     end
 
-    def change_date(year, month, day)
-      post change_date_path, {:date_picker => format_date(Date.new(year, month, day))}
-
-      assert_response :redirect
-      follow_redirect!
-      assert_response :success
-
-      assert_select "a", format_date(Date.new(year, month, day))
-    end
-
     def get_latest_target_weight
       user.target_weights.get_latest
     end
@@ -192,7 +175,7 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     end
 
     def add_weight(year, month, day, params)
-      change_date(year, month, day)
+      change_date(Date.new(year, month, day))
       get new_weight_path
       post weights_path, params
       assert_and_follow_redirect(weights_path, 'weights/index')
@@ -267,7 +250,8 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
   def new_session_as(user)
     open_session do |session|
       session.extend(TargetWeightTestDSL)
-      session.user = user
+      session.user = get_user(users(user))
+      session.openid_url = user_logins(user).openid_url
       yield session if block_given?
     end
   end

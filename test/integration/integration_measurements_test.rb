@@ -3,8 +3,8 @@ require "#{File.dirname(__FILE__)}/../test_helper"
 class IntegrationMeasurementsTest < ActionController::IntegrationTest
   def test_measurements
     # inches
-    spidah = new_session_as(get_user(users(:spidah)))
-    spidah.login(user_logins(:spidah).openid_url)
+    spidah = new_session_as(:spidah)
+    spidah.login(spidah.user, spidah.openid_url)
 
     spidah.cant_add_incorrect_measurement(2007, 6, 1, spidah.measurement_params(0, ''), true)
     spidah.cant_add_incorrect_measurement(2007, 6, 1, spidah.measurement_params(-10, 'Left arm'), false)
@@ -39,8 +39,8 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     spidah_measurement = spidah.get_measurement(2007, 6, 1, 'Left arm')
 
     # cm
-    jimmy = new_session_as(get_user(users(:jimmy)))
-    jimmy.login(user_logins(:jimmy).openid_url)
+    jimmy = new_session_as(:jimmy)
+    jimmy.login(jimmy.user, jimmy.openid_url)
 
     jimmy.cant_add_incorrect_measurement(2007, 6, 1, jimmy.measurement_params(0, ''), true)
     jimmy.cant_add_incorrect_measurement(2007, 6, 1, jimmy.measurement_params(-10, 'Left arm'), false)
@@ -76,14 +76,7 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
   end
 
   module MeasurementTestDSL
-    attr_accessor :user
-
-    def login(openid_url)
-      $mockuser = user
-      post session_path, :openid_url => openid_url
-      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
-      assert_dashboard_redirect
-    end
+    attr_accessor :user, :openid_url
 
     def get_measurement(year, month, day, location)
       user.measurements.find(:first, :conditions => {:taken_on => Date.new(year, month, day), :location => location})
@@ -128,16 +121,6 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
       end
     end
 
-    def change_date(year, month, day)
-      post change_date_path, {:date_picker => format_date(Date.new(year, month, day))}
-
-      assert_response :redirect
-      follow_redirect!
-      assert_response :success
-
-      assert_select "a", format_date(Date.new(year, month, day))
-    end
-
     def check_measurement_difference(weight, difference)
       get measurements_path
       assert_success('measurements/index')
@@ -146,7 +129,7 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     end
 
     def cant_add_incorrect_measurement(year, month, day, params, incorrect_location)
-      change_date(year, month, day)
+      change_date(Date.new(year, month, day))
       get new_measurement_path
       assert_success 'measurements/new'
       assert_measurement_entry_data(1, '')
@@ -160,7 +143,7 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     end
 
     def add_measurement(year, month, day, params, difference = nil)
-      change_date(year, month, day)
+      change_date(Date.new(year, month, day))
       get new_measurement_path
       assert_success 'measurements/new'
       assert_measurement_entry_data(1, '')
@@ -238,7 +221,8 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
   def new_session_as(user)
     open_session do |session|
       session.extend(MeasurementTestDSL)
-      session.user = user
+      session.user = get_user(users(user))
+      session.openid_url = user_logins(user).openid_url
       yield session if block_given?
     end
   end

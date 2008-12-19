@@ -2,8 +2,8 @@ require "#{File.dirname(__FILE__)}/../test_helper"
 
 class IntegrationMealsTest < ActionController::IntegrationTest
   def test_meals
-    spidah = new_session_as(get_user(users(:spidah)))
-    spidah.login(user_logins(:spidah).openid_url)
+    spidah = new_session_as(:spidah)
+    spidah.login(spidah.user, spidah.openid_url)
     bread = spidah.add_food('Medium Bread', 'Single slice medium white bread', 'Kingsmill', '3g', '4.5', '9.2', '1.3', '98')
     ham = spidah.add_food('Sliced Ham', 'Single slice cooked ham', 'Tesco', '1g', '1', '1', '1', '15')
 
@@ -34,8 +34,8 @@ class IntegrationMealsTest < ActionController::IntegrationTest
     spidah.cant_delete_with_invalid_fooditem_or_meal(lunch, bread_fi)
     spidah.cant_show_invalid_meal(1000)
 
-    bob = new_session_as(get_user(users(:bob)))
-    bob.login(user_logins(:bob).openid_url)
+    bob = new_session_as(:bob)
+    bob.login(bob.user, bob.openid_url)
     bob.cant_show_another_users_meal(lunch)
     bob.cant_update_another_users_meal(lunch)
     bob.cant_delete_another_users_meal(lunch)
@@ -60,24 +60,7 @@ class IntegrationMealsTest < ActionController::IntegrationTest
   end
 
   module MealTestDSL
-    attr_accessor :user
-
-    def login(openid_url)
-      $mockuser = user
-      post session_path, :openid_url => openid_url
-      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
-      assert_dashboard_redirect
-    end
-
-    def change_date(date)
-      post(change_date_path, {:date_picker => format_date(date)})
-
-      assert_response(:redirect)
-      follow_redirect!
-      assert_response(:success)
-
-      assert_select('a', format_date(date))
-    end
+    attr_accessor :user, :openid_url
 
     def get_latest_meal
       user.meals.find(:first, :order => 'id DESC')
@@ -277,7 +260,8 @@ class IntegrationMealsTest < ActionController::IntegrationTest
   def new_session_as(user)
     open_session do |session|
       session.extend(MealTestDSL)
-      session.user = user
+      session.user = get_user(users(user))
+      session.openid_url = user_logins(user).openid_url
       yield session if block_given?
     end
   end

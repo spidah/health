@@ -3,8 +3,8 @@ require "#{File.dirname(__FILE__)}/../test_helper"
 class IntegrationWeightsTest < ActionController::IntegrationTest
   def test_weights
     # lbs
-    spidah = new_session_as(get_user(users(:spidah)))
-    spidah.login(user_logins(:spidah).openid_url)
+    spidah = new_session_as(:spidah)
+    spidah.login(spidah.user, spidah.openid_url)
 
     spidah.cant_add_incorrect_weight(2007, 6, 1, spidah.lbs_weight_params(0, 0))
     spidah.cant_add_incorrect_weight(2007, 6, 1, spidah.lbs_weight_params(-10, -10))
@@ -42,8 +42,8 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
 
     spidah.cant_change_taken_on_date('2007-06-08', spidah_weight)
 
-    bob = new_session_as(get_user(users(:bob)))
-    bob.login(user_logins(:bob).openid_url)
+    bob = new_session_as(:bob)
+    bob.login(bob.user, bob.openid_url)
 
     # adding a new weight with the same date as a weight by another user, but unique for this user
     bob.add_weight(2007, 6, 1, bob.lbs_weight_params(7, 2))
@@ -57,8 +57,8 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     bob.check_weight_difference(bob.get_weight(2007, 6, 2), 'gained 1 lb')
 
     # kg
-    jimmy = new_session_as(get_user(users(:jimmy)))
-    jimmy.login(user_logins(:jimmy).openid_url)
+    jimmy = new_session_as(:jimmy)
+    jimmy.login(jimmy.user, jimmy.openid_url)
     jimmy.cant_add_incorrect_weight(2007, 6, 1, jimmy.kg_weight_params(0))
     jimmy.cant_add_incorrect_weight(2007, 6, 1, jimmy.kg_weight_params(-10))
     jimmy.cant_add_incorrect_weight(2007, 6, 1, jimmy.kg_weight_params('a'))
@@ -87,14 +87,7 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
   end
 
   module WeightTestDSL
-    attr_accessor :user, :current_date
-
-    def login(openid_url)
-      $mockuser = user
-      post session_path, :openid_url => openid_url
-      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
-      assert_dashboard_redirect
-    end
+    attr_accessor :user, :openid_url, :current_date
 
     def get_weight(year, month, day)
       user.weights.find(:first, :conditions => {:taken_on => Date.new(year, month, day)})
@@ -148,16 +141,6 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
       end
     end
 
-    def change_date(year, month, day)
-      post change_date_path, {:date_picker => format_date(Date.new(year, month, day))}
-
-      assert_response :redirect
-      follow_redirect!
-      assert_response :success
-
-      assert_select "a", format_date(Date.new(year, month, day))
-    end
-
     def check_weight_difference(weight, difference)
       get weights_path
       assert_success('weights/index')
@@ -170,7 +153,7 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     end
 
     def cant_add_incorrect_weight(year, month, day, params)
-      change_date(year, month, day)
+      change_date(Date.new(year, month, day))
       get new_weight_path
       assert_success('weights/new')
 
@@ -184,7 +167,7 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     end
 
     def add_weight(year, month, day, params, difference = nil)
-      change_date(year, month, day)
+      change_date(Date.new(year, month, day))
       get new_weight_path
       assert_success('weights/new')
 
@@ -198,7 +181,7 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     end
 
     def goto_edit_when_add_on_existing_date(weight, params)
-      change_date(weight.taken_on.year, weight.taken_on.month, weight.taken_on.day)
+      change_date(Date.new(weight.taken_on.year, weight.taken_on.month, weight.taken_on.day))
       get new_weight_path
       assert_and_follow_redirect(edit_weight_path(weight), 'weights/edit')
     end
@@ -278,7 +261,8 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
   def new_session_as(user)
     open_session do |session|
       session.extend(WeightTestDSL)
-      session.user = user
+      session.user = get_user(users(user))
+      session.openid_url = user_logins(user).openid_url
       yield session if block_given?
     end
   end

@@ -2,8 +2,8 @@ require "#{File.dirname(__FILE__)}/../test_helper"
 
 class IntegrationUserTest < ActionController::IntegrationTest
   def test_user
-    spidah = new_session
-    spidah.login(user_logins(:spidah).openid_url)
+    spidah = new_session_as(:spidah)
+    spidah.login(spidah.user, spidah.openid_url)
     spidah.check_settings('m', 16, 8, 1982, 'London', 'lbs', 'inches')
     spidah.should_update_settings('f', 2, 2, 2002, 'Stockholm', 'kg', 'cm')
     spidah.cant_update_invalid_settings('f', 2, 2, 2002, 'Stockholm', 'kg', 'cm',
@@ -16,12 +16,12 @@ class IntegrationUserTest < ActionController::IntegrationTest
     spidah.cant_view_invalid_profile('nonexistingusername')
     spidah.logout
 
-    bob = new_session
-    bob.login(user_logins(:bob).openid_url)
+    bob = new_session_as(:bob)
+    bob.login(bob.user, bob.openid_url)
     bob.cant_update_to_admin
     bob.logout
 
-    amanda = new_session
+    amanda = new_session_as(:amanda)
     amanda.login_normal('amanda', 'test')
     amanda.cant_change_invalid_password('test')
     amanda.should_change_password('test', 'newpassword')
@@ -30,7 +30,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
   end
 
   module UserTestDSL
-    attr_accessor :openid_url
+    attr_accessor :user, :openid_url
 
     def get_user
       ul = UserLogin.get(self.openid_url)
@@ -63,14 +63,6 @@ class IntegrationUserTest < ActionController::IntegrationTest
     def assert_user_units_values(weight_units, measurement_units)
       assert_select "select[id=user_weight_units][name='user[weight_units]']>option[value=?][selected=selected]", weight_units
       assert_select "select[id=user_measurement_units][name='user[measurement_units]']>option[value=?][selected=selected]", measurement_units
-    end
-
-    def login(openid_url)
-      self.openid_url = openid_url
-      get login_path
-      post session_path, :openid_url => openid_url
-      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
-      assert_dashboard_redirect
     end
 
     def login_normal(loginname, password)
@@ -226,9 +218,11 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
   end
 
-  def new_session
+  def new_session_as(user)
     open_session do |session|
       session.extend(UserTestDSL)
+      session.user = get_user(users(user))
+      session.openid_url = user_logins(user).openid_url
       yield session if block_given?
     end
   end

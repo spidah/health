@@ -24,8 +24,6 @@ class IntegrationNormalLoginTest < ActionController::IntegrationTest
   end
 
   module UserLoginsTestDSL
-    attr_accessor :user
-
     def assert_signup_form
       assert_select "form[id=signup_form]" do
         assert_select "input[id=loginname][name='loginname'][type=text]", 1

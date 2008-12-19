@@ -2,8 +2,8 @@ require "#{File.dirname(__FILE__)}/../test_helper"
 
 class IntegrationFoodsTest < ActionController::IntegrationTest
   def test_foods
-    spidah = new_session_as(get_user(users(:spidah)))
-    spidah.login(user_logins(:spidah).openid_url)
+    spidah = new_session_as(:spidah)
+    spidah.login(spidah.user, spidah.openid_url)
     spidah.assert_foods_count(0)
     spidah.cant_add_invalid_food
     spidah.assert_foods_count(0)
@@ -24,21 +24,14 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
     spidah.cant_update_incorrect_food(chocolate)
     spidah.check_sort_action('calories')
 
-    bob = new_session_as(get_user(users(:bob)))
-    bob.login(user_logins(:bob).openid_url)
+    bob = new_session_as(:bob)
+    bob.login(bob.user, bob.openid_url)
     bob.assert_foods_count(0)
     bob.cant_delete_another_users_food(spidah_food)
   end
 
   module FoodTestDSL
-    attr_accessor :user
-
-    def login(openid_url)
-      $mockuser = user
-      post session_path, :openid_url => openid_url
-      get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
-      assert_dashboard_redirect
-    end
+    attr_accessor :user, :openid_url
 
     def assert_foods_count(count)
       assert_equal count, user.foods.count
@@ -149,7 +142,8 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
   def new_session_as(user)
     open_session do |session|
       session.extend(FoodTestDSL)
-      session.user = user
+      session.user = get_user(users(user))
+      session.openid_url = user_logins(user).openid_url
       yield session if block_given?
     end
   end

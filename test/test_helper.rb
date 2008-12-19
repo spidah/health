@@ -11,6 +11,23 @@ class Test::Unit::TestCase
 end
 
 class ActionController::Integration::Session
+  def login(user, openid_url)
+    $mockuser = user
+    post session_path, :openid_url => openid_url
+    get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
+    assert_dashboard_redirect
+  end
+
+  def change_date(date)
+    post(change_date_path, {:date_picker => format_date(date)})
+
+    assert_response(:redirect)
+    follow_redirect!
+    assert_response(:success)
+
+    assert_select('a', format_date(date))
+  end
+
   def assert_dashboard
     assert_success('users/index')
     assert_select 'h2', 'Your Dashboard'
