@@ -38,59 +38,59 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def assert_user_data_tags
-      assert_select 'legend', 'Your Data'
-      assert_select "select[id=user_gender][name='user[gender]']>option", 2
-      assert_select "select[id=user_dob_3i][name='user[dob(3i)]']>option", 31
-      assert_select "select[id=user_dob_2i][name='user[dob(2i)]']>option", 12
-      assert_select "select[id=user_dob_1i][name='user[dob(1i)]']>option", 121
-      assert_select "select[id=user_timezone][name='user[timezone]']>option", :minimum => 1
+      assert_select('legend', 'Your Data')
+      assert_select("select[id=user_gender][name='user[gender]']>option", 2)
+      assert_select("select[id=user_dob_3i][name='user[dob(3i)]']>option", 31)
+      assert_select("select[id=user_dob_2i][name='user[dob(2i)]']>option", 12)
+      assert_select("select[id=user_dob_1i][name='user[dob(1i)]']>option", 121)
+      assert_select("select[id=user_timezone][name='user[timezone]']>option", :minimum => 1)
     end
 
     def assert_user_data_values(gender, dob_day, dob_month, dob_year, timezone)
-      assert_select "select[id=user_gender][name='user[gender]']>option[value=?][selected=selected]", gender
-      assert_select "select[id=user_dob_3i][name='user[dob(3i)]']>option[value=?][selected=selected]", dob_day
-      assert_select "select[id=user_dob_2i][name='user[dob(2i)]']>option[value=?][selected=selected]", dob_month
-      assert_select "select[id=user_dob_1i][name='user[dob(1i)]']>option[value=?][selected=selected]", dob_year
-      assert_select "select[id=user_timezone][name='user[timezone]']>option[selected=selected]", /#{timezone}/
+      assert_select("select[id=user_gender][name='user[gender]']>option[value=?][selected=selected]", gender)
+      assert_select("select[id=user_dob_3i][name='user[dob(3i)]']>option[value=?][selected=selected]", dob_day)
+      assert_select("select[id=user_dob_2i][name='user[dob(2i)]']>option[value=?][selected=selected]", dob_month)
+      assert_select("select[id=user_dob_1i][name='user[dob(1i)]']>option[value=?][selected=selected]", dob_year)
+      assert_select("select[id=user_timezone][name='user[timezone]']>option[selected=selected]", /#{timezone}/)
     end
 
     def assert_user_units_tags
-      assert_select 'legend', 'Units'
-      assert_select "select[id=user_weight_units][name='user[weight_units]']>option", 2
-      assert_select "select[id=user_measurement_units][name='user[measurement_units]']>option", 2
+      assert_select('legend', 'Units')
+      assert_select("select[id=user_weight_units][name='user[weight_units]']>option", 2)
+      assert_select("select[id=user_measurement_units][name='user[measurement_units]']>option", 2)
     end
 
     def assert_user_units_values(weight_units, measurement_units)
-      assert_select "select[id=user_weight_units][name='user[weight_units]']>option[value=?][selected=selected]", weight_units
-      assert_select "select[id=user_measurement_units][name='user[measurement_units]']>option[value=?][selected=selected]", measurement_units
+      assert_select("select[id=user_weight_units][name='user[weight_units]']>option[value=?][selected=selected]", weight_units)
+      assert_select("select[id=user_measurement_units][name='user[measurement_units]']>option[value=?][selected=selected]", measurement_units)
     end
 
     def login_normal(loginname, password)
-      get login_path
-      post session_path, {:loginname => loginname, :password => password}
+      get(login_path)
+      post(session_path, {:loginname => loginname, :password => password})
       assert_dashboard_redirect
     end
 
     def logout
-      delete logout_path
+      delete(logout_path)
     end
 
     def change_date(new_year, new_month, new_day, valid = true, existing_year = nil, existing_month = nil, existing_day = nil)
-      post change_date_path, {:date_picker => "#{new_year}-#{new_month}-#{new_day}"}
+      post(change_date_path, {:date_picker => "#{new_year}-#{new_month}-#{new_day}"})
 
-      assert_response :redirect
+      assert_response(:redirect)
       follow_redirect!
-      assert_response :success
+      assert_response(:success)
 
       if valid
-        assert_select "a", format_date(Date.new(new_year, new_month, new_day))
+        assert_select('a', format_date(Date.new(new_year, new_month, new_day)))
       else
-        assert_select "a", format_date(Date.new(existing_year, existing_month, existing_day))
+        assert_select('a', format_date(Date.new(existing_year, existing_month, existing_day)))
       end
     end
 
     def check_settings(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
-      get edit_user_path
+      get(edit_user_path)
 
       assert_success('users/edit')
 
@@ -102,9 +102,9 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def update_user(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
-      put user_path, "user[gender]" => gender, "user[dob(3i)]" => dob_day,
+      put(user_path, "user[gender]" => gender, "user[dob(3i)]" => dob_day,
         "user[dob(2i)]" => dob_month, "user[dob(1i)]" => dob_year, "user[timezone]" => timezone,
-        "user[weight_units]" => weight_units, "user[measurement_units]" => measurement_units
+        "user[weight_units]" => weight_units, "user[measurement_units]" => measurement_units)
     end
 
     def should_update_settings(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
@@ -142,7 +142,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
       u = get_user
       assert !u.admin
 
-      put user_path, "user[admin]" => 1
+      put(user_path, "user[admin]" => 1)
 
       assert_and_follow_redirect(edit_user_path, 'users/edit')
 
@@ -150,7 +150,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
       assert_flash('info', 'Your settings have been updated.')
 
       u = get_user
-      assert !u.admin
+      assert(!u.admin)
     end
 
     def change_dates
@@ -167,38 +167,38 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def should_view_profile(username, profile_parts)
-      get profile_path(username)
+      get(profile_path(username))
       assert_success('users/show')
 
-      assert_select 'h2', "#{username}'s Profile"
-      assert_select 'h4', 'About Me'
-      assert_select 'p[class=profile-about-me]', 1
+      assert_select('h2', "#{username}'s Profile")
+      assert_select('h4', 'About Me')
+      assert_select('p[class=profile-about-me]', 1)
 
-      assert_select 'p[class=profile-about-me]', profile_parts[:about_me] ? profile_parts[:about_me] : "Unfortunately, #{@user.loginname} is a bit shy and has not written anything about themself."
+      assert_select('p[class=profile-about-me]', profile_parts[:about_me] ? profile_parts[:about_me] : "Unfortunately, #{@user.loginname} is a bit shy and has not written anything about themself.")
 
-      assert_select 'span', {:text => 'Target weight:', :count => profile_parts[:target_weight] ? 1 : 0}
-      assert_select 'span', {:text => 'Current weight:', :count => profile_parts[:weight] ? 1 : 0}
+      assert_select('span', {:text => 'Target weight:', :count => profile_parts[:target_weight] ? 1 : 0})
+      assert_select('span', {:text => 'Current weight:', :count => profile_parts[:weight] ? 1 : 0})
     end
 
     def cant_view_invalid_profile(username)
-      get profile_path(:loginname => username)
+      get(profile_path(:loginname => username))
       assert_dashboard_redirect
     end
 
     def add_data(user)
       if user.weight_units == 'lbs'
-        post weights_path, :weight => {'stone' => 10, 'lbs' => 10}
-        post targetweights_path, :weight => {'stone' => 8, 'lbs' => 0}
+        post(weights_path, :weight => {'stone' => 10, 'lbs' => 10})
+        post(targetweights_path, :weight => {'stone' => 8, 'lbs' => 0})
       else
-        post weights_path, :weight => {'weight' => 50}
-        post targetweights_path, :weight => {'weight' => 25}
+        post(weights_path, :weight => {'weight' => 50})
+        post(targetweights_path, :weight => {'weight' => 25})
       end
 
-      post measurements_path, :measurement => {'measurement' => 30, 'location' => 'Arm'}
+      post(measurements_path, :measurement => {'measurement' => 30, 'location' => 'Arm'})
     end
 
     def change_password(current_password, new_password, confirm_password)
-      put user_path, :current_password => current_password, :new_password => new_password, :confirm_password => confirm_password
+      put(user_path, :current_password => current_password, :new_password => new_password, :confirm_password => confirm_password)
     end
 
     def cant_change_invalid_password(current_password)

@@ -25,31 +25,31 @@ class IntegrationNormalLoginTest < ActionController::IntegrationTest
 
   module UserLoginsTestDSL
     def assert_signup_form
-      assert_select "form[id=signup_form]" do
-        assert_select "input[id=loginname][name='loginname'][type=text]", 1
-        assert_select "input[id=password][name='password'][type=password]", 1
-        assert_select "input[id=password_confirmation][name='password_confirmation'][type=password]", 1
+      assert_select('form[id=signup_form]') do
+        assert_select('input[id=loginname][name=loginname][type=text]', 1)
+        assert_select('input[id=password][name=password][type=password]', 1)
+        assert_select('input[id=password_confirmation][name=password_confirmation][type=password]', 1)
       end
     end
 
     def assert_login_form
-      assert_select "form[id=normal_login_form]" do
-        assert_select "input[id=loginname][name='loginname'][type=text]", 1
-        assert_select "input[id=password][name='password'][type=password]", 1
+      assert_select('form[id=normal_login_form]') do
+        assert_select('input[id=loginname][name=loginname][type=text]', 1)
+        assert_select('input[id=password][name=password][type=password]', 1)
       end
     end
 
     def signup(loginname, password, password_confirmation)
-      get signup_path
+      get(signup_path)
       assert_signup_form
 
-      post signup_path, {:loginname => loginname, :password => password, :password_confirmation => password_confirmation}
+      post(signup_path, {:loginname => loginname, :password => password, :password_confirmation => password_confirmation})
       assert_and_follow_redirect(edit_user_path, 'users/edit')
       assert_no_flash('error')
     end
 
     def invalid_signup(loginname, password, password_confirmation)
-      post signup_path, {:loginname => loginname, :password => password, :password_confirmation => password_confirmation}
+      post(signup_path, {:loginname => loginname, :password => password, :password_confirmation => password_confirmation})
       assert_success('sessions/signup')
       assert_flash('error', nil, 'Signup error')
     end
@@ -85,28 +85,28 @@ class IntegrationNormalLoginTest < ActionController::IntegrationTest
     end
 
     def login(loginname, password)
-      get login_path
+      get(login_path)
       assert_login_form
 
-      post session_path, {:loginname => loginname, :password => password}
+      post(session_path, {:loginname => loginname, :password => password})
       assert_dashboard_redirect
       assert_no_flash('error')
     end
 
     def cant_login_with_wrong_loginname(loginname, password)
-      post session_path, {:loginname => loginname, :password => password}
+      post(session_path, {:loginname => loginname, :password => password})
       assert_and_follow_redirect(login_path, 'sessions/new')
       assert_flash('error', 'Unable to log you in. Please check your loginname and password and try again.', 'Login error')
     end
 
     def cant_login_with_wrong_password(loginname, password)
-      post session_path, {:loginname => loginname, :password => password}
+      post(session_path, {:loginname => loginname, :password => password})
       assert_and_follow_redirect(login_path, 'sessions/new')
       assert_flash('error', 'Unable to log you in. Please check your loginname and password and try again.', 'Login error')
     end
 
     def logout
-      delete logout_path
+      delete(logout_path)
     end
   end
 

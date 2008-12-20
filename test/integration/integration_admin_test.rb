@@ -15,12 +15,12 @@ class IntegrationAdminTest < ActionController::IntegrationTest
     attr_accessor :user, :openid_url
 
     def cant_access_admin_page
-      get admin_path
+      get(admin_path)
       assert_dashboard_redirect
     end
 
     def should_access_admin_page
-      get admin_path
+      get(admin_path)
       assert_success('admin/admin/index')
     end
   end

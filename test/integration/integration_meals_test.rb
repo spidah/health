@@ -67,70 +67,70 @@ class IntegrationMealsTest < ActionController::IntegrationTest
     end
 
     def check_meal_count(count)
-      get meals_path
+      get(meals_path)
       assert_success('meals/index')
-      assert_select 'fieldset', count
+      assert_select('fieldset', count)
     end
 
     def check_food_listings(meal, foods)
-      get new_meal_food_item_path(meal)
+      get(new_meal_food_item_path(meal))
       assert_success('food_items/new')
 
       foods.each { |food|
-        assert_select 'td[class=name]', food.name
-        assert_select 'td[class=description]', food.description
-        assert_select 'td[class=manufacturer]', food.manufacturer
-        assert_select 'td[class=weight]', food.weight
+        assert_select('td[class=name]', food.name)
+        assert_select('td[class=description]', food.description)
+        assert_select('td[class=manufacturer]', food.manufacturer)
+        assert_select('td[class=weight]', food.weight)
       }
     end
 
     def check_food_item(meal, food_item)
-      get meal_path(meal)
+      get(meal_path(meal))
       assert_success('meals/show')
 
-      assert_select "table tr td" do
-        assert_select 'td[class=name]', food_item.name
-        assert_select 'td[class*=quantity]', food_item.quantity.to_s
-        assert_select 'td[class*=calories]', food_item.calories.to_s
+      assert_select('table tr td') do
+        assert_select('td[class=name]', food_item.name)
+        assert_select('td[class*=quantity]', food_item.quantity.to_s)
+        assert_select('td[class*=calories]', food_item.calories.to_s)
       end
     end
 
     def check_food_quantity(meal, food, quantity)
-      get meal_path(meal)
-      assert_select 'td[class=name]', food.name
-      assert_select "td[class='quantity number']", "#{quantity}"
+      get(meal_path(meal))
+      assert_select('td[class=name]', food.name)
+      assert_select('td[class*=quantity]', "#{quantity}")
     end
 
     def check_total_calories(meal, calories)
-      get meal_path(meal)
-      assert_select "td[class='total-calories number']", "#{calories}"
+      get(meal_path(meal))
+      assert_select('td[class*=total-calories]', "#{calories}")
     end
 
     def check_sort_action(meal, action)
-      get new_meal_food_item_path(meal)
+      get(new_meal_food_item_path(meal))
       assert_success('food_items/new')
-      assert_select 'th a[href=?]', CGI.escapeHTML(new_meal_food_item_path(meal, :sort => action))
+      assert_select('th a[href=?]', CGI.escapeHTML(new_meal_food_item_path(meal, :sort => action)))
 
-      get new_meal_food_item_path(meal, :sort => action)
+      get(new_meal_food_item_path(meal, :sort => action))
       assert_success('food_items/new')
-      assert_select 'th a[href=?]', CGI.escapeHTML(new_meal_food_item_path(meal, :sort => action, :dir => 'down'))
+      assert_select('th a[href=?]', CGI.escapeHTML(new_meal_food_item_path(meal, :sort => action, :dir => 'down')))
     end
 
     def check_cant_find_food_item(food_item)
-      assert_equal false, FoodItem.exists?(food_item.id)
+      assert(!FoodItem.exists?(food_item.id))
     end
 
     def add_food(name, description, manufacturer, weight, fat, protein, carbs, calories)
-      post foods_path, :food => {:name => name, :description => description, :manufacturer => manufacturer, :weight => weight,
-        :fat => fat, :protein => protein, :carbs => carbs, :calories => calories}
+      post(foods_path, :food => {:name => name, :description => description, :manufacturer => manufacturer, :weight => weight,
+        :fat => fat, :protein => protein, :carbs => carbs, :calories => calories})
       return user.foods.find(:first, :order => 'id DESC')
     end
 
     def should_add_meal(name)
-      get new_meal_path
+      get(new_meal_path)
       assert_success('meals/new')
 
-      post meals_path, :meal => {:name => name}
+      post(meals_path, :meal => {:name => name})
       meal = get_latest_meal
       assert_redirected_to(meal_path(meal))
       follow_redirect!
@@ -142,116 +142,116 @@ class IntegrationMealsTest < ActionController::IntegrationTest
     end
 
     def cant_add_invalid_meal
-      post meals_path, :meal => {:name => ''}
+      post(meals_path, :meal => {:name => ''})
       assert_success('meals/new')
       assert_flash('error', nil, 'Error saving meal')
       assert_flash_item('error', 'Please enter a meal name.')
     end
 
     def should_add_food_to_meal(meal, food, quantity = 1)
-      post meal_food_items_path(meal), :food_id => food.id
+      post(meal_food_items_path(meal), :food_id => food.id)
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
 
-      assert_select 'td[class=name]', food.name
-      assert_select "td[class='quantity number']", "#{quantity}"
-      assert_select "td[class='calories number']", "#{quantity * food.calories}"
+      assert_select('td[class=name]', food.name)
+      assert_select('td[class*=quantity]', "#{quantity}")
+      assert_select('td[class*=calories]', "#{quantity * food.calories}")
 
       meal.reload
       return meal.food_items.find(:first, :conditions => {:food_id => food.id})
     end
 
     def should_update_food_item_quantity(meal, food_item, existing_quantity, new_quantity)
-      get edit_meal_food_item_path(meal, food_item)
-      assert_select 'option[selected=selected]', "#{existing_quantity}"
+      get(edit_meal_food_item_path(meal, food_item))
+      assert_select('option[selected=selected]', "#{existing_quantity}")
 
-      put meal_food_item_path(meal, food_item), :food_item => {:quantity => new_quantity}
+      put(meal_food_item_path(meal, food_item), :food_item => {:quantity => new_quantity})
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
     end
 
     def should_update_food_item_when_food_updated(meal, food, food_item)
-      put food_path(food), :food => {:name => 'Food', :description => 'Food', :calories => 1}
+      put(food_path(food), :food => {:name => 'Food', :description => 'Food', :calories => 1})
       food_item = FoodItem.find(food_item.id)
       check_food_item(meal, food_item)
     end
 
     def should_remove_food_item(meal, food_item)
-      delete meal_food_item_path(meal, food_item)
+      delete(meal_food_item_path(meal, food_item))
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
       assert_no_flash('error')
     end
 
     def should_delete_meal(meal)
-      delete meal_path(meal)
+      delete(meal_path(meal))
       assert_and_follow_redirect(meals_path, 'meals/index')
     end
 
     def cant_add_with_invalid_food_or_meal(meal, food)
-      get new_meal_food_item_path(1000)
+      get(new_meal_food_item_path(1000))
       assert_redirected_to meals_path
 
-      post meal_food_items_path(100), :food_id => food
+      post(meal_food_items_path(100), :food_id => food)
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to add a food item to an invalid meal.')
 
-      post meal_food_items_path(meal), :food_id => 1000
+      post(meal_food_items_path(meal), :food_id => 1000)
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
       assert_flash('error', 'Unable to add the selected food item.')
     end
 
     def cant_edit_with_invalid_fooditem_or_meal(meal, fooditem)
-      get edit_meal_food_item_path(1000, fooditem)
+      get(edit_meal_food_item_path(1000, fooditem))
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to edit a food item for an invalid meal.')
 
-      get edit_meal_food_item_path(meal, 1000)
+      get(edit_meal_food_item_path(meal, 1000))
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
       assert_flash('error', 'Unable to edit the selected food item.')
     end
 
     def cant_update_with_invalid_fooditem_meal_or_quantity(meal, fooditem, quantity)
-      put meal_food_item_path(1000, fooditem), :food_item => {:quantity => quantity}
+      put(meal_food_item_path(1000, fooditem), :food_item => {:quantity => quantity})
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to edit a food item for an invalid meal.')
 
-      put meal_food_item_path(meal, 1000), :food_item => {:quantity => quantity}
+      put(meal_food_item_path(meal, 1000), :food_item => {:quantity => quantity})
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
       assert_flash('error', 'Unable to edit the selected food item.')
 
-      put meal_food_item_path(meal, fooditem), :food_item => {:quantity => 0}
+      put(meal_food_item_path(meal, fooditem), :food_item => {:quantity => 0})
       assert_and_follow_redirect(edit_meal_food_item_path(meal, fooditem), 'food_items/edit')
       assert_flash('error', 'You need a quantity of at least 1.')
     end
 
     def cant_delete_with_invalid_fooditem_or_meal(meal, food_item)
-      delete meal_food_item_path(1000, food_item)
+      delete(meal_food_item_path(1000, food_item))
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to delete a food item for an invalid meal.')
 
-      delete meal_food_item_path(meal, 1000)
+      delete(meal_food_item_path(meal, 1000))
       assert_and_follow_redirect(meal_path(meal), 'meals/show')
       assert_flash('error', 'Unable to delete the selected food item.')
     end
 
     def cant_show_invalid_meal(id)
-      get meal_path(id)
+      get(meal_path(id))
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to display the selected meal.')
     end
 
     def cant_show_another_users_meal(meal)
-      get meal_path(meal)
+      get(meal_path(meal))
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to display the selected meal.')
     end
 
     def cant_update_another_users_meal(meal)
-      get edit_meal_path(meal)
+      get(edit_meal_path(meal))
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to edit the selected meal.')
     end
 
     def cant_delete_another_users_meal(meal)
-      delete meal_path(meal)
+      delete(meal_path(meal))
       assert_and_follow_redirect(meals_path, 'meals/index')
       assert_flash('error', 'Unable to delete the selected meal.')
     end

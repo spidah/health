@@ -77,47 +77,47 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     end
 
     def assert_target_weight_entry_data(stone, lbs, kg)
-      assert_select 'legend', 'Target Weight Data'
-      assert_select 'div[class=form-row]', 2
+      assert_select('legend', 'Target Weight Data')
+      assert_select('div[class=form-row]', 2)
       
       if user.weight_units == 'lbs'
-        assert_select "select[id=weight_stone][name='weight[stone]']", 1
-        assert_select "select[id=weight_stone][name='weight[stone]'] option", 51
-        assert_select "select[id=weight_stone][name='weight[stone]'] option[value=?][selected=selected]", stone
+        assert_select("select[id=weight_stone][name='weight[stone]']", 1)
+        assert_select("select[id=weight_stone][name='weight[stone]'] option", 51)
+        assert_select("select[id=weight_stone][name='weight[stone]'] option[value=?][selected=selected]", stone)
 
-        assert_select "select[id=weight_lbs][name='weight[lbs]']", 1
-        assert_select "select[id=weight_lbs][name='weight[lbs]'] option", 14
-        assert_select "select[id=weight_lbs][name='weight[lbs]'] option[value=?][selected=selected]", lbs
+        assert_select("select[id=weight_lbs][name='weight[lbs]']", 1)
+        assert_select("select[id=weight_lbs][name='weight[lbs]'] option", 14)
+        assert_select("select[id=weight_lbs][name='weight[lbs]'] option[value=?][selected=selected]", lbs)
       else
-        assert_select "select[id=weight_weight][name='weight[weight]']", 1
-        assert_select "select[id=weight_weight][name='weight[weight]'] option", 401
-        assert_select "select[id=weight_weight][name='weight[weight]'] option[value=?][selected=selected]", kg
+        assert_select("select[id=weight_weight][name='weight[weight]']", 1)
+        assert_select("select[id=weight_weight][name='weight[weight]'] option", 401)
+        assert_select("select[id=weight_weight][name='weight[weight]'] option[value=?][selected=selected]", kg)
       end
     end
 
     def assert_dashboard_target_weight_item(target_weight, current_weight, difference, achieved_on = nil)
-      assert_select "div[class=form-row]" do
-        assert_select "span[class=label]", "Target weight:"
-        assert_select "span[class=data]", /#{target_weight}/
+      assert_select('div[class=form-row]') do
+        assert_select('span[class=label]', 'Target weight:')
+        assert_select('span[class=data]', /#{target_weight}/)
       end
 
       if current_weight
-        assert_select "div[class=form-row]" do
-          assert_select "span[class=label]", "Current weight:"
-          assert_select "span[class=data]", /#{current_weight}/
+        assert_select('div[class=form-row]') do
+          assert_select('span[class=label]', 'Current weight:')
+          assert_select('span[class=data]', /#{current_weight}/)
         end
       end
 
       if achieved_on
-        assert_select "div[class=form-row]" do
-          assert_select "span[class=label]", "Achieved on:"
-          assert_select "span[class=data]", format_date(achieved_on)
+        assert_select('div[class=form-row]') do
+          assert_select('span[class=label]', 'Achieved on:')
+          assert_select('span[class=data]', format_date(achieved_on))
         end
       else
         if current_weight
-          assert_select "div[class=form-row]" do
-            assert_select "span[class=label]", "Remaining:"
-            assert_select "span[class=data]", difference
+          assert_select('div[class=form-row]') do
+            assert_select('span[class=label]', 'Remaining:')
+            assert_select('span[class=data]', difference)
           end
         end
       end
@@ -125,13 +125,13 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
 
     def assert_target_weight_item(target_weight, current_weight, difference, achieved_on = nil)
       current_weight = 'No entry' if !current_weight
-      assert_select "table[id=target-weight]", 1
-      assert_select "table[id=target-weight] td[class=target-weight-target]", target_weight
-      assert_select "table[id=target-weight] td[class=target-weight-current]", current_weight
+      assert_select('table[id=target-weight]', 1)
+      assert_select('table[id=target-weight] td[class=target-weight-target]', target_weight)
+      assert_select('table[id=target-weight] td[class=target-weight-current]', current_weight)
       if achieved_on
-        assert_select "table[id=target-weight] td[class=target-weight-completed]", "Target reached on #{format_date(achieved_on)}!"
+        assert_select('table[id=target-weight] td[class=target-weight-completed]', "Target reached on #{format_date(achieved_on)}!")
       else
-        assert_select "table[id=target-weight] td[class=target-weight-difference]", difference
+        assert_select('table[id=target-weight] td[class=target-weight-difference]', difference)
       end
     end
 
@@ -140,14 +140,14 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     end
 
     def check_dashboard(target_weight, current_weight, difference, achieved_on = nil)
-      get dashboard_path
-      assert_success 'users/index'
-      assert_select 'h2', 'Your Dashboard'
+      get(dashboard_path)
+      assert_success('users/index')
+      assert_select('h2', 'Your Dashboard')
       assert_dashboard_target_weight_item(target_weight, current_weight, difference, achieved_on)
     end
 
     def check_target_weight(target_weight, current_weight, difference, achieved_on = nil)
-      get targetweights_path
+      get(targetweights_path)
       assert_success('target_weights/index')
 
       assert_target_weight_item(target_weight, current_weight, difference, achieved_on)
@@ -159,42 +159,42 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     end
 
     def check_target_weights_count(count)
-      assert_equal count, user.target_weights.find(:all).size
+      assert_equal(count, user.target_weights.find(:all).size)
     end
 
     def check_no_target_weights
       check_target_weights_count(0)
 
-      get targetweights_path
+      get(targetweights_path)
       assert_success('target_weights/index')
-      assert_select 'p[class=target-weight-add]', 'Please add a target weight. Target weights let you see how well you are doing.'
+      assert_select('p[class=target-weight-add]', 'Please add a target weight. Target weights let you see how well you are doing.')
 
-      get dashboard_path
+      get(dashboard_path)
       assert_success('users/index')
-      assert_select 'h2', {:text => 'Target Weight', :count => 0}
+      assert_select('h2', {:text => 'Target Weight', :count => 0})
     end
 
     def add_weight(year, month, day, params)
       change_date(Date.new(year, month, day))
-      get new_weight_path
-      post weights_path, params
+      get(new_weight_path)
+      post(weights_path, params)
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_no_flash('error')
     end
 
     def delete_weight(year, month, day)
       weight = user.weights.find(:first, :conditions => {:taken_on => Date.new(year, month, day)})
-      delete weight_path(weight)
+      delete(weight_path(weight))
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_no_flash('error')
     end
 
     def cant_add_incorrect_target_weight(params)
-      get new_targetweight_path
-      assert_success 'target_weights/new'
+      get(new_targetweight_path)
+      assert_success('target_weights/new')
       assert_target_weight_entry_data(0, 0, 0)
 
-      post targetweights_path, params
+      post(targetweights_path, params)
       assert_success('target_weights/new')
 
       assert_flash('error', nil, 'Error saving target weight')
@@ -202,46 +202,46 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     end
 
     def add_target_weight(params)
-      get new_targetweight_path
+      get(new_targetweight_path)
       assert_success 'target_weights/new'
       assert_target_weight_entry_data(0, 0, 0)
 
-      post targetweights_path, params
+      post(targetweights_path, params)
       assert_and_follow_redirect(targetweights_path, 'target_weights/index')
       assert_no_flash('error')
 
       target_weight = user.target_weights.get_latest
       if user.weight_units == 'lbs'
-        assert_equal target_weight.stone, params[:weight]['stone']
-        assert_equal target_weight.lbs, params[:weight]['lbs']
-        assert_equal target_weight.weight, (params[:weight]['stone'] * 14) + params[:weight]['lbs']
+        assert_equal(target_weight.stone, params[:weight]['stone'])
+        assert_equal(target_weight.lbs, params[:weight]['lbs'])
+        assert_equal(target_weight.weight, (params[:weight]['stone'] * 14) + params[:weight]['lbs'])
       else
-        assert_equal target_weight.weight, params[:weight]['weight']
+        assert_equal(target_weight.weight, params[:weight]['weight'])
       end
     end
 
     def goto_index_when_add_with_existing_target_weight(params)
-      get new_targetweight_path
+      get(new_targetweight_path)
       assert_and_follow_redirect(targetweights_path, 'target_weights/index')
 
-      post targetweights_path, params
+      post(targetweights_path, params)
       assert_and_follow_redirect(targetweights_path, 'target_weights/index')
     end
 
     def cant_delete_invalid_target_weight_id(id)
-      delete targetweight_path(id)
+      delete(targetweight_path(id))
       assert_and_follow_redirect(targetweights_path, 'target_weights/index')
       assert_flash('error', 'Unable to delete the target weight.')
     end
 
     def cant_delete_another_users_target_weight(target_weight)
-      delete targetweight_path(target_weight)
+      delete(targetweight_path(target_weight))
       assert_and_follow_redirect(targetweights_path, 'target_weights/index')
       assert_flash('error', 'Unable to delete the target weight.')
     end
 
     def delete_target_weight(target_weight)
-      delete targetweight_path(target_weight)
+      delete(targetweight_path(target_weight))
       assert_and_follow_redirect(targetweights_path, 'target_weights/index')
       assert_no_flash('error')
     end

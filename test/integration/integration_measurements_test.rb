@@ -87,42 +87,42 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     end
 
     def assert_measurement_entry_data(measurement, location)
-      assert_select 'legend', 'Measurement Data'
-      assert_select 'div[class=form-row]', 3
+      assert_select('legend', 'Measurement Data')
+      assert_select('div[class=form-row]', 3)
 
-      assert_select "select[id=measurement_measurement][name='measurement[measurement]']", 1
+      assert_select("select[id=measurement_measurement][name='measurement[measurement]']", 1)
       if user.measurement_units == 'inches'
-        assert_select "select[id=measurement_measurement][name='measurement[measurement]'] option", 112
+        assert_select("select[id=measurement_measurement][name='measurement[measurement]'] option", 112)
       else
-        assert_select "select[id=measurement_measurement][name='measurement[measurement]'] option", 300
+        assert_select("select[id=measurement_measurement][name='measurement[measurement]'] option", 300)
       end
-      assert_select "select[id=measurement_measurement][name='measurement[measurement]'] option[value=?][selected=selected]", measurement
+      assert_select("select[id=measurement_measurement][name='measurement[measurement]'] option[value=?][selected=selected]", measurement)
 
-      assert_select "input[id=measurement_location][name='measurement[location]']", 1
-      assert_select "input[id=measurement_location][name='measurement[location]'][value=?]", location if !location.blank?
+      assert_select("input[id=measurement_location][name='measurement[location]']", 1)
+      assert_select("input[id=measurement_location][name='measurement[location]'][value=?]", location) if !location.blank?
     end
 
     def assert_measurement_list_data(params, date, difference = nil)
       m = params[:measurement]
 
-      assert_select 'table[class=measurements-list] tr[class=measurement-date] td' do
-        assert_select 'td[class=date]', format_date(date)
+      assert_select('table[class=measurements-list] tr[class=measurement-date] td') do
+        assert_select('td[class=date]', format_date(date))
       end
 
-      assert_select 'table[class=measurements-list] tr[class=?] td', /measurement-data.*#{date.year}-#{date.month}-#{date.day}.*#{m['location'].split(' ').join('-')}/ do
-        assert_select 'td[class=location]', m['location']
+      assert_select('table[class=measurements-list] tr[class=?] td', /measurement-data.*#{date.year}-#{date.month}-#{date.day}.*#{m['location'].split(' ').join('-')}/) do
+        assert_select('td[class=location]', m['location'])
 
         if user.measurement_units == 'inches'
-          assert_select 'td[class=measurement]', "#{m['measurement']} inches"
+          assert_select('td[class=measurement]', "#{m['measurement']} inches")
         else
           assert_select 'td[class=measurement]', "#{m['measurement']} cm"
         end
-        assert_select 'td[class=difference]', difference if difference
+        assert_select('td[class=difference]', difference) if difference
       end
     end
 
     def check_measurement_difference(weight, difference)
-      get measurements_path
+      get(measurements_path)
       assert_success('measurements/index')
 
       assert_measurement_list_data(measurement_params(weight.measurement, weight.location), weight.taken_on, difference)
@@ -130,12 +130,12 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
 
     def cant_add_incorrect_measurement(year, month, day, params, incorrect_location)
       change_date(Date.new(year, month, day))
-      get new_measurement_path
-      assert_success 'measurements/new'
+      get(new_measurement_path)
+      assert_success('measurements/new')
       assert_measurement_entry_data(1, '')
 
-      post measurements_path, params
-      assert_success 'measurements/new'
+      post(measurements_path, params)
+      assert_success('measurements/new')
 
       assert_flash('error', nil, 'Error saving measurement')
       assert_flash_item('error', 'Please enter a valid measurement.')
@@ -144,11 +144,11 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
 
     def add_measurement(year, month, day, params, difference = nil)
       change_date(Date.new(year, month, day))
-      get new_measurement_path
-      assert_success 'measurements/new'
+      get(new_measurement_path)
+      assert_success('measurements/new')
       assert_measurement_entry_data(1, '')
 
-      post measurements_path, params
+      post(measurements_path, params)
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_no_flash('error')
 
@@ -156,11 +156,11 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     end
 
     def cant_update_incorrect_measurement(measurement, params, incorrect_location)
-      get edit_measurement_path(measurement)
-      assert_success 'measurements/edit'
+      get(edit_measurement_path(measurement))
+      assert_success('measurements/edit')
       assert_measurement_entry_data(measurement.measurement, measurement.location)
 
-      put measurement_path(measurement), params
+      put(measurement_path(measurement), params)
       assert_and_follow_redirect(edit_measurement_path(measurement), 'measurements/edit')
 
       assert_flash('error', nil, 'Error saving measurement')
@@ -169,50 +169,50 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     end
 
     def cant_update_invalid_measurement_id(id, params)
-      get edit_measurement_path(id)
+      get(edit_measurement_path(id))
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_flash('error', 'Unable to edit the selected measurement.', 'Error')
 
-      put measurement_path(id), params
+      put(measurement_path(id), params)
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_flash('error', 'Unable to update the selected measurement.', 'Error')
     end
     
     def cant_update_another_users_measurement(measurement, params)
-      get edit_measurement_path(measurement)
+      get(edit_measurement_path(measurement))
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_flash('error', 'Unable to edit the selected measurement.', 'Error')
 
-      put measurement_path(measurement), params
+      put(measurement_path(measurement), params)
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_flash('error', 'Unable to update the selected measurement.', 'Error')
     end
 
     def update_measurement(measurement, params, difference = nil)
-      get edit_measurement_path(measurement)
+      get(edit_measurement_path(measurement))
       assert_success 'measurements/edit'
       assert_measurement_entry_data(measurement.measurement, measurement.location)
       
-      put measurement_path(measurement), params
+      put(measurement_path(measurement), params)
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_no_flash('error')
       assert_measurement_list_data(params, measurement.taken_on, difference)
     end
 
     def cant_delete_invalid_measurement_id(id)
-      delete measurement_path(id)
+      delete(measurement_path(id))
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_flash('error', 'Unable to delete the selected measurement.', 'Error')
     end
 
     def cant_delete_another_users_measurement(measurement)
-      delete measurement_path(measurement)
+      delete(measurement_path(measurement))
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_flash('error', 'Unable to delete the selected measurement.', 'Error')
     end
 
     def delete_measurement(measurement)
-      delete measurement_path(measurement)
+      delete(measurement_path(measurement))
       assert_and_follow_redirect(measurements_path, 'measurements/index')
       assert_no_flash('error')
     end

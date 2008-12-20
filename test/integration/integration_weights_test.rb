@@ -102,47 +102,47 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     end
 
     def assert_weight_entry_data(stone, lbs, kg, date = nil)
-      assert_select 'legend', 'Weight Data'
-      assert_select 'div[class=form-row]', 2
+      assert_select('legend', 'Weight Data')
+      assert_select('div[class=form-row]', 2)
       
       if user.weight_units == 'lbs'
-        assert_select "select[id=weight_stone][name='weight[stone]']", 1
-        assert_select "select[id=weight_stone][name='weight[stone]'] option", 51
-        assert_select "select[id=weight_stone][name='weight[stone]'] option[value=?][selected=selected]", stone
+        assert_select("select[id=weight_stone][name='weight[stone]']", 1)
+        assert_select("select[id=weight_stone][name='weight[stone]'] option", 51)
+        assert_select("select[id=weight_stone][name='weight[stone]'] option[value=?][selected=selected]", stone)
 
-        assert_select "select[id=weight_lbs][name='weight[lbs]']", 1
-        assert_select "select[id=weight_lbs][name='weight[lbs]'] option", 14
-        assert_select "select[id=weight_lbs][name='weight[lbs]'] option[value=?][selected=selected]", lbs
+        assert_select("select[id=weight_lbs][name='weight[lbs]']", 1)
+        assert_select("select[id=weight_lbs][name='weight[lbs]'] option", 14)
+        assert_select("select[id=weight_lbs][name='weight[lbs]'] option[value=?][selected=selected]", lbs)
       else
-        assert_select "select[id=weight_weight][name='weight[weight]']", 1
-        assert_select "select[id=weight_weight][name='weight[weight]'] option", 401
-        assert_select "select[id=weight_weight][name='weight[weight]'] option[value=?][selected=selected]", kg
+        assert_select("select[id=weight_weight][name='weight[weight]']", 1)
+        assert_select("select[id=weight_weight][name='weight[weight]'] option", 401)
+        assert_select("select[id=weight_weight][name='weight[weight]'] option[value=?][selected=selected]", kg)
       end
 
-      assert_select "h2", "Edit Weight For #{format_date(date)}" if date
+      assert_select('h2', "Edit Weight For #{format_date(date)}") if date
     end
 
     def assert_weight_list_data(params, date, difference)
       weight = Weight.new({:weight_units => user.weight_units}.merge(params[:weight]))
 
-      assert_select "table[class=weights-list] tr[class=?] td", /weight-data.*/ do
-        assert_select 'td[class=date]', format_date(date)
-        assert_select 'td[class=weight]', weight.format
-        assert_select 'td[class=difference]', difference if difference
+      assert_select('table[class=weights-list] tr[class=?] td', /weight-data.*/) do
+        assert_select('td[class=date]', format_date(date))
+        assert_select('td[class=weight]', weight.format)
+        assert_select('td[class=difference]', difference) if difference
       end
     end
 
     def assert_weight_list_data_from_weight(weight, date, difference = nil)
       weight.weight_units = user.weight_units
-      assert_select "table[class=weights-list] tr[class=?] td", /weight-data.*/ do
-        assert_select 'td[class=date]', format_date(weight.taken_on)
-        assert_select 'td[class=weight]', weight.format
-        assert_select 'td[class=difference]', difference if difference
+      assert_select('table[class=weights-list] tr[class=?] td', /weight-data.*/) do
+        assert_select('td[class=date]', format_date(weight.taken_on))
+        assert_select('td[class=weight]', weight.format)
+        assert_select('td[class=difference]', difference) if difference
       end
     end
 
     def check_weight_difference(weight, difference)
-      get weights_path
+      get(weights_path)
       assert_success('weights/index')
 
       if user.weight_units == 'lbs'
@@ -154,12 +154,12 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
 
     def cant_add_incorrect_weight(year, month, day, params)
       change_date(Date.new(year, month, day))
-      get new_weight_path
+      get(new_weight_path)
       assert_success('weights/new')
 
       assert_weight_entry_data(0, 0, 0)
 
-      post weights_path, params
+      post(weights_path, params)
       assert_success('weights/new')
 
       assert_flash('error', nil, 'Error saving weight')
@@ -168,12 +168,12 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
 
     def add_weight(year, month, day, params, difference = nil)
       change_date(Date.new(year, month, day))
-      get new_weight_path
+      get(new_weight_path)
       assert_success('weights/new')
 
       assert_weight_entry_data(0, 0, 0)
 
-      post weights_path, params
+      post(weights_path, params)
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_no_flash('error')
 
@@ -182,17 +182,17 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
 
     def goto_edit_when_add_on_existing_date(weight, params)
       change_date(Date.new(weight.taken_on.year, weight.taken_on.month, weight.taken_on.day))
-      get new_weight_path
+      get(new_weight_path)
       assert_and_follow_redirect(edit_weight_path(weight), 'weights/edit')
     end
 
     def cant_update_incorrect_weight(weight, params)
-      get edit_weight_path(weight)
+      get(edit_weight_path(weight))
       assert_success('weights/edit')
 
       assert_weight_entry_data(weight.stone, weight.lbs, weight.weight, weight.taken_on)
 
-      put weight_path(weight), params
+      put(weight_path(weight), params)
       assert_and_follow_redirect(edit_weight_path(weight), 'weights/edit')
 
       assert_flash('error', nil, 'Error saving weight')
@@ -200,18 +200,18 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     end
 
     def cant_update_invalid_weight_id(id, params)
-      get edit_weight_path(id)
+      get(edit_weight_path(id))
 
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_flash('error', 'Unable to edit the selected weight.')
 
-      put weight_path(id), params
+      put(weight_path(id), params)
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_flash('error', 'Unable to update the selected weight.', 'Error')
     end
 
     def cant_change_taken_on_date(date, weight)
-      put weight_path(weight), :weight => {:taken_on => date}
+      put(weight_path(weight), :weight => {:taken_on => date})
 
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_no_flash('error')
@@ -219,40 +219,40 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     end
 
     def update_weight(weight, params, difference = nil)
-      get edit_weight_path(weight)
+      get(edit_weight_path(weight))
       assert_success('weights/edit')
       assert_weight_entry_data(weight.stone, weight.lbs, weight.weight, weight.taken_on)
 
-      put weight_path(weight), params
+      put(weight_path(weight), params)
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_no_flash('error')
       assert_weight_list_data(params, weight.taken_on, difference)
     end
 
     def cant_delete_invalid_weight_id(id)
-      delete weight_path(id)
+      delete(weight_path(id))
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_flash('error', 'Unable to delete the selected weight.', 'Error')
     end
 
     def delete_weight(weight)
-      delete weight_path(weight)
+      delete(weight_path(weight))
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_no_flash('error')
     end
 
     def cant_update_another_users_weight(weight, params)
-      get edit_weight_path(weight)
+      get(edit_weight_path(weight))
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_flash('error', 'Unable to edit the selected weight.', 'Error')
 
-      put weight_path(weight), params
+      put(weight_path(weight), params)
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_flash('error', 'Unable to update the selected weight.', 'Error')
     end
 
     def cant_delete_another_users_weight(weight)
-      delete weight_path(weight)
+      delete(weight_path(weight))
       assert_and_follow_redirect(weights_path, 'weights/index')
       assert_flash('error', 'Unable to delete the selected weight.', 'Error')
     end
