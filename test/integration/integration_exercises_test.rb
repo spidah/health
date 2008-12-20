@@ -3,7 +3,7 @@ require "#{File.dirname(__FILE__)}/../test_helper"
 class IntegrationExercisesTest < ActionController::IntegrationTest
   def test_exercises
     spidah = new_session_as(:spidah)
-    spidah.login
+    spidah.login(spidah.user, spidah.openid_url)
 
     spidah.should_have_no_activities
     spidah.should_not_add_invalid_activity
@@ -47,7 +47,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
     spidah.should_have_exercises(2)
 
     bob = new_session_as(:bob)
-    bob.login
+    bob.login(bob.user, bob.openid_url)
     bob.add_activity('Jogging', 'Jogging', 'Aerobic', 10, 30)
     bob.should_not_edit_another_users_activity(jogging)
     bob.should_not_update_another_users_activity(jogging)
@@ -58,24 +58,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
   end
 
   module ExercisesTestDSL
-    attr_accessor :user, :user_login
-
-    def login
-      $mockuser = user
-      post(session_path, :openid_url => user_login.openid_url)
-      get(open_id_complete_path, :openid_url => user_login.openid_url, :open_id_complete => 1)
-      assert_dashboard_redirect
-    end
-
-    def change_date(date)
-      post(change_date_path, {:date_picker => format_date(date)})
-
-      assert_response(:redirect)
-      follow_redirect!
-      assert_response(:success)
-
-      assert_select('a', format_date(date))
-    end
+    attr_accessor :user, :openid_url
 
     def assert_activity_values(activity, name, description, type, duration, calories)
       get(edit_activity_path(activity))
@@ -331,7 +314,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
     open_session do |session|
       session.extend(ExercisesTestDSL)
       session.user = get_user(users(user))
-      session.user_login = user_logins(user)
+      session.openid_url = user_logins(user).openid_url
       yield session if block_given?
     end
   end
