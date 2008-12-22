@@ -2,7 +2,7 @@
         <div class="calendar-key weights-ball">Weights</div>
         <div class="calendar-key measurements-ball">Measurements</div>
         <div class="calendar-key meals-ball">Meals</div>
-        <div class="calendar-key exercise-ball">Exercise</div>
+        <div class="calendar-key exercises-ball">Exercise</div>
 <% if session[:displaydate] && session[:displaydate] != @current_user.get_date -%>
         <div><%= link_date(@current_user.get_date, controller.controller_name, 'Switch to today') -%></div>
 <% end -%>
