@@ -3,6 +3,10 @@ class Exercise < ActiveRecord::Base
 
   named_scope :for_day, lambda { |date| { :conditions => { :taken_on => date } } }
 
+  named_scope :for_month, lambda { |month|
+    { :conditions => ['taken_on >= ? AND taken_on <= ?', month.beginning_of_month, month.end_of_month] }
+  }
+
   validates_numericality_of :duration, :only_integer => true, :greater_than => 0, :message => 'Please enter a duration greater than 0.'
 
   def set_values(duration, activity)
@@ -37,6 +41,13 @@ class Exercise < ActiveRecord::Base
 
   def self.get_count
     count(:id)
+  end
+
+  def self.counts
+    counts = count(1, :group => :taken_on)
+    hash = {}
+    counts.each {|count| hash[count[0]] = count[1]}
+    hash
   end
 
   def self.calories

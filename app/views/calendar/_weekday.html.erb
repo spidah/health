@@ -1,12 +1,11 @@
-<% day_counts(date) -%>
 <div class="day<%= ' today' if date == today -%><%= extra if defined?(extra) -%>">
   <div class="data">
     <span class="number"><%= link_date(date, 'calendar', day) -%></span>
     <div>
-<% if @weights_count > 0 -%><%= link_date(date, 'weights', image_tag('weights-ball.gif', :alt => 'Weight entry', :title => 'Weight entry')) -%><% end -%>
-<% if @measurements_count > 0 -%><%= link_date(date, 'measurements', image_tag('measurements-ball.gif', :alt => "Measurements: #{@measurements_count}", :title => "Measurements: #{@measurements_count}")) -%><% end -%>
-<% if @meals_count > 0 -%><%= link_date(date, 'meals', image_tag('meals-ball.gif', :alt => "Meals: #{@meals_count}", :title => "Meals: #{@meals_count}")) -%><% end -%>
-<% if @exercises_count > 0 -%><%= link_date(date, 'exercises', image_tag('exercises-ball.gif', :alt => "Exercises: #{@exercises_count}", :title => "Exercises: #{@exercises_count}")) -%><% end -%>
+      <%= link_weight(@weights, date) -%>
+      <%= link_measurements(@measurements, date) -%>
+      <%= link_meals(@meals, date) -%>
+      <%= link_exercises(@exercises, date) -%>
     </div>
   </div>
 </div>

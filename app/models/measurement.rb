@@ -1,5 +1,11 @@
 class Measurement < ActiveRecord::Base
   belongs_to :user
+  
+  named_scope :for_day, lambda { |date| { :conditions => { :taken_on => date } } }
+
+  named_scope :for_month, lambda { |month|
+    { :conditions => ['taken_on >= ? AND taken_on <= ?', month.beginning_of_month, month.end_of_month] }
+  }
 
   # only allow these attributes to be changeable
   attr_accessible :measurement, :location, :taken_on
@@ -35,8 +41,11 @@ class Measurement < ActiveRecord::Base
     find(:first, :select => 'taken_on', :order => 'taken_on DESC').taken_on rescue nil
   end
 
-  def self.get_count(date)
-    count('id', :conditions => {:taken_on => date})
+  def self.counts
+    counts = count(1, :group => :taken_on)
+    hash = {}
+    counts.each {|count| hash[count[0]] = count[1]}
+    hash
   end
 
   def update_difference

@@ -2,6 +2,10 @@ class Weight < ActiveRecord::Base
   include ActionView::Helpers::TextHelper
   belongs_to :user
 
+  named_scope :for_month, lambda { |month|
+    { :conditions => ['taken_on >= ? AND taken_on <= ?', month.beginning_of_month, month.end_of_month] }
+  }
+
   # only allow these attributes to be changeable
   attr_accessor :weight_units, :stone, :lbs
   attr_accessible :weight, :weight_units, :stone, :lbs
@@ -50,6 +54,13 @@ class Weight < ActiveRecord::Base
 
   def self.get_count(date)
     count('id', :conditions => "taken_on = '#{date}'")
+  end
+
+  def self.counts
+    counts = count(1, :group => :taken_on)
+    hash = {}
+    counts.each {|count| hash[count[0]] = count[1]}
+    hash
   end
 
   def update_difference
