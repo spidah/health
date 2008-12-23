@@ -13,12 +13,12 @@ class UsersController < ApplicationController
     @target_weight = @current_user.target_weights.get_latest
     @current_weight = @current_user.weights.get_latest
     @measurements_date = @current_user.measurements.get_latest_date
-    @measurements = @current_user.measurements.get_count(@measurements_date)
+    @measurements = @current_user.measurements.for_day(@measurements_date).count
     @meals_date = @current_user.meals.get_latest_date
-    @meals = @current_user.meals.for_day(@meals_date).get_count
+    @meals = @current_user.meals.for_day(@meals_date).count
     @meals_calories = @current_user.meals.for_day(@meals_date).calories
     @exercises_date = @current_user.exercises.get_latest_date
-    @exercises = @current_user.exercises.for_day(@exercises_date).get_count
+    @exercises = @current_user.exercises.for_day(@exercises_date).count
     @exercises_calories = @current_user.exercises.for_day(@exercises_date).calories
     @today = @current_user.get_date
   end
