@@ -1,11 +1,10 @@
 <div class="block">
-<h2>Activity Calendar</h2>
-<%= print_flash(flash[:error], 'error', 'Error') -%>
-<%= print_flash(flash[:info], 'info') -%>
+  <h2>Activity Calendar</h2>
+  <%= print_flash(flash[:error], 'error', 'Error') -%>
+  <%= print_flash(flash[:info], 'info') -%>
 </div>
 
 <div class="block">
-
   <div id="calendar">
     <div class="month-header">
       <div class="prev-month"><%= link_month(@prevmonth, "&lt;&lt; #{month_name(@prevmonth)}") -%></div>
@@ -14,38 +13,37 @@
     </div>
     <div class="days">
       <div class="week">
-<% 0.upto(6) do |day| -%>
+      <% 0.upto(6) do |day| -%>
         <%= render :partial => 'weekheader', :locals => {:day => WEEKDAYS[day], :extra => day == 6 ? ' last' : ''} -%>
-<% end -%>
+      <% end -%>
       </div><!-- week -->
-<% if @monthstart > 1 -%>
+      <% if @monthstart > 1 -%>
       <div class="week">
-<% 1.upto(@monthstart - 1) do |day| -%>
+        <% 1.upto(@monthstart - 1) do |day| -%>
         <%= render :partial => 'blankday' -%>
-<% @weekindex += 1 -%>
-<% end -%>
-<% @weekindex.upto(7) do |day| -%>
+        <% @weekindex += 1 -%>
+        <% end -%>
+        <% @weekindex.upto(7) do |day| -%>
         <%= render :partial => 'weekday', :locals => {:day => @dayindex, :date => replace_day(@date, @dayindex), :today => @today, :extra => @weekindex == 7 ? ' last' : ''} -%>
-<% @dayindex += 1 -%>
-<% @weekindex += 1 -%>
-<% end -%>
+        <% @dayindex += 1 -%>
+        <% @weekindex += 1 -%>
+        <% end -%>
       </div><!-- week -->
-<% end -%>
-<% while @dayindex <= @monthdays do -%>
+      <% end -%>
+      <% while @dayindex <= @monthdays do -%>
       <div class="week">
-<% @weekindex = 1 -%>
-<% 1.upto(7) do |dayi| -%>
-<% if @dayindex <= @monthdays -%>
+        <% @weekindex = 1 -%>
+        <% 1.upto(7) do |dayi| -%>
+        <% if @dayindex <= @monthdays -%>
         <%= render :partial => 'weekday', :locals => {:day => @dayindex, :date => replace_day(@date, @dayindex), :today => @today, :extra => @weekindex == 7 ? ' last' : ''} -%>
-<% else -%>
+        <% else -%>
         <%= render :partial => 'blankday', :locals => {:extra => @weekindex == 7 ? ' last' : ''} -%>
-<% end -%>
-<% @dayindex += 1 -%>
-<% @weekindex += 1 -%>
-<% end -%>
+        <% end -%>
+        <% @dayindex += 1 -%>
+        <% @weekindex += 1 -%>
+        <% end -%>
       </div><!-- week -->
-<% end -%>
+      <% end -%>
     </div><!-- days -->
   </div>
-
 </div>
