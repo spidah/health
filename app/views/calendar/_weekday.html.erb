@@ -1,6 +1,6 @@
-<div class="day<%= ' today' if date == today -%><%= extra if defined?(extra) -%>">
+<div class="day<%= ' today' if date == @today -%><%= ' last' if @weekindex == 7 -%>">
   <div class="data">
-    <span class="number"><%= link_date(date, 'calendar', day) -%></span>
+    <span class="number"><%= link_date(date, 'calendar', @dayindex) -%></span>
     <div>
       <%= link_weight(@weights, date) -%>
       <%= link_measurements(@measurements, date) -%>
