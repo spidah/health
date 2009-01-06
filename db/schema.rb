@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080802213519) do
+ActiveRecord::Schema.define(:version => 20090106204510) do
 
   create_table "activities", :force => true do |t|
     t.integer "user_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.integer "calories",    :default => 0
     t.text    "description"
   end
+
+  add_index "activities", ["id"], :name => "index_activities_on_id"
 
   create_table "exercises", :force => true do |t|
     t.integer "user_id"
@@ -30,6 +32,8 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.date    "taken_on"
   end
 
+  add_index "exercises", ["id"], :name => "index_exercises_on_id"
+
   create_table "food_items", :force => true do |t|
     t.string  "name"
     t.string  "description"
@@ -38,6 +42,8 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.integer "calories",    :default => 0
     t.integer "quantity",    :default => 1
   end
+
+  add_index "food_items", ["id"], :name => "index_food_items_on_id"
 
   create_table "foods", :force => true do |t|
     t.string  "name"
@@ -52,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.integer "user_id"
   end
 
+  add_index "foods", ["id"], :name => "index_foods_on_id"
   add_index "foods", ["user_id"], :name => "index_foods_on_user_id"
 
   create_table "meals", :force => true do |t|
@@ -61,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.date    "created_on"
   end
 
+  add_index "meals", ["id"], :name => "index_meals_on_id"
   add_index "meals", ["user_id"], :name => "index_meals_on_user_id"
 
   create_table "measurements", :force => true do |t|
@@ -71,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.integer "difference",  :default => 0
   end
 
+  add_index "measurements", ["id"], :name => "index_measurements_on_id"
   add_index "measurements", ["user_id"], :name => "index_measurements_on_user_id"
 
   create_table "news_items", :force => true do |t|
@@ -110,6 +119,8 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.integer "difference",  :default => 0
   end
 
+  add_index "target_weights", ["id"], :name => "index_target_weights_on_id"
+
   create_table "user_logins", :force => true do |t|
     t.string  "openid_url"
     t.integer "user_id"
@@ -118,6 +129,7 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.string  "salt",             :limit => 40
   end
 
+  add_index "user_logins", ["id"], :name => "index_user_logins_on_id"
   add_index "user_logins", ["openid_url"], :name => "index_user_logins_on_openid_url"
 
   create_table "users", :force => true do |t|
@@ -139,6 +151,7 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.text     "profile_aboutme"
   end
 
+  add_index "users", ["id"], :name => "index_users_on_id"
   add_index "users", ["loginname"], :name => "index_users_on_loginname", :unique => true
 
   create_table "weights", :force => true do |t|
@@ -148,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20080802213519) do
     t.integer "difference", :default => 0
   end
 
+  add_index "weights", ["id"], :name => "index_weights_on_id"
   add_index "weights", ["user_id"], :name => "index_weights_on_user_id"
 
 end
