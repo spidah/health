@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   validates_presence_of :loginname, :message => 'You need to enter a login name.'
   validates_format_of :loginname, :with => /\A[a-z0-9\._-]+\Z/i,
     :message => "Please pick a loginname using the following characters only: 'a'-'z', '0'-'9', '.', '_' and '-'."
-  validates_uniqueness_of :loginname, :allow_nil => true, :case_sensitive => false,
+  validates_uniqueness_of :loginname, :allow_nil => true, :case_sensitive => false, :if => Proc.new { |user| user.new_record? },
     :message => 'That login name is already taken. Please select another one.'
   validates_date :dob, :message => 'Please pick a valid date of birth.'
   validates_inclusion_of :gender, :in => %w(m f), :message => 'Please pick a valid gender.'
