@@ -9,7 +9,6 @@ class UsersController < ApplicationController
   verify :method => :delete, :only => :destroy, :redirect_to => 'index'
 
   def index
-    @weights = @current_user.get_weights(:all, 'DESC', nil, 7)
     @target_weight = @current_user.target_weights.get_latest
     @current_weight = @current_user.weights.get_latest
     @measurements_date = @current_user.measurements.get_latest_date
