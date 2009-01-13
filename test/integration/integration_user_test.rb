@@ -220,15 +220,20 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def check_menu_changes_from_add_to_edit_when_values_are_added
-      post(change_date_path, {:date_picker => format_date((Date.today + 1.year))})
+      date = Date.today + 1.year
+      post(change_date_path, :date_picker => format_date((date)))
       get(dashboard_path)
       assert_select('a[href=/weights/new]', 'Add Weight')
 
-      post(weights_path, {:weight => {'stone' => 12, 'lbs' => 4}})
-      weight = user.weights.find(:first, :conditions => {:taken_on => Date.today + 1.year})
+      post(weights_path, :weight => {'stone' => 12, 'lbs' => 4})
+      weight = user.weights.find(:first, :conditions => {:taken_on => date})
 
       get(dashboard_path)
       assert_select("a[href=/weights/#{weight.id}/edit]", 'Edit Weight')
+
+      delete(weight_path(weight.id))
+      get(dashboard_path)
+      assert_select('a[href=/weights/new]', 'Add Weight')
     end
   end
 
