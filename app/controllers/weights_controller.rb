@@ -29,6 +29,7 @@ class WeightsController < ApplicationController
     @weight.taken_on = current_date
 
     @weight.save!
+    session[:existing_weight] = @weight.id
     redirect_to(weights_path)
   rescue
     flash[:error] = @weight.errors
@@ -61,6 +62,8 @@ class WeightsController < ApplicationController
   def destroy
     @weight = @current_user.weights.find(params[:id].to_i)
     @weight.destroy
+    #session[:existing_weight] = 0 if current_date == @weight.taken_on
+    @current_user.cache_values(session, current_date, true)
   rescue
     flash[:error] = 'Unable to delete the selected weight.'
   ensure

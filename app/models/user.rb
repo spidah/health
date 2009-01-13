@@ -54,4 +54,14 @@ class User < ActiveRecord::Base
   def profile_aboutme=(value)
     self[:profile_aboutme] = value.strip_tags.sanitize if value && !value.blank?
   end
+
+  def cache_values(session, current_date, invalidate = false)
+    today = get_date
+    
+    if invalidate
+      session[:existing_weight] = nil
+    end
+    
+    session[:existing_weight] ||= begin weights.get_for_date(current_date).id rescue 0 end
+  end
 end

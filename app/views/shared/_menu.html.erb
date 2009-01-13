@@ -14,10 +14,10 @@
     <li><%= link_to('Weights', weights_path, :id => 'menu-weights') -%>
       <ul>
         <li><%= link_to('View Weights', weights_path) -%></li>
-<% if @current_user.weights.get_count(current_date) == 0 -%>
+<% if session[:existing_weight] == 0 -%>
         <li><%= link_to('Add Weight', new_weight_path) -%></li>
 <% else -%>
-        <li><%= link_to('Edit Weight', edit_weight_path(@current_user.weights.get_for_date(current_date))) -%></li>
+        <li><%= link_to('Edit Weight', edit_weight_path(session[:existing_weight])) -%></li>
 <% end -%>
         <li><%= link_to('Target Weight', targetweights_path, :class => 'break-above') -%></li>
       </ul>

@@ -9,6 +9,8 @@ class UsersController < ApplicationController
   verify :method => :delete, :only => :destroy, :redirect_to => 'index'
 
   def index
+    @today = @current_user.get_date
+    @current_user.cache_values(session, current_date)
     @target_weight = @current_user.target_weights.get_latest
     @current_weight = @current_user.weights.get_latest
     @measurements_date = @current_user.measurements.get_latest_date
@@ -19,7 +21,6 @@ class UsersController < ApplicationController
     @exercises_date = @current_user.exercises.get_latest_date
     @exercises = @current_user.exercises.for_day(@exercises_date).count
     @exercises_calories = @current_user.exercises.for_day(@exercises_date).calories
-    @today = @current_user.get_date
   end
 
   def show
