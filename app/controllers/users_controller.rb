@@ -10,7 +10,6 @@ class UsersController < ApplicationController
 
   def index
     @today = @current_user.get_date
-    @current_user.cache_values(session, current_date)
     @target_weight = @current_user.target_weights.get_latest
     @current_weight = @current_user.weights.get_latest
     @measurements_date = @current_user.measurements.get_latest_date

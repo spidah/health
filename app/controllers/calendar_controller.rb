@@ -23,7 +23,7 @@ class CalendarController < ApplicationController
     session[:displaydate] = Date.parse(params[:date_picker]) rescue session[:displaydate]
     session[:calendar_date] = nil
 
-    @current_user.cache_values(session, current_date, true)
+    @current_user.weights.cache_existing_weight(session, current_date)
 
     redirect_path = eval("#{params[:section]}_path") rescue dashboard_path
     redirect_to redirect_path

@@ -79,6 +79,16 @@ class Weight < ActiveRecord::Base
     next_w.save
   end
 
+  def self.cache_existing_weight(session, current_date, invalidate = false)
+    if invalidate || current_date != session[:existing_weight_date]
+      session[:existing_weight] = nil
+      session[:existing_weight_date] = nil
+    end
+
+    session[:existing_weight_date] ||= current_date
+    session[:existing_weight] ||= begin get_for_date(current_date).id rescue 0 end
+  end
+
   protected
     def before_save
       return if !weight_changed?
