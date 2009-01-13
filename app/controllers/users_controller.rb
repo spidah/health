@@ -67,12 +67,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def change_date
-    session[:displaydate] = Date.parse(params[:date_picker]) rescue session[:displaydate]
-
-    redirect_to request.referer || dashboard_path
-  end
-
   protected
 
   def set_menu_item
