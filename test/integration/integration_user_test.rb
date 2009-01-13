@@ -14,6 +14,8 @@ class IntegrationUserTest < ActionController::IntegrationTest
     spidah.add_data(users(:spidah))
     spidah.should_view_profile('spidah', {:about_me => 'Spidah.', :target_weight => true, :weight => true})
     spidah.cant_view_invalid_profile('nonexistingusername')
+
+    spidah.check_menu_changes_from_add_to_edit_when_values_are_added
     spidah.logout
 
     bob = new_session_as(:bob)
@@ -215,6 +217,18 @@ class IntegrationUserTest < ActionController::IntegrationTest
       change_password(current_password, new_password, new_password)
       assert_user_settings_redirect
       assert_flash('info', 'Your password has been updated.')
+    end
+
+    def check_menu_changes_from_add_to_edit_when_values_are_added
+      post(change_date_path, {:date_picker => format_date((Date.today + 1.year))})
+      get(dashboard_path)
+      assert_select('a[href=/weights/new]', 'Add Weight')
+
+      post(weights_path, {:weight => {'stone' => 12, 'lbs' => 4}})
+      weight = user.weights.find(:first, :conditions => {:taken_on => Date.today + 1.year})
+
+      get(dashboard_path)
+      assert_select("a[href=/weights/#{weight.id}/edit]", 'Edit Weight')
     end
   end
 
