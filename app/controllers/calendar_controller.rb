@@ -13,10 +13,10 @@ class CalendarController < ApplicationController
     @nextmonth = @date + 1.month
     @dayindex = 1
     @weekindex = 1
-    @weights = @current_user.weights.for_month(@today).counts
-    @measurements = @current_user.measurements.for_month(@today).counts
-    @meals = @current_user.meals.for_month(@today).counts
-    @exercises = @current_user.exercises.for_month(@today).counts
+    @weights = @current_user.weights.for_month(@date).counts
+    @measurements = @current_user.measurements.for_month(@date).counts
+    @meals = @current_user.meals.for_month(@date).counts
+    @exercises = @current_user.exercises.for_month(@date).counts
   end
 
   def change_date
