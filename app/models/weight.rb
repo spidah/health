@@ -49,7 +49,7 @@ class Weight < ActiveRecord::Base
   end
 
   def self.get_for_date(date)
-    find(:first, :conditions => {:taken_on => date})
+    find(:first, :conditions => {:taken_on => date}) or raise ActiveRecord::RecordNotFound
   end
 
   def self.get_count(date)
