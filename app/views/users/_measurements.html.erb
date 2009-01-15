@@ -1,5 +1,6 @@
 <% if measurements > 0 -%>
-<div class="form-row"><span class="label">Measurements:</span><span class="data"><%= measurements -%>
-(from <%= format_date(measurements_date, nil, today) -%>)</span>
+<div class="form-row">
+  <span class="label">Measurements:</span>
+  <span class="data"><%= measurements -%> (from <%= format_date(measurements_date, nil, today) -%>)</span>
 </div>
 <% end -%>
