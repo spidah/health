@@ -3,14 +3,22 @@
 </div>
 <div class="block">
 <h4>Dashboard</h4>
-<%= thumbnail_image('tour', 'dashboard.jpg', 'left') -%>
-<p class="tour-p">Your dashboard contains the latest entries for all of the sections. In
-most cases it'll show either the last three or seven days worth of entries to keep the displayed data at a minimum. To view
-earlier entries you can visit the section in question and change the date.</p>
+<%= thumbnail_image('dashboard.jpg') -%>
+<p class="tour-p">Your dashboard displays the latest entries for all of the sections. For sections that allow multiple
+entries it will show a count of how many entries were added. To actually view the entries you can visit the section in
+question and browse backwards in time.</p>
 </div>
-<div class="block">
+<div class="block tour-break">
+<h4>Public Profile</h4>
+<%= thumbnail_image('profile.jpg') -%>
+<p class="tour-p">All of the data that you enter is private and only visible to you. However, you do have a public profile
+that other users can view. By default this does not show anything, but you can enable sections to display the very latest
+entry for the section. You can also enter a bit of text describing yourself. It'll show the same data as on your dashboard.
+In the future you will also be able to add a picture, be it of you or some other image.</p>
+</div>
+<div class="block tour-break">
 <h4>Weights</h4>
-<%= thumbnail_image('tour', 'weights.jpg', 'right') -%>
+<%= thumbnail_image('weights.jpg') -%>
 <p class="tour-p">The weights list allows you to easily see how your weight is changing. Each time a new weight is entered the
 difference from the previous one is calculated so that your progress is easier to understand. You can change the date to travel
 back through the list to earlier weights and easily add a weight to any day that does not currently have one. The differences
@@ -19,20 +27,53 @@ are automatically recalculated when adding, editing or deleting a weight.</p>
 difference is calculated and you can see at a glance how much is left to lose. It will also congratulate you if you reach your
 target weight! You can then add a new target weight to aim for.</p>
 </div>
-<div class="block">
+<div class="block tour-break">
 <h4>Measurements</h4>
-<%= thumbnail_image('tour', 'measurements.jpg', 'left') -%>
+<%= thumbnail_image('measurements.jpg') -%>
 <p class="tour-p">The measurements list acts the same way as the weights list, except it allows multiple measurements per day
 in different locations. The differences will be calculated based on the location, regardless of when a measurement was last
 entered for it.</p>
-<p class="tour-p">I have decided not to have target measurements as most people really only track their weight. I can easily
-add this feature if it turns out to be something that people really want.</p>
 </div>
-<div class="block">
-<h4>Public Profile</h4>
-<%= thumbnail_image('tour', 'profile.jpg', 'right') -%>
-<p class="tour-p">All of the data that you enter is private and only visible to you. However, you do have a public profile
-that other users can view. By default this does not show anything, but you can enable sections to display the very latest
-entry for the section. You can also enter a bit of text describing yourself. In the future you will also be able to add a
-picture, be it of you or some other image.</p>
+<div class="block tour-break">
+<h4>Foods</h4>
+<%= thumbnail_image('foods.jpg') -%>
+<p class="tour-p">The foods list holds all of the food items that you have entered. The food items are used to make up meals.
+The most important value for the food items is the number of calories. This is used to generate the total calorie count for a meal.</p>
 </div>
+<div class="block tour-break">
+<h4>Meals</h4>
+<%= thumbnail_image('meals.jpg') -%>
+<p class="tour-p">The meals section lets you quickly see what you have eaten per day and how many calories each meal was. Each meal can
+contain multiple food items and quantities, allowing you to list each meal exactly how it is, provided you have added food items for
+everything.</p>
+</div>
+<div class="block tour-break">
+<h4>Activities</h4>
+<%= thumbnail_image('activities.jpg') -%>
+<p class="tour-p">The activities list contains all of the exercise activities that you can do. You enter the duration and the number
+of calories burnt for that duration, along with a name, and you're done. The type isn't actually used anywhere, it's just there so
+you can easily see what kinds of exercise you do. The description is useful for when you do different forms of the same activity type,
+like running at 5mph and running at 10mph.</p>
+<p class="tour-p">The duration and calories burnt need to match up, so if you only know how many calories you burn doing running for 20
+minutes then enter 20 for the duration and the correct number for the calories. If you know how much is burnt in only a minute then
+enter 1 for the duration and the correct number for the calories.</p>
+</div>
+<div class="block tour-break">
+<h4>Exercises</h4>
+<%= thumbnail_image('exercises.jpg') -%>
+<p class="tour-p">The exercises list uses the values entered in the activities section (hence the need for correct numbers) to
+calculate the number of calories burnt. The durations here can differ to the durations given in the activities section, and it will
+calculate the correct number of calories burnt for the entered duration.</p>
+<p class="tou-p">For example: a 20 minute jogging activity burns 228 calories, so if you went jogging for 30 minutes (10 minutes
+longer than the activity specifies) then you would have burnt 342 calories.
+</div>
+<div class="block tour-break">
+<h4>Calendar</h4>
+<%= thumbnail_image('calendar.jpg') -%>
+<p class="tour-p">The calendar allows you to travel through time to check out previously added entries or to add entries for days
+that you missed. If you have added entries for a day then it will display the icon relating to the section the entry was in. This
+allows you to quickly click the icon to change the date and automatically navigate to the section.</p>
+<p class="tour-p">To change the date to a day that has no entries then you just click the day number. If you have changed the date
+then a new link will appear below the icon key that will allow you to quickly change the date back to the current date.</p>
+</div>
+

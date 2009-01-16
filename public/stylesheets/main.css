@@ -225,6 +225,11 @@ div.block {
   overflow: auto;
 }
 
+div.image {
+  float: left;
+  margin: 0.2em 0.5em 0 0;
+}
+
 div.image-left {
   float: left;
   margin: 0.2em 0.5em 0 0;
@@ -255,6 +260,11 @@ input.login-input {
 span.openid {
   color: darkgrey;
   font-size: 85%;
+}
+
+div.tour-break {
+  border-top: 3px solid #ccc;
+  padding-top: 1em;
 }
 
 /* tables */
