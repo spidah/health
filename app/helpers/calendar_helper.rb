@@ -1,6 +1,6 @@
 module CalendarHelper
   def month_name(date)
-    date.strftime('%B')
+    date.strftime('%B %Y')
   end
 
   def link_month(date, text)
