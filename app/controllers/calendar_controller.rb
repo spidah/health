@@ -3,6 +3,7 @@ class CalendarController < ApplicationController
   before_filter :include_stylesheet
 
   def show
+    @usertoday = @current_user.get_date
     @today = current_date
     @date = session[:calendar_date] || @today
     @weekday = convert_week_day_number(@date.wday)
