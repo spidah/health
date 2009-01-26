@@ -34,6 +34,7 @@ class CalendarController < ApplicationController
 
   def change_month
     session[:calendar_date] = Date.parse(params[:date_picker]) rescue session[:displaydate]
+    session[:calendar_date] = @current_user.get_date if session[:calendar_date] > @current_user.get_date
     redirect_to calendar_path
   end
 
