@@ -3,8 +3,12 @@ module CalendarHelper
     date.strftime('%B %Y')
   end
 
-  def link_month(date, text)
-    link_to(text, change_month_path(:date_picker => date.to_s(:db)), :class => 'change-date-link')
+  def link_month(date, text, today = nil)
+    if today && date > today
+      text
+    else
+      link_to(text, change_month_path(:date_picker => date.to_s(:db)), :class => 'change-date-link')
+    end
   end
 
   def replace_day(date, day)
