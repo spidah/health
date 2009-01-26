@@ -50,6 +50,10 @@
         text-align: left;
       }
 
+      #calendar div.days div.week div.user-today {
+        background-color: #49d854;
+      }
+
       #calendar div.days div.week div.today {
         background-color: #87ceeb;
       }

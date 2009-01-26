@@ -1,4 +1,4 @@
-<div class="day<%= ' today' if date == @today -%><%= ' last' if @weekindex == 7 -%>">
+<div class="day<%= ' user-today' if date == @usertoday -%><%= ' today' if date == @today -%><%= ' last' if @weekindex == 7 -%>">
   <div class="data">
     <span class="number"><%= link_date(date, 'calendar', @dayindex, @usertoday) -%></span>
     <div>
