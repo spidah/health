@@ -50,8 +50,12 @@ module ApplicationHelper
     (number / 100).to_s
   end
 
-  def link_date(date, section = 'dashboard', display = nil)
-    link_to(display || format_date(date), change_date_path(:date_picker => date.to_s(:db), :section => section), :class => 'change-date-link')
+  def link_date(date, section = 'dashboard', display = nil, today = nil)
+    if today && date > today
+      display || format_date(date)
+    else
+      link_to(display || format_date(date), change_date_path(:date_picker => date.to_s(:db), :section => section), :class => 'change-date-link')
+    end
   end
 
   def dateselect(date)
