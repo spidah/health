@@ -2,7 +2,7 @@
   <h2>New Meal</h2>
   <p>Please give your meal a name so that it is distinguishable (ie. Breakfast, Dinner, Lunch, Snack 1).</p>
   <div class="meal_form">
-    <% form_for :meal, @meal, :url => meals_path do |f| -%>
+    <% form_for @meal do |f| -%>
       <fieldset>
         <legend>New Meal</legend>
         <%= print_flash(flash[:error], 'error', 'Error saving meal') -%>
