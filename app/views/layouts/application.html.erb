@@ -16,8 +16,7 @@
 
 <body>
 <div id="page">
-  <div id="header">
-  </div>
+  <div id="header"></div>
   <%= render(:partial => 'shared/menu') %>
 
   <div id="main">
@@ -36,7 +35,10 @@
   </div>
 </div>
 
-<%= javascript_include_tag('prototype', 'effects', 'niftycube') %>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js" type="text/javascript"></script>
+<%= javascript_include_tag('application') %>
+<%= javascript_include_tag('niftycube') %>
 <% if @extra_javascripts
    @extra_javascripts.each { |file| -%>
 <%= javascript_include_tag(file) %>
@@ -44,6 +46,7 @@
    end
 -%>
 <script type="text/javascript">
+var AUTH_TOKEN = <%= form_authenticity_token.inspect %>;
 window.onload = function() {
   Nifty("div.container", "tl tr transparent");
 <%= yield(:niftycorners) -%>
