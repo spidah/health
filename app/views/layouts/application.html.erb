@@ -4,10 +4,6 @@
 <head>
 <%= stylesheet_link_tag 'main', 'menus' -%>
 <%= javascript_include_tag 'prototype', 'effects', 'niftycube' -%>
-<%# if @current_user -%>
-<%# stylesheet_link_tag 'calendar' -%>
-<%# javascript_include_tag 'calendar', 'calendar-setup', 'calendar-en', 'my-calendar-setup' -%>
-<%# end -%>
 <%  if @extra_javascripts
       @extra_javascripts.each {|file| -%>
 <%= javascript_include_tag file -%><%
