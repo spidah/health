@@ -8,7 +8,7 @@
 <% if @current_user.admin -%>
         <li><%= link_to('Admin', admin_path, :class => 'break-above') %></li>
 <% end -%>
-        <li><%= link_to('Logout', logout_path, :id => 'logout', :class => 'break-above') %></li>
+        <li><%= link_to('Logout', logout_path, :class => 'break-above') %></li>
       </ul>
     </li>
     <li><%= link_to('Weights', weights_path, :id => 'menu-weights') %>
