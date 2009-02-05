@@ -2,9 +2,7 @@
   <h2>Today's Meals</h2>
   <%= print_flash(flash[:error], 'error', 'Error') -%>
   <% if @meals.size > 0 -%>
-  <% for meal in @meals do -%>
-  <%= render :partial => 'meal_item', :locals => {:meal => meal} -%>
-  <% end -%>
+  <%= render(:partial => @meals) -%>
   <% else -%>
   <p>You have not entered any meals for today.</p>
   <% end -%>
