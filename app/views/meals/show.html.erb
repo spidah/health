@@ -9,15 +9,7 @@
       <th>Calories</th>
       <th>Remove</th>
     </tr>
-    <% for food_item in @meal.food_items do -%>
-    <tr>
-      <td class="name"><%= h(food_item.name) -%></td>
-      <td class="quantity number"><%= food_item.quantity -%> <%= link_to image_tag('edit.gif'), edit_meal_food_item_path(@meal, food_item) -%></td>
-      <td class="calories number"><%= food_item.quantity * food_item.calories -%></td>
-      <td class="delete"><%= link_to image_tag('delete.gif'), meal_food_item_path(@meal, food_item), :method => :delete,
-        :confirm => 'Are you sure you want to delete this food item?' -%></td>
-    </tr>
-    <% end -%>
+    <%= render(:partial => 'food_item', :collection => @meal.food_items) %>
     <tr>
       <td><strong>Total</strong></td>
       <td></td>

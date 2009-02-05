@@ -50,12 +50,19 @@ class FoodItemsController < ApplicationController
     if !@food_item = get_food_item(@meal, params[:id].to_i)
       fail_to_meal_path(@meal, 'Unable to edit the selected food item.') and return
     end
-
-    @food_item.quantity = params[:food_item][:quantity]
-    if !@food_item.save
-      flash[:error] = @food_item.errors
-      redirect_to(edit_meal_food_item_path(@meal, @food_item))
-      return
+    
+    if params['add.x']
+      @food_item.increment!(:quantity)
+    elsif params['delete.x']
+      @food_item.decrement!(:quantity)
+      @food_item.destroy if @food_item.quantity < 1
+    else
+      @food_item.quantity = params[:food_item][:quantity]
+      if !@food_item.save
+        flash[:error] = @food_item.errors
+        redirect_to(edit_meal_food_item_path(@meal, @food_item))
+        return
+      end
     end
 
     redirect_to(meal_path(@meal))
@@ -69,8 +76,12 @@ class FoodItemsController < ApplicationController
     if !@food_item = get_food_item(@meal, params[:id].to_i)
       fail_to_meal_path(@meal, 'Unable to delete the selected food item.') and return
     end
-
-    @food_item.destroy
+    
+    if @food_item.quantity > 1
+      @food_item.decrement!(:quantity)
+    else
+      @food_item.destroy
+    end
     redirect_to(meal_path(@meal))
   end
 
