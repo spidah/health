@@ -1,13 +1,13 @@
     <tr id="<%= food_item.id %>">
       <td class="name"><%= h(food_item.name) -%></td>
       <td class="quantity number">
-        <% form_tag(meal_food_item_path(@meal, food_item), :method => :put) do %>
+        <% form_tag(meal_food_item_url(@meal, food_item), :method => :put) do %>
         <%= submit_tag('Delete', :src => '/images/delete.gif', :type => :image, :name => 'delete') %>
         <%= food_item.quantity %>
         <%= submit_tag('Add', :src => '/images/add.gif', :type => :image, :name => 'add') %>
         <% end %>
       </td>
       <td class="calories number"><%= food_item.quantity * food_item.calories -%></td>
-      <td class="delete"><%= link_to image_tag('delete.gif'), meal_food_item_path(@meal, food_item), :method => :delete,
+      <td class="delete"><%= link_to image_tag('cross.gif'), meal_food_item_path(@meal, food_item), :method => :delete,
         :confirm => 'Are you sure you want to delete this food item?' -%></td>
     </tr>

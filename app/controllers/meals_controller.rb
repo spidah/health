@@ -1,5 +1,5 @@
 class MealsController < ApplicationController
-  before_filter :login_required, :set_menu_item
+  before_filter :login_required, :set_menu_item, :include_meal_files
 
   verify :method => :get, :only => [:index, :new, :edit, :show], :redirect_to => 'index'
   verify :method => :post, :only => [:create], :redirect_to => 'index'
@@ -47,7 +47,13 @@ class MealsController < ApplicationController
   end
 
   protected
-    def set_menu_item
-      @activemenuitem = 'menu-meals'
-    end
+
+  def set_menu_item
+    @activemenuitem = 'menu-meals'
+  end
+
+  def include_meal_files
+    include_extra_stylesheet(:meals)
+    include_extra_javascript(:meals)
+  end
 end

@@ -2,7 +2,7 @@
   <h2><%= h(@meal.name) -%></h2>
   <%= print_flash(flash[:error], 'error', 'Error') -%>
   <p>Would you like to <%= link_to 'add a food', new_meal_food_item_path(@meal) -%> to your meal?</p>
-  <table>
+  <table id="meals">
     <tr>
       <th>Food</th>
       <th>Quantity</th>

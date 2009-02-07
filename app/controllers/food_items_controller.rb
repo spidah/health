@@ -51,11 +51,17 @@ class FoodItemsController < ApplicationController
       fail_to_meal_path(@meal, 'Unable to edit the selected food item.') and return
     end
     
-    if params['add.x']
+    if params['add.x'] || (params[:submit] && params[:submit] == 'add')
       @food_item.increment!(:quantity)
-    elsif params['delete.x']
+      render(:partial => 'meals/food_item', :object => @food_item, :layout => false)
+    elsif params['delete.x'] || (params[:submit] && params[:submit] == 'delete')
       @food_item.decrement!(:quantity)
-      @food_item.destroy if @food_item.quantity < 1
+      if @food_item.quantity < 1
+        @food_item.destroy
+        render(:nothing => true)
+      else
+        render(:partial => 'meals/food_item', :object => @food_item, :layout => false)
+      end      
     else
       @food_item.quantity = params[:food_item][:quantity]
       if !@food_item.save
@@ -63,9 +69,8 @@ class FoodItemsController < ApplicationController
         redirect_to(edit_meal_food_item_path(@meal, @food_item))
         return
       end
+      redirect_to(meal_path(@meal))
     end
-
-    redirect_to(meal_path(@meal))
   end
 
   def destroy
@@ -77,11 +82,7 @@ class FoodItemsController < ApplicationController
       fail_to_meal_path(@meal, 'Unable to delete the selected food item.') and return
     end
     
-    if @food_item.quantity > 1
-      @food_item.decrement!(:quantity)
-    else
-      @food_item.destroy
-    end
+    @food_item.destroy
     redirect_to(meal_path(@meal))
   end
 
