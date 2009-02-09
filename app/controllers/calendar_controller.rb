@@ -23,7 +23,8 @@ class CalendarController < ApplicationController
   def change_date
     session[:displaydate] = Date.parse(params[:date_picker]) rescue session[:displaydate]
     session[:calendar_date] = nil
-
+    
+    session[:displaydate] ||= @current_user.get_date
     session[:displaydate] = @current_user.get_date if session[:displaydate] > @current_user.get_date
 
     @current_user.weights.cache_existing_weight(session, current_date)
