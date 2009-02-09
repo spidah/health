@@ -19,7 +19,7 @@ class ActionController::Integration::Session
   end
 
   def change_date(date)
-    post(change_date_path, {:date_picker => format_date(date)})
+    post(change_date_path, {:date_picker => date})
 
     assert_response(:redirect)
     follow_redirect!
