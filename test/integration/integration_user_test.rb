@@ -131,7 +131,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
       assert_and_follow_redirect(edit_user_path, 'users/edit')
 
       assert_flash('error', nil, 'Unable to update your settings')
-      assert_select 'div[class=error][id=error-flash]>p>span[class=error-msg]', 3
+      assert_select 'div[class=flash][id=error-flash]>p>span[class=error-msg]', 3
 
       assert_user_data_tags
       assert_user_data_values(expected_gender, expected_dob_day, expected_dob_month, expected_dob_year, expected_timezone)
