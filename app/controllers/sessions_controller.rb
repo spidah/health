@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   before_filter :set_menu_item
+  before_filter :login_required, :only => :destroy
 
   verify :method => :get, :only => :new, :redirect_to => 'new'
   verify :method => [:get, :post], :only => [:create, :signup], :redirect_to => 'new'
