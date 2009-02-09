@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
 
   verify :method => :get, :only => :new, :redirect_to => 'new'
   verify :method => [:get, :post], :only => [:create, :signup], :redirect_to => 'new'
-  verify :method => :get, :only => :destroy, :redirect_to => 'new'
+  verify :method => [:get, :delete], :only => :destroy, :redirect_to => 'new'
 
   def new
     redirect_to(dashboard_path) and return if (@current_user && @current_user.valid?)
@@ -11,6 +11,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    @overridden_controller = ''
+    return if request.get?
     session[:user_id] = nil
     reset_session
     redirect_to(home_path)
