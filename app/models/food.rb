@@ -8,7 +8,7 @@ class Food < ActiveRecord::Base
   validates_numericality_of :calories, :only_integer => true, :greater_than_or_equal_to => 0, :message => 'Please enter a valid calories value.'
 
   def self.pagination(page, sort = nil, dir = 'ASC')
-    paginate :page => page, :per_page => 50, :order => sort ? "#{sort} #{dir}" : 'name ASC'
+    paginate :page => page, :per_page => 50, :order => sort ? "#{sort} #{dir}" : 'name, description ASC'
   end
 
   def fat
