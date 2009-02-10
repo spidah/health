@@ -19,7 +19,7 @@ class ActionController::Integration::Session
   end
 
   def change_date(date)
-    post(change_date_path, {:date_picker => format_date(date)})
+    get(change_date_path, {:date_picker => date})
 
     assert_response(:redirect)
     follow_redirect!
@@ -55,23 +55,23 @@ class ActionController::Integration::Session
   end
 
   def assert_flash(type, message = nil, title = nil)
-    assert_select "div[class=#{type}][id=#{type}-flash]", {:minimum => 1}
-    assert_select "div[class=#{type}][id=#{type}-flash]>p", message if message
-    assert_select "div[class=#{type}][id=#{type}-flash]>h5", title if title
+    assert_select "div[class=flash][id=#{type}-flash]", {:minimum => 1}
+    assert_select "div[class=flash][id=#{type}-flash]>p", message if message
+    assert_select "div[class=flash][id=#{type}-flash]>h5", title if title
   end
 
   def assert_flash_item(type, item)
-    assert_select "div[class=#{type}][id=#{type}-flash]>p>span", item
+    assert_select "div[class=flash][id=#{type}-flash]>p>span", item
   end
 
   def assert_flash_item_count(type, count)
-    assert_select "div[class=#{type}][id=#{type}-flash]>p>span", count
+    assert_select "div[class=flash][id=#{type}-flash]>p>span", count
   end
 
   def assert_no_flash(type)
-    assert_select "div[class=#{type}][id=#{type}-flash]", 0
-    assert_select "div[class=#{type}][id=#{type}-flash]>p", 0
-    assert_select "div[class=#{type}][id=#{type}-flash]>h5", 0
+    assert_select "div[class=flash][id=#{type}-flash]", 0
+    assert_select "div[class=flash][id=#{type}-flash]>p", 0
+    assert_select "div[class=flash][id=#{type}-flash]>h5", 0
   end
 
   def format_date(date, format = nil)

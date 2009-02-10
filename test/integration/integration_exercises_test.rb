@@ -19,8 +19,9 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
 
     jogging_a = spidah.add_activity('Jogging', 'Jogging around the park', 'Aerobic', 10, 30)
     walking_a = spidah.add_activity('Walking', 'Walking around the park', 'Aerobic', 10, 10)
-
-    spidah.change_date(Date.today)
+    
+    date = Date.today - 1.year
+    spidah.change_date(date)
     spidah.should_have_no_exercises
     spidah.should_not_add_exercise_for_invalid_activity
     spidah.should_not_add_exercise_with_invalid_attributes(jogging_a)
@@ -40,7 +41,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
 
     jogging_e = spidah.add_exercise(jogging_a, 30)
     spidah.should_have_exercises(1)
-    spidah.change_date(Date.tomorrow)
+    spidah.change_date(date + 1.day)
     spidah.should_have_no_exercises
     spidah.add_exercise(jogging_a, 30)
     spidah.add_exercise(jogging_a, 40)

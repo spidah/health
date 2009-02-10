@@ -131,7 +131,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
       assert_and_follow_redirect(edit_user_path, 'users/edit')
 
       assert_flash('error', nil, 'Unable to update your settings')
-      assert_select 'div[class=error][id=error-flash]>p>span[class=error-msg]', 3
+      assert_select 'div[class=flash][id=error-flash]>p>span[class=error-msg]', 3
 
       assert_user_data_tags
       assert_user_data_values(expected_gender, expected_dob_day, expected_dob_month, expected_dob_year, expected_timezone)
@@ -220,8 +220,8 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def check_menu_changes_from_add_to_edit_when_values_are_added
-      date = Date.today + 1.year
-      post(change_date_path, :date_picker => format_date((date)))
+      date = Date.today - 1.year
+      post(change_date_path, :date_picker => date)
       get(dashboard_path)
       assert_select('a[href=/weights/new]', 'Add Weight')
 
