@@ -1,41 +1,5 @@
 <div class="block">
-<h2>Login</h2>
-<%= print_flash(flash[:login_error], 'error', 'Login error') -%>
-  <div id="login-openid" style="display: none">
-  <p>Please login using your OpenID account, or with a <a href="#" onclick="changeVisibility('login-normal', 'block'); changeVisibility('login-openid', 'none'); return false;">normal login</a>.</p>
-  <% form_tag session_path, :id => 'openid_login_form' do -%>
-  <div class="form-row">
-    <label for="user_login" class="label">Login</label>
-    <span class="data"><input type="text" name="openid_url" class="openid_url" size="30" value="http://"/></span>
-  </div>
-  <div class="form-row">
-    <label class="label">&nbsp;</label>
-    <span class="data openid">eg: http://yourname.myopenid.com</span>
-  </div>
-  <div class="form-row">
-    <span class="data"><input type="submit" name="login" value="Login" /></span>
-  </div>
-  <% end -%>
-  </div>
-  <div id="login-normal">
-  <p>Please login using your loginname and password, or with an <a href="#" onclick="changeVisibility('login-openid', 'block'); changeVisibility('login-normal', 'none'); return false;">OpenID account</a>.</p>
-  <% form_tag session_url, :id => 'normal_login_form' do -%>
-    <div class="form-row">
-      <label for="loginname" class="label">Loginname</label>
-      <span class="data"><%= text_field_tag('loginname', session[:loginname]) -%></span>
-    </div>
-    <div class="form-row">
-      <label for="password" class="label">Password</label>
-      <span class="data"><%= password_field_tag('password') -%></span>
-    </div>
-    <div class="form-row">
-      <span class="data"><input type="submit" name="login" value="Login" /></span>
-    </div>
-  <% end -%>
-  </div>
+  <h2>Login</h2>
+  <%= print_flash(flash[:login_error], 'error', 'Login error') -%> 
+  <p>To use this site, please login using one of the boxes on the right hand side of the page.</p>
 </div>
-<% content_for :extrajavascript do -%>
-function changeVisibility(element, visibility) {
-  document.getElementById(element).style.display = visibility;
-}
-<% end -%>
