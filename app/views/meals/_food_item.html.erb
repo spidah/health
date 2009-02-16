@@ -2,6 +2,7 @@
       <td class="name"><%= h(food_item.name) -%></td>
       <td class="quantity number">
         <% form_tag(meal_food_item_url(@meal, food_item), :method => :put) do %>
+        <%= hidden_field_tag('action_type', 'update', :id => nil) %>
         <%= submit_tag('Delete', :src => '/images/delete.gif', :type => :image, :name => 'delete') %>
         <%= food_item.quantity %>
         <%= submit_tag('Add', :src => '/images/add.gif', :type => :image, :name => 'add') %>
