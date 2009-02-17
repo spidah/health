@@ -8,6 +8,7 @@ class FoodItemsController < ApplicationController
 
   def new
     include_extra_stylesheet(:foods)
+    include_extra_javascript(:foods)
     @meal = @current_user.meals.find(params[:meal_id].to_i)
     get_all_foods
   rescue
@@ -26,8 +27,13 @@ class FoodItemsController < ApplicationController
           :description => @food.description, :calories => @food.calories, :quantity => 1})
       end
     end
-
-    redirect_to(new_meal_food_item_path(@meal))
+    
+    if request.xhr?
+      @meal.food_items(true)
+      render(:partial => 'food_items/food', :object => @current_user.foods.find(params[:food_id].to_i))
+    else
+      redirect_to(new_meal_food_item_path(@meal))
+    end
   end
 
   def edit
@@ -116,11 +122,26 @@ class FoodItemsController < ApplicationController
         @food_item.decrement!(:quantity)
         if @food_item.quantity < 1
           @food_item.destroy
-          render(:nothing => true)
         end
       end
 
-      request.xhr? ? render(:partial => 'meals/food_item', :object => @food_item) :
-        redirect_to(params[:action_type] == 'new' ? new_meal_food_item_url(@meal) : meal_url(@meal))
+      @meal.food_items(true)
+
+      
+      if params[:action_type] == 'new'
+        # sender: new meal food item page 'meals/x/food_items/new'
+        if request.xhr?
+          render(:partial => 'food_items/food', :object => @current_user.foods.find(@food_item.food_id))
+        else
+          redirect_to(new_meal_food_item_url(@meal))
+        end
+      else
+        # sender: meal page 'meals/x'
+        if request.xhr?
+          render(:partial => 'meals/food_item', :object => @food_item)
+        else
+          redirect_to(meal_url(@meal))
+        end
+      end
     end
 end
