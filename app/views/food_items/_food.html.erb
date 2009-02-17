@@ -1,0 +1,16 @@
+    <tr class="food-item">
+      <td class="name"><%= h(food.name) -%></td>
+      <td class="description"><%= h(food.description) -%></td>
+      <td class="manufacturer"><%= h(food.manufacturer) -%></td>
+      <td class="weight"><%= h(food.weight) -%></td>
+      <td class="add">
+        <% path, method = food_item_form_options(@meal, food)
+           form_tag(path, :method => method) do %>
+          <%= hidden_field_tag('food_id', food.id, :id => nil) %>
+          <%= hidden_field_tag('action_type', 'new', :id => nil) %>
+          <input type="image" name="delete" src="/images/delete.gif" alt="Remove Food" />
+          <%= food_quantity(@meal.food_items, food) %>
+          <input type="image" name="add" src="/images/add.gif" alt="Add Food" />
+        <% end -%>
+      </td>
+    </tr>
