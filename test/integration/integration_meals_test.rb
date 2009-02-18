@@ -19,14 +19,21 @@ class IntegrationMealsTest < ActionController::IntegrationTest
 
     bread_fi = spidah.should_add_food_to_meal(lunch, bread)
     ham_fi = spidah.should_add_food_to_meal(lunch, ham)
-    spidah.should_add_food_to_meal(lunch, bread, 2)
-    spidah.should_update_food_item_quantity(lunch, bread_fi, 2, 4)
-    spidah.should_update_food_item_quantity(lunch, ham_fi, 1, 4)
+    spidah.add_food_multiple_times(lunch, bread, 1, 3, 4)
+    spidah.add_food_multiple_times(lunch, ham, 1, 3, 4)
     spidah.check_food_quantity(lunch, bread, 4)
     spidah.check_food_quantity(lunch, ham, 4)
-    spidah.check_total_calories(lunch, (4 * 98) + (4 * 15))
+    spidah.check_total_calories(lunch, (4 * bread.calories) + (4 * ham.calories))
     spidah.should_remove_food_item(lunch, ham_fi)
-    spidah.check_total_calories(lunch, 4 * 98)
+    spidah.check_total_calories(lunch, 4 * bread.calories)
+    
+    ham_fi = spidah.should_add_food_to_meal(lunch, ham)
+    spidah.inc_food_item_quantity(lunch, ham_fi)
+    spidah.check_food_quantity(lunch, ham, 2)
+    spidah.dec_food_item_quantity(lunch, ham_fi)
+    spidah.check_food_quantity(lunch, ham, 1)
+
+    spidah.should_destroy_food_item_with_dec(lunch, ham_fi, ham)
 
     spidah.cant_add_with_invalid_food_or_meal(lunch, bread)
     spidah.cant_edit_with_invalid_fooditem_or_meal(lunch, bread_fi)
@@ -64,6 +71,13 @@ class IntegrationMealsTest < ActionController::IntegrationTest
 
     def get_latest_meal
       user.meals.find(:first, :order => 'id DESC')
+    end
+
+    def assert_new_food_item_quantity(food, quantity)
+      assert_select('tr[class=food-item]') do
+        assert_select('td[class=name]', food.name)
+        assert_select('td[class=add] form span[class=quantity]', "#{quantity}")
+      end
     end
 
     def check_meal_count(count)
@@ -148,24 +162,51 @@ class IntegrationMealsTest < ActionController::IntegrationTest
       assert_flash_item('error', 'Please enter a meal name.')
     end
 
-    def should_add_food_to_meal(meal, food, quantity = 1)
-      post(meal_food_items_path(meal), :food_id => food.id)
-      assert_and_follow_redirect(meal_path(meal), 'meals/show')
+    def should_add_food_to_meal(meal, food)
+      post(meal_food_items_path(meal), :food_id => food.id, :action_type => 'new', :submit => 'add')
+      assert_and_follow_redirect(new_meal_food_item_path(meal), 'food_items/new')
+      
+      assert_new_food_item_quantity(food, 1)
 
-      assert_select('td[class=name]', food.name)
-      assert_select('td[class*=quantity]', "#{quantity}")
-      assert_select('td[class*=calories]', "#{quantity * food.calories}")
+      get(meal_path(meal))
+      assert_success('meals/show')
+      
+      assert_select('tr') do
+        assert_select('td[class=name]', food.name)
+        assert_select('td[class*=quantity]', "1")
+        assert_select('td[class*=calories]', "#{food.calories}")
+      end
 
       meal.reload
       return meal.food_items.find(:first, :conditions => {:food_id => food.id})
     end
 
-    def should_update_food_item_quantity(meal, food_item, existing_quantity, new_quantity)
-      get(edit_meal_food_item_path(meal, food_item))
-      assert_select('option[selected=selected]', "#{existing_quantity}")
+    def add_food_multiple_times(meal, food, existing_quantity, to_add, new_quantity)
+      get(new_meal_food_item_path(meal))
+      assert_new_food_item_quantity(food, existing_quantity)
 
-      put(meal_food_item_path(meal, food_item), :food_item => {:quantity => new_quantity})
-      assert_and_follow_redirect(meal_path(meal), 'meals/show')
+      to_add.times do
+        post(meal_food_items_path(meal), :food_id => food.id, :action_type => 'new', :submit => 'add')
+      end
+      
+      get(new_meal_food_item_path(meal))
+      assert_new_food_item_quantity(food, new_quantity)
+    end
+
+    def inc_food_item_quantity(meal, food_item)
+      put(meal_food_item_path(meal, food_item), :submit => 'add')
+    end
+
+    def dec_food_item_quantity(meal, food_item)
+      put(meal_food_item_path(meal, food_item), :submit => 'delete')
+    end
+
+    def should_destroy_food_item_with_dec(meal, food_item, food)
+      dec_food_item_quantity(meal, food_item)
+      
+      get(new_meal_food_item_path(meal))
+      assert_new_food_item_quantity(food, 0)
+      assert_raise(ActiveRecord::RecordNotFound) { meal.food_items.find(food_item) }
     end
 
     def should_update_food_item_when_food_updated(meal, food, food_item)
