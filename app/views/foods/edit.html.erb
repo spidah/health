@@ -1,8 +1,6 @@
 <div class="block">
-  <h2>Edit <%= h(@food.name) -%></h2>
+  <h2>Edit <%= h(@food.name) %></h2>
   <div id="food_form">
-    <% form_for(@food) do |f| -%>
-      <%= render :partial => 'food_form', :locals => {:f => f, :action => 'Update'} -%>
-    <% end -%>
+<%= render(:partial => 'food_form') %>
   </div>
 </div>

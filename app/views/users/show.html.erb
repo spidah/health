@@ -1,18 +1,18 @@
 <div class="block">
-<h2><%= @user.loginname -%>'s Profile</h2>
+<h2><%= h(@user.loginname) %>'s Profile</h2>
 </div>
 <div class="block">
 <h4>About Me</h4>
 <p class="profile-about-me">
 <% if !@user.profile_aboutme.blank? -%>
-<%= h @user.profile_aboutme -%>
+<%= h(@user.profile_aboutme) %>
 <% else -%>
-Unfortunately, <%= @user.loginname -%> is a bit shy and has not written anything about themself.
+Unfortunately, <%= h(@user.loginname) %> is a bit shy and has not written anything about themself.
 <% end -%>
 </p>
 </div>
 <% if @user.profile_targetweight || @user.profile_weights -%>
 <div class="block">
-<%= render(:partial => 'weights', :locals => {:target_weight => @target_weight, :current_weight => @current_weight, :units => @user.weight_units, :today => @user.get_date}) if (@user.profile_targetweight && @targer_weight) || (@user.profile_weights && @current_weight) -%>
+<%= render(:partial => 'weights', :locals => {:target_weight => @target_weight, :current_weight => @current_weight, :units => @user.weight_units, :today => @user.get_date}) if (@user.profile_targetweight && @targer_weight) || (@user.profile_weights && @current_weight) %>
 </div>
 <% end -%>

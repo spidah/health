@@ -1,40 +1,42 @@
+  <% form_for(@food) do |f| %>
     <fieldset>
       <legend>Food Details</legend>
-      <%= print_flash(flash[:error], 'error', 'Error saving food') -%>
+<%= print_flash(flash[:error], 'error', 'Error saving food') -%>
       <div class="form-row">
         <span class="label">Name</span>
-        <span class="data"><%= f.text_field(:name) -%></span>
+        <span class="data"><%= f.text_field(:name) %></span>
       </div>
       <div class="form-row">
         <span class="label">Description</span>
-        <span class="data"><%= f.text_field(:description) -%></span>
+        <span class="data"><%= f.text_field(:description) %></span>
       </div>
       <div class="form-row">
         <span class="label">Manufacturer</span>
-        <span class="data"><%= f.text_field(:manufacturer) -%></span>
+        <span class="data"><%= f.text_field(:manufacturer) %></span>
       </div>
       <div class="form-row">
         <span class="label">Weight</span>
-        <span class="data"><%= f.text_field(:weight) -%></span>
+        <span class="data"><%= f.text_field(:weight) %></span>
       </div>
       <div class="form-row">
         <span class="label">Fat</span>
-        <span class="data"><%= f.text_field(:fat, :size => 6, :value => @food.fat) -%> grams</span>
+        <span class="data"><%= f.text_field(:fat, :size => 6, :value => @food.fat) %> grams</span>
       </div>
       <div class="form-row">
         <span class="label">Protein</span>
-        <span class="data"><%= f.text_field(:protein, :size => 6, :value => @food.protein) -%> grams</span>
+        <span class="data"><%= f.text_field(:protein, :size => 6, :value => @food.protein) %> grams</span>
       </div>
       <div class="form-row">
         <span class="label">Carbohydrates</span>
-        <span class="data"><%= f.text_field(:carbs, :size => 6, :value => @food.carbs) -%> grams</span>
+        <span class="data"><%= f.text_field(:carbs, :size => 6, :value => @food.carbs) %> grams</span>
       </div>
       <div class="form-row">
         <span class="label">Calories</span>
-        <span class="data"><%= text_field(:food, :calories, :size => 6, :value => @food.calories) -%></span>
+        <span class="data"><%= text_field(:food, :calories, :size => 6, :value => @food.calories) %></span>
       </div>
       <div class="form-row">
-        <%= submit_tag(action, :class => 'submit') -%>
-        <%= cancel_button if !defined?(no_cancel) -%>
+        <%= submit_tag('Save', :class => 'submit') %>
+        <%= cancel_button %>
       </div>
     </fieldset>
+  <% end %>

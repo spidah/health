@@ -1,36 +1,38 @@
 <div class="block">
-<h2>Contact</h2>
-<p>If you find a problem with any of the pages, have a suggestion to make, want to give me some praise, or any other reason,
-then just fill out the form below and submit it. Please enter a valid email so that I can reply if needed. All comments will be read.</p>
-<%= print_flash(flash[:error], 'error', 'Error submitting contact form') %>
-<form action="<%= contact_path -%>" method="post">
-  <div class="form-row">
-    <span class="label">Name</span>
-    <span class="data"><input type="text" name="name" id="name" size="40" value="<%= @current_user.loginname if @current_user -%>" /></span>
-  </div>
-  <div class="form-row">
-    <span class="label">Email</span>
-    <span class="data"><input type="text" name="email" id="email" size="40" value="<%= @current_user.email if @current_user -%>" /></span>
-  </div>
-  <div class="form-row">
-    <span class="label">Subject</span>
-    <span class="data"><input type="text" name="subject" id="subject" size="40" value="" /></span>
-  </div>
-  <div class="form-row">
-    <span class="label">Category</span>
-    <span class="data"><select name="category" id="category">
-      <option value="general">General</option>
-      <option value="suggestion">Suggestion</option>
-      <option value="bug">Bug</option>
-      <option value="other">Other</option>
-    </select></span>
-  </div>
-  <div class="form-row">
-    <span class="label">Comment</span>
-    <span class="data"><textarea name="comment" id="comment" rows="15" cols="60"></textarea></span>
-  </div>
-  <div class="form-row">
-    <input type="submit" name="submit" value="Submit" />
-  </div>
-</form>
+  <h2>Contact</h2>
+  <p>If you find a problem with any of the pages, have a suggestion to make, want to give me some praise, or any other reason,
+     then just fill out the form below and submit it. Please enter a valid email so that I can reply if needed. All comments will be read.</p>
+<%= print_flash(flash[:error], 'error', 'Error submitting contact form') -%>
+  <form action="<%= contact_url %>" method="post">
+    <div class="form-row">
+      <span class="label">Name</span>
+      <span class="data"><input type="text" name="name" id="name" size="40" value="<%= @current_user.loginname if @current_user %>" /></span>
+    </div>
+    <div class="form-row">
+      <span class="label">Email</span>
+      <span class="data"><input type="text" name="email" id="email" size="40" value="<%= @current_user.email if @current_user %>" /></span>
+    </div>
+    <div class="form-row">
+      <span class="label">Subject</span>
+      <span class="data"><input type="text" name="subject" id="subject" size="40" value="" /></span>
+    </div>
+    <div class="form-row">
+      <span class="label">Category</span>
+      <span class="data">
+        <select name="category" id="category">
+          <option value="general">General</option>
+          <option value="suggestion">Suggestion</option>
+          <option value="bug">Bug</option>
+          <option value="other">Other</option>
+        </select>
+      </span>
+    </div>
+    <div class="form-row">
+      <span class="label">Comment</span>
+      <span class="data"><textarea name="comment" id="comment" rows="15" cols="60"></textarea></span>
+    </div>
+    <div class="form-row">
+      <input type="submit" name="submit" value="Submit" />
+    </div>
+  </form>
 </div>

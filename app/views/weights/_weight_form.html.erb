@@ -1,11 +1,11 @@
-<fieldset>
-  <legend>Weight Data</legend>
-  <%= error if error %>
-  <div class="form-row">
-    <span class="label">Weight</span>
-    <span class="data"><%= weight_entry(user.weight_units, weight) %></span>
-  </div>
-  <div class="form-row">
-    <%= submit_tag action, :class => "submit" %>
-  </div>
-</fieldset>
+    <fieldset>
+      <legend>Weight Data</legend>
+<%= print_flash(flash[:error], 'error', 'Error saving weight') -%>
+      <div class="form-row">
+        <span class="label">Weight</span>
+        <span class="data"><%= weight_entry(@current_user.weight_units, @weight) %></span>
+      </div>
+      <div class="form-row">
+        <%= submit_tag('Save', :class => 'submit') %>
+      </div>
+    </fieldset>

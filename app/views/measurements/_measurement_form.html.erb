@@ -1,15 +1,16 @@
-<fieldset>
-  <legend>Measurement Data</legend>
-  <%= error if error %>
-  <div class="form-row">
-    <span class="label">Location</span>
-    <span class="data"><%= f.text_field :location %></span>
-  </div>
-  <div class="form-row">
-    <span class="label">Measurement</span>
-    <span class="data"><%= measurement_entry(user.measurement_units, measurement) %></span>
-  </div>
-  <div class="form-row">
-    <%= submit_tag action, :class => "submit" %>
-  </div>
-</fieldset>
+    <fieldset>
+      <legend>Measurement Data</legend>
+<%= print_flash(flash[:error], 'error', 'Error saving measurement') -%>
+      <div class="form-row">
+        <span class="label">Location</span>
+        <span class="data"><%= f.text_field(:location) %></span>
+      </div>
+      <div class="form-row">
+        <span class="label">Measurement</span>
+        <span class="data"><%= measurement_entry(@current_user.measurement_units, @measurement) %></span>
+      </div>
+      <div class="form-row">
+        <%= submit_tag('Save', :class => 'submit') %>
+        <%= cancel_button %>
+      </div>
+    </fieldset>

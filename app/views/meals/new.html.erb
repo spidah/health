@@ -2,18 +2,18 @@
   <h2>New Meal</h2>
   <p>Please give your meal a name so that it is distinguishable (ie. Breakfast, Dinner, Lunch, Snack 1).</p>
   <div class="meal_form">
-    <% form_for @meal do |f| -%>
+    <% form_for(@meal) do |f| %>
       <fieldset>
         <legend>New Meal</legend>
-        <%= print_flash(flash[:error], 'error', 'Error saving meal') -%>
+<%= print_flash(flash[:error], 'error', 'Error saving meal') -%>
         <div class="form-row">
           <span class="label">Name</span>
-          <span class="data"><%= f.text_field :name -%></span>
+          <span class="data"><%= f.text_field(:name) %></span>
         </div>
         <div class="form-row">
-          <%= submit_tag 'Add', :class => 'submit' -%>
+          <%= submit_tag('Add', :class => 'submit') %>
         </div>
       </fieldset>
-    <% end -%>
+    <% end %>
   </div>
 </div>

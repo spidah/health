@@ -1,15 +1,15 @@
 <div class="block">
-  <h2><%= @meal.name -%>: Add Food</h2>
+  <h2><%= h(@meal.name) %>: Add Food</h2>
   <p><%= link_to('Return to the meal', meal_url(@meal)) %>.</p>
   <table id="foods">
     <tr>
-      <th><%= sort_link('Name', 'name') -%></th>
-      <th><%= sort_link('Description', 'description') -%></th>
-      <th><%= sort_link('Manufacturer', 'manufacturer') -%></th>
+      <th><%= sort_link('Name', 'name') %></th>
+      <th><%= sort_link('Description', 'description') %></th>
+      <th><%= sort_link('Manufacturer', 'manufacturer') %></th>
       <th>Weight</th>
       <th>Quantity</th>
     </tr>
-  <%= render(:partial => 'food', :collection => @foods) %>
+<%= render(:partial => 'food', :collection => @foods) %>
   </table>
   <%= will_paginate(@foods) -%>
 </div>

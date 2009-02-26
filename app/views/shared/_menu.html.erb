@@ -1,55 +1,55 @@
-<div id="menu">
-  <ul>
+  <div id="menu">
+    <ul>
 <% if @current_user -%>
-    <li><%= link_to('Your Account', dashboard_path, :id => 'menu-account') %>
-      <ul>
-        <li><%= link_to('Dashboard', dashboard_path) %></li>
-        <li><%= link_to('Settings', edit_user_path) %></li>
+      <li><%= link_to('Your Account', dashboard_url, :id => 'menu-account') %>
+        <ul>
+          <li><%= link_to('Dashboard', dashboard_url) %></li>
+          <li><%= link_to('Settings', edit_user_url) %></li>
 <% if @current_user.admin -%>
-        <li><%= link_to('Admin', admin_path, :class => 'break-above') %></li>
+          <li><%= link_to('Admin', admin_url, :class => 'break-above') %></li>
 <% end -%>
-        <li><%= link_to('Logout', logout_path, :class => 'break-above', :id => 'logout') %></li>
-      </ul>
-    </li>
-    <li><%= link_to('Weights', weights_path, :id => 'menu-weights') %>
-      <ul>
-        <li><%= link_to('View Weights', weights_path) %></li>
+          <li><%= link_to('Logout', logout_url, :class => 'break-above', :id => 'logout') %></li>
+        </ul>
+      </li>
+      <li><%= link_to('Weights', weights_url, :id => 'menu-weights') %>
+        <ul>
+          <li><%= link_to('View Weights', weights_url) %></li>
 <% if @current_user.weights.cache_existing_weight(session, current_date) == 0 -%>
-        <li><%= link_to('Add Weight', new_weight_path) %></li>
+          <li><%= link_to('Add Weight', new_weight_url) %></li>
 <% else -%>
-        <li><%= link_to('Edit Weight', edit_weight_path(session[:existing_weight])) %></li>
+          <li><%= link_to('Edit Weight', edit_weight_url(session[:existing_weight])) %></li>
 <% end -%>
-        <li><%= link_to('Target Weight', targetweights_path, :class => 'break-above') %></li>
-      </ul>
-    </li>
-    <li><%= link_to('Measurements', measurements_path, :id => 'menu-measurements') %>
-      <ul>
-        <li><%= link_to('View Measurements', measurements_path) %></li>
-        <li><%= link_to('Add Measurement', new_measurement_path) %></li>
-      </ul>
-    </li>
-    <li><%= link_to('Meals', meals_path, :id => 'menu-meals') %>
-      <ul>
-        <li><%= link_to('View Meals', meals_path) %></li>
-        <li><%= link_to('Add Meal', new_meal_path) %></li>
-        <li><%= link_to('View Foods', foods_path, :class => 'break-above') %></li>
-        <li><%= link_to('Add Food', foods_path) %></li>
-      </ul>
-    </li>
-    <li><%= link_to('Exercise', meals_path, :id => 'menu-exercise') %>
-      <ul>
-        <li><%= link_to('View Exercises', exercises_path) %></li>
-        <li><%= link_to('Add Exercise', new_exercise_path) %></li>
-        <li><%= link_to('View Activities', activities_path, :class => 'break-above') %></li>
-        <li><%= link_to('Add Activity', new_activity_path) %></li>
-      </ul>
-    </li>
+          <li><%= link_to('Target Weight', targetweights_url, :class => 'break-above') %></li>
+        </ul>
+      </li>
+      <li><%= link_to('Measurements', measurements_url, :id => 'menu-measurements') %>
+        <ul>
+          <li><%= link_to('View Measurements', measurements_url) %></li>
+          <li><%= link_to('Add Measurement', new_measurement_url) %></li>
+        </ul>
+      </li>
+      <li><%= link_to('Meals', meals_url, :id => 'menu-meals') %>
+        <ul>
+          <li><%= link_to('View Meals', meals_url) %></li>
+          <li><%= link_to('Add Meal', new_meal_url) %></li>
+          <li><%= link_to('View Foods', foods_url, :class => 'break-above') %></li>
+          <li><%= link_to('Add Food', foods_url) %></li>
+        </ul>
+      </li>
+      <li><%= link_to('Exercise', meals_url, :id => 'menu-exercise') %>
+        <ul>
+          <li><%= link_to('View Exercises', exercises_url) %></li>
+          <li><%= link_to('Add Exercise', new_exercise_url) %></li>
+          <li><%= link_to('View Activities', activities_url, :class => 'break-above') %></li>
+          <li><%= link_to('Add Activity', new_activity_url) %></li>
+        </ul>
+      </li>
 <% else -%>
-    <li><%= link_to('Welcome', home_path, :id => 'menu-home') %></li>
-    <li><%= link_to('News', news_path, :id => 'menu-news') %></li>
-    <li><%= link_to('Tour', tour_path, :id => 'menu-tour') %></li>
-    <li><%= link_to('About', about_path, :id => 'menu-about') %></li>
-    <li><%= link_to('Signup', signup_path, :id => 'menu-signup') %></li>
+      <li><%= link_to('Welcome', home_url, :id => 'menu-home') %></li>
+      <li><%= link_to('News', news_url, :id => 'menu-news') %></li>
+      <li><%= link_to('Tour', tour_url, :id => 'menu-tour') %></li>
+      <li><%= link_to('About', about_url, :id => 'menu-about') %></li>
+      <li><%= link_to('Signup', signup_url, :id => 'menu-signup') %></li>
 <% end -%>
-  </ul>
-</div>
+    </ul>
+  </div>

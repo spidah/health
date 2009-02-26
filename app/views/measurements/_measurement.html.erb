@@ -1,0 +1,16 @@
+<%
+  @m_date ||= nil
+  if @m_date != measurement.taken_on
+    @m_date = measurement.taken_on -%>
+      <tr class="measurement-date">
+        <td class="date" colspan="5"><%= link_date(@m_date, 'measurements') %></td>
+      </tr>
+<% end -%>
+      <tr class="measurement-data<% if current_date == measurement.taken_on %> today<% else %> <%= cycle('odd', 'even') %><% end %> <%= "#{measurement.taken_on.year}-#{measurement.taken_on.month}-#{measurement.taken_on.day} #{measurement.location.split(' ').join('-')}" %>">
+        <td class="location"><%= h(measurement.location) %></td>
+        <td class="measurement"><%= format_measurement(@current_user.measurement_units, measurement) %></td>
+        <td class="difference"><%= measurement_difference(@current_user.measurement_units, measurement.difference) %></td>
+        <td class="edit"><%= link_to(image_tag('/images/edit.gif'), edit_measurement_url(measurement)) %></td>
+        <td class="delete"><%= link_to(image_tag('/images/delete.gif'), measurement_url(measurement),
+          :confirm => 'Are you sure you want to delete this measurement?', :method => :delete) %></td>
+      </tr>

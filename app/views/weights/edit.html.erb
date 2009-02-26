@@ -1,9 +1,7 @@
 <div class="block">
-<h2>Edit Weight For <%= format_date(@weight.taken_on) %></h2>
-<%= print_flash(flash[:info], 'info') %>
-<% form_for(:weight, @weight, :url => weight_path(@weight), :html => {:method => :put, :id => 'weights_form'}) do |f| %>
-  <%= render :partial => 'weight_form', :locals => {
-    :f => f, :user => @current_user, :weight => @weight, :action => 'Update',
-    :error => print_flash(flash[:error], 'error', 'Error saving weight') } %>
-<% end %>
+  <h2>Edit Weight For <%= format_date(@weight.taken_on) %></h2>
+<%= print_flash(flash[:info], 'info') -%>
+  <% form_for(:weight, @weight, :url => weight_url(@weight), :html => {:method => :put, :id => 'weights_form'}) do |f| %>
+<%= render(:partial => 'weight_form', :locals => {:f => f}) %>
+  <% end %>
 </div>

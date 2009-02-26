@@ -1,24 +1,13 @@
 <div class="block">
   <h2>Activities</h2>
-  <%= print_flash(flash[:error], 'error') -%>
-  <%= print_flash(flash[:info], 'info') -%>
-  <p>You have <%= pluralize(@activities.size, 'activity') -%>. Would you like to <%= link_to('add another', new_activity_path) -%>?</p>
+<%= print_flash(flash[:error], 'error') -%>
+<%= print_flash(flash[:info], 'info') -%>
+  <p>You have <%= pluralize(@activities.size, 'activity') %>. Would you like to <%= link_to('add another', new_activity_url) %>?</p>
 </div>
 <div class="block">
   <table class="activities-list">
-    <tr>
-      <%= render :partial => 'activity_header' -%>
-      <th>Edit</th>
-      <th>Delete</th>
-    </tr>
-    <% for activity in @activities do -%>
-      <tr class="<%= cycle('odd', 'even') -%>">
-        <%= render :partial => 'activity_item', :locals => {:activity => activity} -%>
-        <td class="edit"><%= link_to image_tag('/images/edit.gif'), edit_activity_path(activity) -%></td>
-        <td class="delete"><%= link_to image_tag('/images/delete.gif'), activity_path(activity),
-          :confirm => 'Are you sure you want to delete this activity?', :method => :delete -%></td>
-      </tr>
-    <% end -%>
+<%= render(:partial => 'activity_header') -%>
+<%= render(:partial => @activities) %>
   </table>
   <%= will_paginate(@activities) -%>
 </div>

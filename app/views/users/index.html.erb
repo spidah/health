@@ -8,9 +8,9 @@ messages = []
 if @new_openid_links and @new_openid_links.size > 0
   for link in @new_openid_links do
     openidlink = "<span>#{normalise_url(link.openid_url)} wants to link their account to yours. Please "
-    openidlink << link_to('confirm', openid_link_path(link), :method => :put)
+    openidlink << link_to('confirm', openid_link_url(link), :method => :put)
     openidlink << ' or '
-    openidlink << link_to('deny', openid_link_path(link), :method => :delete)
+    openidlink << link_to('deny', openid_link_url(link), :method => :delete)
     openidlink << ' the link.</span>'
     messages << openidlink
   end
@@ -20,12 +20,12 @@ if @new_openid_links and @new_openid_links.size > 0
 <p>Welcome to your dashboard. The data displayed below is an overview of your latest entries, if you have entered any.</p>
 </div>
 <div class="block">
-<%= render :partial => 'weights', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
-  :units => @current_user.weight_units, :today => @today} -%>
-<%= render :partial => 'measurements', :locals => {
-  :measurements => @measurements, :measurements_date => @measurements_date, :today => @today} -%>
-<%= render :partial => 'meals', :locals => {:meals => @meals, :meals_date => @meals_date,
-  :meals_calories => @meals_calories, :today => @today} -%>
-<%= render :partial => 'exercises', :locals => {:exercises => @exercises, :exercises_date => @exercises_date,
-  :exercises_calories => @exercises_calories, :today => @today} -%>
+<%= render(:partial => 'weights', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
+  :units => @current_user.weight_units, :today => @today}) -%>
+<%= render(:partial => 'measurements', :locals => {
+  :measurements => @measurements, :measurements_date => @measurements_date, :today => @today}) -%>
+<%= render(:partial => 'meals', :locals => {:meals => @meals, :meals_date => @meals_date,
+  :meals_calories => @meals_calories, :today => @today}) -%>
+<%= render(:partial => 'exercises', :locals => {:exercises => @exercises, :exercises_date => @exercises_date,
+  :exercises_calories => @exercises_calories, :today => @today}) -%>
 </div>

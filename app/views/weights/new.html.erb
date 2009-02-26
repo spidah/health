@@ -1,11 +1,9 @@
 <div class="block">
-<h2>New Weight</h2>
-<%= print_flash(flash[:info], 'info') %>
-<p>If you accidentally make a mistake while adding the new weight you will still be
-able to edit it from the weights list.</p>
-<% form_for :weight, @weight, :url => weights_path, :html => {:id => 'weights_form'} do |f| %>
-  <%= render :partial => 'weight_form', :locals => {
-    :f => f, :user => @current_user, :weight => @weight, :action => 'Add',
-    :error => print_flash(flash[:error], 'error', 'Error saving weight') } %>
-<% end %>
+  <h2>New Weight</h2>
+<%= print_flash(flash[:info], 'info') -%>
+  <p>If you accidentally make a mistake while adding the new weight you will still be
+     able to edit it from the weights list.</p>
+  <% form_for(:weight, @weight, :url => weights_url, :html => {:id => 'weights_form'}) do |f| %>
+<%= render(:partial => 'weight_form', :locals => {:f => f}) -%>
+  <% end %>
 </div>

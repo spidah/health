@@ -1,8 +1,6 @@
 <div class="block">
   <h2>New Food</h2>
   <div id="foods_form">
-    <% form_for(@food) do |f| -%>
-      <%= render :partial => 'food_form', :locals => {:f => f, :action => 'Add'} -%>
-    <% end -%>
+<%= render(:partial => 'food_form') %>
   </div>
 </div>

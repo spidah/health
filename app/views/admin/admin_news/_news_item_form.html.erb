@@ -1,19 +1,20 @@
-<fieldset>
-  <legend>News Item Data</legend>
-  <%= error if error %>
-  <div class="form-row">
-    <span class="label">Posted</span>
-    <span class="data"><%= format_date(item.posted_on) %></span>
-  </div>
-  <div class="form-row">
-    <span class="label">Title</span>
-    <span class="data"><%= f.text_field :title %></span>
-  </div>
-  <div class="form-row">
-    <span class="label">Body</span>
-    <span class="data"><%= f.text_area :body, :rows => 10 %></span>
-  </div>
-  <div class="form-row">
-    <%= submit_tag action, :class => "submit" %>
-  </div>
-</fieldset>
+    <fieldset>
+      <legend>News Item Data</legend>
+<%= print_flash(flash[:error], 'error', 'Error saving news item') -%>
+      <div class="form-row">
+        <span class="label">Posted</span>
+        <span class="data"><%= format_date(@item.posted_on) %></span>
+      </div>
+      <div class="form-row">
+        <span class="label">Title</span>
+        <span class="data"><%= f.text_field(:title) %></span>
+      </div>
+      <div class="form-row">
+        <span class="label">Body</span>
+        <span class="data"><%= f.text_area(:body, :rows => 10) %></span>
+      </div>
+      <div class="form-row">
+        <%= submit_tag('Save', :class => 'submit') %>
+        <%= cancel_button %>
+      </div>
+    </fieldset>

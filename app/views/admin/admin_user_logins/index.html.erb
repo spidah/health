@@ -1,7 +1,7 @@
 <div class="block">
 <h2>Admin :: User Logins</h2>
-<%= print_flash(flash[:error], 'error', 'Error') -%>
-<%= print_flash(flash[:info], 'info', 'Info') -%>
+<%= print_flash(flash[:error], 'error', 'Error') %>
+<%= print_flash(flash[:info], 'info', 'Info') %>
 <p>
 <table>
   <tr>
@@ -10,8 +10,8 @@
     <th>Edit</th>
     <th>Delete</th>
   </tr>
-  <%= render :partial => 'user_login_item', :collection => @user_logins -%>
+  <%= render(:partial => 'user_login_item', :collection => @user_logins) -%>
 </table>
 </p>
-<%= will_paginate @user_logins -%>
+<%= will_paginate(@user_logins) -%>
 </div>

@@ -1,35 +1,35 @@
 <div class="block">
-<h2>Create A New User Account</h2>
+  <h2>Create A New User Account</h2>
 <%= print_flash(flash[:error], 'error', 'Error') -%>
 <%= print_flash(flash[:info], 'info') -%>
-<p>If this is your very first time here then you will want to create a new user account. This will
-allow you to access the features of this website. You need to pick a login name. This will be used
-for other users to see your public profile.</p>
+  <p>If this is your very first time here then you will want to create a new user account. This will
+     allow you to access the features of this website. You need to pick a login name. This will be used
+     for other users to see your public profile.</p>
 <%= print_flash(flash[:loginname_error], 'error', 'Login Name Taken') -%>
-<% form_for(:user, @current_user, :url => user_path) do |f| -%>
-  <div class="form-row">
-    <label for="desired_login_name" class="label">Login Name</label>
-    <span class="data"><input type="text" name="desired_login_name" size="30" value="<%= session[:nickname] || '' -%>" /></span>
-  </div>
-  <div class="form-row">
-    <%= submit_tag 'Create User Account' -%>
-  </div>
-<% end -%>
+  <% form_for(:user, @current_user, :url => user_url) do |f| %>
+    <div class="form-row">
+      <label for="desired_login_name" class="label">Login Name</label>
+      <span class="data"><input type="text" name="desired_login_name" size="30" value="<%= session[:nickname] || '' %>" /></span>
+    </div>
+    <div class="form-row">
+      <%= submit_tag('Create User Account') %>
+    </div>
+  <% end %>
 </div>
 <div class="block">
-<h2>Link To An Existing Account</h2>
-<p>If you wish to link this OpenID login to an existing user account then please enter that user accounts
-OpenID login and click the link button. You will then need to login using that OpenID login to confirm the
-link. After you have confirmed (or denied) the link you will be able to access your account using both
-OpenID logins.</p>
+  <h2>Link To An Existing Account</h2>
+  <p>If you wish to link this OpenID login to an existing user account then please enter that user accounts
+    OpenID login and click the link button. You will then need to login using that OpenID login to confirm the
+    link. After you have confirmed (or denied) the link you will be able to access your account using both
+    OpenID logins.</p>
 <%= print_flash(flash[:openidlink_error], 'error', 'OpenID Error') -%>
-<% form_tag openid_links_path do -%>
-  <div class="form-row">
-    <label for="linkto">Existing OpenID login</label>
-    <input type="text" name="linkto" class="openid_url" size="30" value="http://"/>
-  </div>
-  <div class="form-row">
-    <%= submit_tag 'Link' -%>
-  </div>
-<% end -%>
+  <% form_tag(openid_links_url) do %>
+    <div class="form-row">
+      <label for="linkto">Existing OpenID login</label>
+      <input type="text" name="linkto" class="openid_url" size="30" value="http://"/>
+    </div>
+    <div class="form-row">
+      <%= submit_tag('Link') %>
+    </div>
+  <% end %>
 </div>

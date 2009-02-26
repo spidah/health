@@ -1,4 +1,4 @@
-      <% menu_side_bar do -%>
-        <div>Logged in as <%= link_to(h(@current_user.loginname), profile_path(@current_user.loginname)) -%>.</div>
-        <div>Display date: <%= link_to(format_date(session[:displaydate] || @current_user.get_date), calendar_path) -%></div>
-      <% end -%>
+      <% menu_side_bar do %>
+          <div>Logged in as <%= link_to(h(@current_user.loginname), profile_url(h(@current_user.loginname))) %>.</div>
+          <div>Display date: <%= link_to(format_date(session[:displaydate] || @current_user.get_date), calendar_url) %></div>
+      <% end %>

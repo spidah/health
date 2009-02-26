@@ -1,28 +1,28 @@
     <fieldset>
       <legend>Activity Details</legend>
-      <%= print_flash(flash[:error], 'error', 'Error saving activity') -%>
+<%= print_flash(flash[:error], 'error', 'Error saving activity') -%>
       <div class="form-row">
         <span class="label">Name</span>
-        <span class="data"><%= f.text_field(:name) -%></span>
+        <span class="data"><%= f.text_field(:name) %></span>
       </div>
       <div class="form-row">
         <span class="label">Description</span>
-        <span class="data"><%= f.text_field(:description) -%></span>
+        <span class="data"><%= f.text_field(:description) %></span>
       </div>
       <div class="form-row">
         <span class="label">Type</span>
-        <span class="data"><%= f.select(:type, ['Aerobic', 'Anaerobic', 'Flexibility', 'Strengthening', 'Other']) -%></span>
+        <span class="data"><%= f.select(:type, ['Aerobic', 'Anaerobic', 'Flexibility', 'Strengthening', 'Other']) %></span>
       </div>
       <div class="form-row">
         <span class="label">Duration</span>
-        <span class="data"><%= f.text_field("duration", :size => 6, :value => @activity.duration) -%> minutes</span>
+        <span class="data"><%= f.text_field(:duration, :size => 6, :value => @activity.duration) %> minutes</span>
       </div>
       <div class="form-row">
         <span class="label">Calories</span>
-        <span class="data"><%= f.text_field(:calories, :size => 6, :value => @activity.calories) -%></span>
+        <span class="data"><%= f.text_field(:calories, :size => 6, :value => @activity.calories) %></span>
       </div>
       <div class="form-row">
-        <%= submit_tag(action, :class => 'submit') -%>
-        <%= cancel_button if !defined?(no_cancel) -%>
+        <%= submit_tag('Save', :class => 'submit') %>
+        <%= cancel_button %>
       </div>
     </fieldset>

@@ -1,33 +1,29 @@
 <div class="block">
-<h2>Weights List</h2>
-<%= print_flash(flash[:error], 'error', 'Error') %>
-<%= print_flash(flash[:info], 'info') %>
-<p>
-<table class="weights-list" cellspacing="0">
-<tr>
-<th class="weight-date-header">Taken</th>
-<th class="weight-weight-header">Weight</th>
-<th class="weight-difference-header">Difference</th>
-<th class="weight-edit-header">Edit</th>
-<th class="weight-delete-header">Delete</th>
-</tr>
-<% for weight in @after do %>
-<%= render :partial => 'weight_item', :locals => {:units => @current_user.weight_units, :weight => weight} %>
-<% end %>
-<% if @weight %>
-<%= render :partial => 'weight_item', :locals => {:units => @current_user.weight_units, :weight => @weight} %>
-<% else %>
-<tr class="weight-data today">
-<td class="date"><%= link_date(current_date) %></td>
-<td class="weight"><%= link_to('Add weight', new_weight_path, :class => 'add-new-entry') -%></td>
-<td class="difference"></td>
-<td class="edit"></td>
-<td class="delete"></td>
-</tr>
-<% end %>
-<% for weight in @before do %>
-<%= render :partial => 'weight_item', :locals => {:units => @current_user.weight_units, :weight => weight} %>
-<% end %>
-</table>
-</p>
+  <h2>Weights List</h2>
+<%= print_flash(flash[:error], 'error', 'Error') -%>
+<%= print_flash(flash[:info], 'info') -%>
+  <p>
+    <table class="weights-list" cellspacing="0">
+      <tr>
+        <th class="weight-date-header">Taken</th>
+        <th class="weight-weight-header">Weight</th>
+        <th class="weight-difference-header">Difference</th>
+        <th class="weight-edit-header">Edit</th>
+        <th class="weight-delete-header">Delete</th>
+      </tr>
+<%= render(:partial => 'weight', :collection => @after) %>
+<% if @weight -%>
+<%= render(:partial => 'weight', :object => @weight) %>
+<% else -%>
+      <tr class="weight-data today">
+        <td class="date"><%= link_date(current_date) %></td>
+        <td class="weight"><%= link_to('Add weight', new_weight_url, :class => 'add-new-entry') %></td>
+        <td class="difference"></td>
+        <td class="edit"></td>
+        <td class="delete"></td>
+      </tr>
+<% end -%>
+<%= render(:partial => 'weight', :collection => @before) %>
+    </table>
+  </p>
 </div>

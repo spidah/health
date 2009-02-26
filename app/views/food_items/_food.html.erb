@@ -1,8 +1,8 @@
     <tr class="food-item">
-      <td class="name"><%= h(food.name) -%></td>
-      <td class="description"><%= h(food.description) -%></td>
-      <td class="manufacturer"><%= h(food.manufacturer) -%></td>
-      <td class="weight"><%= h(food.weight) -%></td>
+      <td class="name"><%= h(food.name) %></td>
+      <td class="description"><%= h(food.description) %></td>
+      <td class="manufacturer"><%= h(food.manufacturer) %></td>
+      <td class="weight"><%= h(food.weight) %></td>
       <td class="add">
         <% path, method = food_item_form_options(@meal, food)
            form_tag(path, :method => method) do %>
@@ -11,6 +11,6 @@
           <input type="image" name="delete" src="/images/delete.gif" alt="Remove Food" />
           <span class="quantity"><%= food_quantity(@meal.food_items, food) %></span>
           <input type="image" name="add" src="/images/add.gif" alt="Add Food" />
-        <% end -%>
+        <% end %>
       </td>
     </tr>

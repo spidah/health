@@ -20,20 +20,19 @@ module ApplicationHelper
   end
 
   def menu_extra(activemenuitem)
-    css = "<style type=\"text/css\" media=\"screen\">\n"
-    css << "<!--\n"
-    css << "div#menu ul li a##{activemenuitem}, div#menu ul li a##{activemenuitem}:hover {\n"
-    css << "  color: #0f0;\n"
-    css << "}\n"
-    css << "-->\n"
-    css << "</style>\n"
+    css =  "  <style type=\"text/css\" media=\"screen\">\n"
+    css << "  <!--\n"
+    css << "    div#menu ul li a##{activemenuitem}, div#menu ul li a##{activemenuitem}:hover {\n"
+    css << "      color: #0f0;\n"
+    css << "    }\n"
+    css << "  -->\n"
+    css << "  </style>\n"
   end
 
   def menu_side_bar(&block)
-    content = capture(&block)
-    concat("<div class=\"container\">\r\n\t\t\t\t<div>\r\n\t\t\t\t")
-    concat(content)
-    concat("\t</div>\r\n\t\t\t</div>")
+    concat("<div class=\"container\">\r\n        <div>")
+    concat(capture(&block))
+    concat("  </div>\r\n      </div>")
   end
   
   def format_date(date, format = nil, current = nil)
@@ -62,5 +61,19 @@ module ApplicationHelper
 
   def cancel_button
     '<input name="cancel" type="button" value="Cancel" onclick="history.go(-1)" />'
+  end
+
+  def output_stylesheets(*files)
+    output = []
+    files.each { |file| output << '  ' + stylesheet_link_tag(file) }
+    @extra_stylesheets.each { |file| output << '  ' + stylesheet_link_tag(file) } if @extra_stylesheets
+    output.join("\n")
+  end
+
+  def output_javascripts(*files)
+    output = []
+    files.each { |file| output << javascript_include_tag(file) }
+    @extra_javascripts.each { |file| output << javascript_include_tag(file) } if @extra_javascripts
+    output.join("\n")
   end
 end

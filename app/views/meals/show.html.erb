@@ -1,7 +1,7 @@
 <div class="block">
   <h2><%= h(@meal.name) -%></h2>
-  <%= print_flash(flash[:error], 'error', 'Error') -%>
-  <p>Would you like to <%= link_to 'add a food', new_meal_food_item_path(@meal) -%> to your meal?</p>
+<%= print_flash(flash[:error], 'error', 'Error') -%>
+  <p>Would you like to <%= link_to('add a food', new_meal_food_item_url(@meal)) %> to your meal?</p>
   <table id="meals">
     <tr>
       <th>Food</th>
@@ -9,11 +9,11 @@
       <th>Calories</th>
       <th>Remove</th>
     </tr>
-    <%= render(:partial => 'food_item', :collection => @meal.food_items) %>
+<%= render(:partial => 'food_item', :collection => @meal.food_items) -%>
     <tr>
       <td><strong>Total</strong></td>
       <td></td>
-      <td class="total-calories number"><strong><%= @meal.total_calories -%></strong></td>
+      <td class="total-calories number"><strong><%= @meal.total_calories %></strong></td>
       <td></td>
     </tr>
   </table>

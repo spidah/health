@@ -1,16 +1,13 @@
 <div class="block">
-<h2>Target Weight</h2>
+  <h2>Target Weight</h2>
 <%= print_flash(flash[:error], 'error', 'Error') -%>
 <% if @target_weight -%>
-<p class="target-weight">
-<%= render :partial => 'target_weight_item', :locals => {:target_weight => @target_weight, :current_weight => @current_weight,
-  :units => @current_user.weight_units} -%>
-</p>
+<%= render(:partial => 'target_weight') -%>
+  </p>
 <% if @target_weight.achieved_on -%>
-<p class="target-weight-congrats">Congratulations on reaching your target weight! You can now <%= link_to 'add another target weight', new_targetweight_path -%>.
-</p>
+  <p class="target-weight-congrats">Congratulations on reaching your target weight! You can now <%= link_to('add another target weight', new_targetweight_url) %>.</p>
 <% end -%>
 <% else -%>
-<p class="target-weight-add">Please <%= link_to 'add a target weight', new_targetweight_path -%>. Target weights let you see how well you are doing.</p>
+  <p class="target-weight-add">Please <%= link_to('add a target weight', new_targetweight_url) %>. Target weights let you see how well you are doing.</p>
 <% end -%>
 </div>

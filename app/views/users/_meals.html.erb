@@ -1,4 +1,6 @@
 <% if meals > 0 -%>
-<div class="form-row"><span class="label">Meals:</span><span class="data"><%= meals -%> (<%= @meals_calories -%> calories) (from <%= format_date(meals_date, nil, today) -%>)</span>
+<div class="form-row">
+  <span class="label">Meals:</span>
+  <span class="data"><%= meals %> (<%= @meals_calories %> calories) (from <%= format_date(meals_date, nil, today) %>)</span>
 </div>
 <% end -%>

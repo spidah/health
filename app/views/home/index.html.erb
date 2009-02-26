@@ -7,8 +7,6 @@ like weights, measurements, meals, exercise, and so on, and see at a glance how 
 </div>
 <div class="block">
 <h2>Latest News</h2>
-<% for item in @news do -%>
-<%= render :partial => 'news/news_item', :locals => {:news_item => item}-%>
-<% end -%>
-<p><span class="news-item-body"><%= link_to 'More news', news_path %></span></p>
+<%= render(:partial => 'news/news', :collection => @news) %>
+<p><span class="news-item-body"><%= link_to('More news', news_url) %></span></p>
 </div>

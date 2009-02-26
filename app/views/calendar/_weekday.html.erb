@@ -1,11 +1,11 @@
-<div class="day<%= ' user-today' if date == @usertoday -%><%= ' today' if date == @today -%><%= ' last' if @weekindex == 7 -%>">
-  <div class="data">
-    <span class="number"><%= link_date(date, 'calendar', @dayindex, @usertoday) -%></span>
-    <div>
-      <%= link_weight(@weights, date) -%>
-      <%= link_measurements(@measurements, date) -%>
-      <%= link_meals(@meals, date) -%>
-      <%= link_exercises(@exercises, date) -%>
-    </div>
-  </div>
-</div>
+        <div class="day<%= ' user-today' if date == @usertoday %><%= ' today' if date == @today %><%= ' last' if @weekindex == 7 %>">
+          <div class="data">
+            <span class="number"><%= link_date(date, 'calendar', @dayindex, @usertoday) %></span>
+            <div>
+              <%= link_weight(@weights, date) %>
+              <%= link_measurements(@measurements, date) %>
+              <%= link_meals(@meals, date) %>
+              <%= link_exercises(@exercises, date) %>
+            </div>
+          </div>
+        </div>
