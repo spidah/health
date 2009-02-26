@@ -13,8 +13,8 @@ $(function() {
   });
 
   $('table#foods tr td.add form input').live('click', function() {
-    var row = $(this).parent().parent().parent().get(0);
-    var form = $(this).parent().get(0);
+    var row = $(this).parent().parent().parent().parent().get(0);
+    var form = $(this).parent().parent().get(0);
     var action_type = $(form).find('input[name=action_type]').attr('value');
 
     var method_input = $(form).find('input[name=_method]');

@@ -267,6 +267,14 @@ div.tour-break {
   padding-top: 1em;
 }
 
+div.inline {
+  display: inline;
+}
+
+.total {
+  font-weight: bold;
+}
+
 /* tables */
 
 table {

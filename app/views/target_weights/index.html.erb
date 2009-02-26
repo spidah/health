@@ -3,7 +3,6 @@
 <%= print_flash(flash[:error], 'error', 'Error') -%>
 <% if @target_weight -%>
 <%= render(:partial => 'target_weight') -%>
-  </p>
 <% if @target_weight.achieved_on -%>
   <p class="target-weight-congrats">Congratulations on reaching your target weight! You can now <%= link_to('add another target weight', new_targetweight_url) %>.</p>
 <% end -%>

@@ -1,11 +1,11 @@
-    <tr id="<%= food_item.id %>">
+    <tr>
       <td class="name"><%= h(food_item.name) %></td>
       <td class="quantity number">
         <% form_tag(meal_food_item_url(@meal, food_item), :method => :put) do %>
-          <%= hidden_field_tag('action_type', 'update', :id => nil) %>
-          <%= submit_tag('Delete', :src => '/images/delete.gif', :type => :image, :name => 'delete') %>
-          <span class="quantity"><%= food_item.quantity %></span>
-          <%= submit_tag('Add', :src => '/images/add.gif', :type => :image, :name => 'add') %>
+          <div class="inline"><%= hidden_field_tag('action_type', 'update', :id => nil) %></div>
+          <div class="inline"><%= submit_tag('Delete', :src => '/images/delete.gif', :type => :image, :name => 'delete') %></div>
+          <div class="inline"><span class="quantity"><%= food_item.quantity %></span></div>
+          <div class="inline"><%= submit_tag('Add', :src => '/images/add.gif', :type => :image, :name => 'add') %></div>
         <% end %>
       </td>
       <td class="calories number"><%= food_item.quantity * food_item.calories %></td>

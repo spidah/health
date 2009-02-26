@@ -2,31 +2,29 @@
   <h2>Measurements List</h2>
 <%= print_flash(flash[:error], 'error', 'Error') -%>
 <%= print_flash(flash[:info], 'info') -%>
-  <p>
-    <table class="measurements-list" cellspacing="0">
-      <tr class="measurement-header">
-        <th class="location-header">Location</th>
-        <th class="measurement-header">Measurement</th>
-        <th class="difference-header">Difference</th>
-        <th class="edit-header">Edit</th>
-        <th class="delete-header">Delete</th>
-      </tr>
+  <table class="measurements-list" cellspacing="0">
+    <tr class="measurement-header">
+      <th class="location-header">Location</th>
+      <th class="measurement-header">Measurement</th>
+      <th class="difference-header">Difference</th>
+      <th class="edit-header">Edit</th>
+      <th class="delete-header">Delete</th>
+    </tr>
 <%= render(:partial => "measurement", :collection => @after) %>
 <% if @measurements.size > 0 -%>
 <%= render(:partial => "measurement", :collection => @measurements) %>
 <% else -%>
-      <tr class="measurement-date">
-        <td class="date" colspan="5"><%= link_date(current_date) %></td>
-      </tr>
+    <tr class="measurement-date">
+      <td class="date" colspan="5"><%= link_date(current_date) %></td>
+    </tr>
 <% end -%>
-      <tr class="measurement-data today <%= "#{current_date.year}-#{current_date.month}-#{current_date.day}" %>">
-        <td class="location"></td>
-        <td class="measurement"><%= link_to('Add measurement', new_measurement_url, :class => 'add-new-entry') %></td>
-        <td class="difference"></td>
-        <td class="edit"></td>
-        <td class="delete"></td>
-      </tr>
+    <tr class="measurement-data today <%= "#{current_date.year}-#{current_date.month}-#{current_date.day}" %>">
+      <td class="location"></td>
+      <td class="measurement"><%= link_to('Add measurement', new_measurement_url, :class => 'add-new-entry') %></td>
+      <td class="difference"></td>
+      <td class="edit"></td>
+      <td class="delete"></td>
+    </tr>
 <%= render(:partial => "measurement", :collection => @before) %>
-</table>
-</p>
+  </table>
 </div>

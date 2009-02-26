@@ -1,16 +1,14 @@
 <div class="block">
   <h2>Admin :: News</h2>
-  <p>
-    <table>
-      <tr>
-        <th>Posted On</th>
-        <th>Title</th>
-        <th>Body</th>
-        <th>Edit</th>
-        <th>Delete</th>
-      </tr>
+  <table>
+    <tr>
+      <th>Posted On</th>
+      <th>Title</th>
+      <th>Body</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
 <%= render(:partial => 'news', :collection => @news) -%>
-    </table>
-  </p>
+  </table>
   <%= will_paginate(@news) -%>
 </div>
