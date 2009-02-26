@@ -1,24 +1,22 @@
 <div class="block">
-<h2>Admin :: Users</h2>
-<p>
-<table>
-  <tr>
-    <th>ID</th>
-    <th>Login Name</th>
-    <th>Email</th>
-    <th>Admin</th>
-    <th>Last Login</th>
-  </tr>
+  <h2>Admin :: Users</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Login Name</th>
+      <th>Email</th>
+      <th>Admin</th>
+      <th>Last Login</th>
+    </tr>
 <% for user in @users -%>
-<tr>
-  <td><%= user.id %></td>
-  <td><%= link_to(h(user.loginname), admin_user_url(user)) %></td>
-  <td><%= h(user.email) %></td>
-  <td><%= user.admin ? 'Yes' : 'No' %></td>
-  <td><%= format_date(user.last_login) %></td>
-</tr>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= link_to(h(user.loginname), admin_user_url(user)) %></td>
+      <td><%= h(user.email) %></td>
+      <td><%= user.admin ? 'Yes' : 'No' %></td>
+      <td><%= format_date(user.last_login) %></td>
+    </tr>
 <% end -%>
-</table>
-</p>
-<%= will_paginate(@users) %>
+  </table>
+  <%= will_paginate(@users) -%>
 </div>
