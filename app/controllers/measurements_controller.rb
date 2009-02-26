@@ -21,58 +21,51 @@ class MeasurementsController < ApplicationController
 
   # POST measurements
   def create
-    @measurement = Measurement.new({:taken_on => current_date}.merge(params[:measurement]))
-
-    if @current_user.measurements << @measurement
-      redirect_to measurements_path
+    if @measurement = @current_user.measurements.create({:taken_on => current_date}.merge(params[:measurement]))
+      redirect_to(measurements_url)
     else
       flash[:error] = @measurement.errors
-      render :action => 'new'
+      render(:action => 'new')
     end
   end
 
   # GET measurements/edit/id
   def edit
-    begin
-      @measurement = @current_user.measurements.find(params[:id])
-    rescue
-      flash[:error] = 'Unable to edit the selected measurement.'
-      redirect_to measurements_path
-    end
+    @measurement = @current_user.measurements.find(params[:id])
+  rescue
+    flash[:error] = 'Unable to edit the selected measurement.'
+    redirect_to(measurements_url)
   end
 
   # PUT measurements/id
   def update
-    begin
-      @measurement = @current_user.measurements.find(params[:id])
-      @measurement.update_attributes!(params[:measurement])
+    @measurement = @current_user.measurements.find(params[:id])
+    @measurement.update_attributes!(params[:measurement])
 
-      redirect_to measurements_path
-    rescue
-      if @measurement
-        flash[:error] = @measurement.errors
-        redirect_to edit_measurement_path(@measurement)
-      else
-        flash[:error] = 'Unable to update the selected measurement.'
-        redirect_to measurements_path
-      end
+    redirect_to(measurements_url)
+  rescue
+    if @measurement
+      flash[:error] = @measurement.errors
+      redirect_to(edit_measurement_url(@measurement))
+    else
+      flash[:error] = 'Unable to update the selected measurement.'
+      redirect_to(measurements_url)
     end
   end
 
   # DESTROY measurements/id
   def destroy
-    begin
-      @measurement = @current_user.measurements.find(params[:id])
-      @measurement.destroy
-    rescue
-      flash[:error] = 'Unable to delete the selected measurement.'
-    end
-
-    redirect_to measurements_path
+    @measurement = @current_user.measurements.find(params[:id])
+    @measurement.destroy
+  rescue
+    flash[:error] = 'Unable to delete the selected measurement.'
+  ensure
+    redirect_to(measurements_url)
   end
 
   protected
-    def set_menu_item
-      @activemenuitem = 'menu-measurements'
-    end
+
+  def set_menu_item
+    @activemenuitem = 'menu-measurements'
+  end
 end

@@ -1,7 +1,7 @@
 module Admin::AdminUserLoginsHelper
   def link_to_user(user_login)
     if user_login.openid_url.blank?
-      link_to(h(user_login.user.loginname), admin_user_path(user_login.user_id))
+      link_to(h(user_login.user.loginname), admin_user_url(user_login.user_id))
     else
       h(user_login.openid_url)
     end

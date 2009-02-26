@@ -21,7 +21,7 @@ class ExercisesController < ApplicationController
       @activity = @current_user.activities.find(params[:exercise]["activity"])
     rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Unable to add the selected activity.'
-      redirect_to(new_exercise_path) and return
+      redirect_to(new_exercise_url) and return
     end
 
     @exercise = @current_user.exercises.build
@@ -30,10 +30,10 @@ class ExercisesController < ApplicationController
 
     begin
       @exercise.save!
-      redirect_to(exercises_path)
+      redirect_to(exercises_url)
     rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
       flash[:error] = @exercise.errors
-      redirect_to(new_exercise_path)
+      redirect_to(new_exercise_url)
     end
   end
 
@@ -42,7 +42,7 @@ class ExercisesController < ApplicationController
     get_all_activities
   rescue ActiveRecord::RecordNotFound
     flash[:error] = 'Unable to edit the selected exercise.'
-    redirect_to(exercises_path)
+    redirect_to(exercises_url)
   end
 
   def update
@@ -50,24 +50,24 @@ class ExercisesController < ApplicationController
       @exercise = @current_user.exercises.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Unable to update the selected exercise.'
-      redirect_to(exercises_path) and return
+      redirect_to(exercises_url) and return
     end
 
     begin
       @activity = @current_user.activities.find(params[:exercise]["activity"])
     rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Unable to find the selected activity.'
-      redirect_to(edit_exercise_path(@exercise)) and return
+      redirect_to(edit_exercise_url(@exercise)) and return
     end
 
     @exercise.set_values(params[:exercise]["duration"], @activity)
 
     begin
       @exercise.save!
-      redirect_to(exercises_path)
+      redirect_to(exercises_url)
     rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
       flash[:error] = @exercise.errors
-      redirect_to(edit_exercise_path(@exercise))
+      redirect_to(edit_exercise_url(@exercise))
     end
   end
 
@@ -77,10 +77,11 @@ class ExercisesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:error] = 'Unable to delete the selected exercise.'
   ensure
-    redirect_to(exercises_path)
+    redirect_to(exercises_url)
   end
 
   protected
+
   def get_all_exercises
     @exercises = @current_user.exercises.for_day(current_date)
   end

@@ -1,10 +1,7 @@
 module FoodItemsHelper
   def sort_link(title, action)
-    direction = nil
-    if action == params[:sort]
-      direction = params[:dir] == 'down' ? nil : 'down'        
-    end
-    link_to(title, new_meal_food_item_path(:sort => action, :dir => direction), :class => 'sort-header')
+    direction = params[:dir] == 'down' ? nil : 'down' if action == params[:sort]
+    link_to(title, new_meal_food_item_url(:sort => action, :dir => direction), :class => 'sort-header')
   end
   
   def get_food_item_quantities(meal_foods)

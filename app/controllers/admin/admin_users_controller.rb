@@ -7,50 +7,43 @@ class Admin::AdminUsersController < ApplicationController
   end
 
   def edit
-    begin
-      @user = User.find(params[:id])
-    rescue
-      redirect_to admin_users_path
-    end
+    @user = User.find(params[:id])
+  rescue
+    redirect_to(admin_users_url)
   end
 
   def update
-    begin
-      @user = User.find(params[:id])
-      @user.update_attributes(params[:user])
+    @user = User.find(params[:id])
+    @user.update_attributes(params[:user])
 
-      redirect_to admin_users_path
-    rescue
-      flash[:error] = @u.errors
-      render :action => 'edit'
-    end
+    redirect_to(admin_users_url)
+  rescue
+    flash[:error] = @user.errors
+    render(:action => 'edit')
   end
 
   def show
-    begin
-      @user = User.find(params[:id])
-    rescue
-      redirect_to admin_users_path
-    end
+    @user = User.find(params[:id])
+  rescue
+    redirect_to(admin_users_url)
   end
-  
-  def destroy
-    begin
-      @user = User.find(params[:id])
-      @user.destroy
-    rescue
-      flash[:error] = 'Unable to delete the selected user.'
-    end
 
-    redirect_to admin_users_path
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+  rescue
+    flash[:error] = 'Unable to delete the selected user.'
+  ensure
+    redirect_to(admin_users_url)
   end
 
   protected
-    def override_controller
-      @overridden_controller = 'admin_users'
-    end
-    
-    def set_menu_item
-      @activemenuitem = 'menu-account'
-    end
+
+  def override_controller
+    @overridden_controller = 'admin_users'
+  end
+
+  def set_menu_item
+    @activemenuitem = 'menu-account'
+  end
 end

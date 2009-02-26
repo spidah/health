@@ -13,11 +13,9 @@ class ApplicationController < ActionController::Base
   # filters used through the app
 
   def get_user
-    begin
-      @current_user ||= User.find(session[:user_id])
-    rescue
-      @current_user = nil
-    end
+    @current_user ||= User.find(session[:user_id])
+  rescue
+    @current_user = nil
   end
 
   # other methods
@@ -40,12 +38,12 @@ class ApplicationController < ActionController::Base
     return true if @current_user
 
     store_location
-    redirect_to(login_path)
+    redirect_to(login_url)
   end
 
   def admin_required
     return true if @current_user && @current_user.admin
-    redirect_to(dashboard_path)
+    redirect_to(dashboard_url)
   end
 
   def store_location

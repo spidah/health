@@ -23,32 +23,33 @@ class CalendarController < ApplicationController
   def change_date
     session[:displaydate] = Date.parse(params[:date_picker]) rescue session[:displaydate]
     session[:calendar_date] = nil
-    
+
     session[:displaydate] ||= @current_user.get_date
     session[:displaydate] = @current_user.get_date if session[:displaydate] > @current_user.get_date
 
     @current_user.weights.cache_existing_weight(session, current_date)
 
-    redirect_path = eval("#{params[:section]}_path") rescue dashboard_path
-    redirect_to redirect_path
+    redirect_url = eval("#{params[:section]}_url") rescue dashboard_url
+    redirect_to(redirect_url)
   end
 
   def change_month
     session[:calendar_date] = Date.parse(params[:date_picker]) rescue session[:displaydate]
     session[:calendar_date] = @current_user.get_date if session[:calendar_date] > @current_user.get_date
-    redirect_to calendar_path
+    redirect_to(calendar_url)
   end
 
   protected
-    def convert_week_day_number(wday)
-      wday > 0 ? wday : 7
-    end
 
-    def set_menu_item
-      @activemenuitem = 'menu-account'
-    end
+  def convert_week_day_number(wday)
+    wday > 0 ? wday : 7
+  end
 
-    def include_stylesheet
-      include_extra_stylesheet :calendar
-    end
+  def set_menu_item
+    @activemenuitem = 'menu-account'
+  end
+
+  def include_stylesheet
+    include_extra_stylesheet :calendar
+  end
 end

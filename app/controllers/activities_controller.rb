@@ -10,7 +10,7 @@ class ActivitiesController < ApplicationController
     get_all_activities
     if @activities.size == 0
       flash[:info] = 'You have not created any activities yet. You will need to add activities before you can add any exercises.'
-      redirect_to(new_activity_path)
+      redirect_to(new_activity_url)
     end
   end
 
@@ -21,17 +21,17 @@ class ActivitiesController < ApplicationController
   def create
     @activity = @current_user.activities.build(params[:activity])
     @activity.save!
-    redirect_to(activities_path)
+    redirect_to(activities_url)
   rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
     flash[:error] = @activity.errors
-    redirect_to(new_activity_path)
+    redirect_to(new_activity_url)
   end
 
   def edit
     @activity = @current_user.activities.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:error] = 'Unable to edit the selected activity.'
-    redirect_to(activities_path)
+    redirect_to(activities_url)
   end
 
   def update
@@ -39,15 +39,15 @@ class ActivitiesController < ApplicationController
       @activity = @current_user.activities.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Unable to update the selected activity.'
-      redirect_to(activities_path) and return
+      redirect_to(activities_url) and return
     end
 
     begin
       @activity.update_attributes!(params[:activity])
-      redirect_to(activities_path)
+      redirect_to(activities_url)
     rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
       flash[:error] = @activity.errors
-      redirect_to(edit_activity_path(@activity))
+      redirect_to(edit_activity_url(@activity))
     end
   end
 
@@ -57,7 +57,7 @@ class ActivitiesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:error] = 'Unable to delete the selected activity.'
   ensure
-    redirect_to(activities_path)
+    redirect_to(activities_url)
   end
 
   protected

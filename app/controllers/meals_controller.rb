@@ -11,10 +11,10 @@ class MealsController < ApplicationController
 
   def show
     @meal = @current_user.meals.find(params[:id].to_i)
-    redirect_to(new_meal_food_item_path(@meal)) and return if @meal.food_items.size == 0
+    redirect_to(new_meal_food_item_url(@meal)) and return if @meal.food_items.size == 0
   rescue
     flash[:error] = 'Unable to display the selected meal.'
-    redirect_to meals_path
+    redirect_to(meals_url)
   end
 
   def new
@@ -24,7 +24,7 @@ class MealsController < ApplicationController
   def create
     @meal = @current_user.meals.build(params[:meal].merge(:created_on => current_date))
     @meal.save!
-    redirect_to(meal_path(@meal))
+    redirect_to(meal_url(@meal))
   rescue
     flash[:error] = @meal.errors
     render(:action => 'new')
@@ -36,14 +36,14 @@ class MealsController < ApplicationController
   rescue
     flash[:error] = 'Unable to delete the selected meal.'
   ensure
-    redirect_to(meals_path)
+    redirect_to(meals_url)
   end
 
   def edit
     @meal = @current_user.meals.find(params[:id].to_i)
   rescue
     flash[:error] = 'Unable to edit the selected meal.'
-    redirect_to(meals_path)
+    redirect_to(meals_url)
   end
 
   protected

@@ -7,7 +7,7 @@ module CalendarHelper
     if today && date > today
       text
     else
-      link_to(text, change_month_path(:date_picker => date.to_s(:db)), :class => 'change-date-link')
+      link_to(text, change_month_url(:date_picker => date.to_s(:db)), :class => 'change-date-link')
     end
   end
 

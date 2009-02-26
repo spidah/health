@@ -13,7 +13,7 @@ class OpenidLinksController < ApplicationController
         flash[:openid_error] = "Someone has already linked #{params[:openid_link]} to their account."
       end
 
-      redirect_to edit_user_path
+      redirect_to(edit_user_url)
     else
       authenticate_linked_openid(params[:openid_link])
     end
@@ -29,20 +29,21 @@ class OpenidLinksController < ApplicationController
       flash[:openid_error] = 'Unable to remove the link. Please go back and try again.'
     end
 
-    redirect_to edit_user_path
+    redirect_to(edit_user_url)
   end
 
   protected
-    def authenticate_linked_openid(openid_link = nil)
-      authenticate_with_open_id(openid_link) do |result, identity_url, registration|
-        if result.successful?
-          UserLogin.create(:openid_url => identity_url, :user_id => @current_user.id)
-          flash[:info] = "OpenID login #{identity_url} was successfully linked to your account. You may now login using it."
-          redirect_to edit_user_path
-        else
-          flash[:error] = "You failed to login #{identity_url} correctly and it has not been added to the list of linked OpenID accounts."
-          redirect_to edit_user_path
-        end
+
+  def authenticate_linked_openid(openid_link = nil)
+    authenticate_with_open_id(openid_link) do |result, identity_url, registration|
+      if result.successful?
+        UserLogin.create(:openid_url => identity_url, :user_id => @current_user.id)
+        flash[:info] = "OpenID login #{identity_url} was successfully linked to your account. You may now login using it."
+        redirect_to(edit_user_url)
+      else
+        flash[:error] = "You failed to login #{identity_url} correctly and it has not been added to the list of linked OpenID accounts."
+        redirect_to(edit_user_url)
       end
     end
+  end
 end

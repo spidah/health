@@ -24,7 +24,6 @@ class UsersController < ApplicationController
 
   def show
     @activemenuitem = ''
-    @overridden_controller = 'blank'
     if @user = User.find(:first, :conditions => {:loginname => params[:loginname]}) rescue nil
       @target_weight = @current_weight = nil
       if @user.profile_targetweight
@@ -34,7 +33,7 @@ class UsersController < ApplicationController
       @current_weight = @user.weights.get_latest if @user.profile_weights
       @measurements = @user.measurements.get_latest_measurements if @user.profile_measurements
     else
-      redirect_to dashboard_path
+      redirect_to(dashboard_url)
     end
   end
 
@@ -75,11 +74,11 @@ class UsersController < ApplicationController
 
   def failed_update(message)
     flash[:error] = message
-    redirect_to(edit_user_path)
+    redirect_to(edit_user_url)
   end
 
   def successful_update(message)
     flash[:info] = message
-    redirect_to(edit_user_path)
+    redirect_to(edit_user_url)
   end
 end

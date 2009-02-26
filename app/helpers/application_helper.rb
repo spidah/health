@@ -1,7 +1,6 @@
 module ApplicationHelper
   def print_flash(flash, flash_type, title = nil)
     if flash
-      hide_link = '<a href="#" class="hide-flash">Hide</a>'
       title_p = "<h5>#{title}</h5>" if title
       result = "<div id=\"#{flash_type}-flash\" class=\"flash\">#{title_p}<p>"
       
@@ -15,7 +14,7 @@ module ApplicationHelper
       end
       
       result << messages.join('<br />')
-      result << "</p><p>#{hide_link}</p></div>"
+      result << "</p><p><a href="#" class="hide-flash">Hide</a></p></div>"
     end
   end
 
@@ -51,7 +50,7 @@ module ApplicationHelper
     if today && date > today
       display || format_date(date)
     else
-      link_to(display || format_date(date), change_date_path(:date_picker => date.to_s(:db), :section => section), :class => 'change-date-link')
+      link_to(display || format_date(date), change_date_url(:date_picker => date.to_s(:db), :section => section), :class => 'change-date-link')
     end
   end
 

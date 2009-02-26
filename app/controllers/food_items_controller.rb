@@ -12,13 +12,13 @@ class FoodItemsController < ApplicationController
     @meal = @current_user.meals.find(params[:meal_id].to_i)
     get_all_foods
   rescue
-    redirect_to(meals_path)
+    redirect_to(meals_url)
   end
 
   def create
     @meal = get_meal('Unable to add a food item to an invalid meal.') || return
     @food = get_food('Unable to add the selected food item.') || return
-    
+
     if params['add.x'] || params[:submit] == 'add'
       begin
         @meal.food_items.find_by_food_id(@food.id).increment!(:quantity)
@@ -27,12 +27,12 @@ class FoodItemsController < ApplicationController
           :description => @food.description, :calories => @food.calories, :quantity => 1})
       end
     end
-    
+
     if request.xhr?
       @meal.food_items(true)
       render(:partial => 'food_items/food', :object => @current_user.foods.find(params[:food_id].to_i))
     else
-      redirect_to(new_meal_food_item_path(@meal))
+      redirect_to(new_meal_food_item_url(@meal))
     end
   end
 
@@ -44,20 +44,20 @@ class FoodItemsController < ApplicationController
   def update
     @meal = get_meal('Unable to edit a food item for an invalid meal.') || return
     @food_item = get_food_item('Unable to edit the selected food item.') || return
-    
+
     if params['add.x'] || params['delete.x'] || params[:submit]
       handle_quantity_change
     else
       @food_item.quantity = params[:food_item][:quantity]
       if !@food_item.save
         flash[:error] = @food_item.errors
-        redirect_to(edit_meal_food_item_path(@meal, @food_item))
+        redirect_to(edit_meal_food_item_url(@meal, @food_item))
         return
       end
       if params[:action_type] == 'new'
         redirect_to(new_meal_food_item_url(@meal))
       else
-        redirect_to(meal_path(@meal))
+        redirect_to(meal_url(@meal))
       end
     end
   end
@@ -65,83 +65,84 @@ class FoodItemsController < ApplicationController
   def destroy
     @meal = get_meal('Unable to delete a food item for an invalid meal.') || return
     @food_item = get_food_item('Unable to delete the selected food item.') || return
-    
+
     @food_item.destroy
-    redirect_to(meal_path(@meal))
+    redirect_to(meal_url(@meal))
   end
 
   protected
-    def set_menu_item
-      @activemenuitem = 'menu-meals'
-      @overridden_controller = 'meals'
-    end
 
-    def get_all_foods
-      @foods = @current_user.foods.pagination(params[:page], params[:sort] || 'name', params[:dir] ? 'DESC' : 'ASC')
-    end
+  def set_menu_item
+    @activemenuitem = 'menu-meals'
+    @overridden_controller = 'meals'
+  end
 
-    def get_meal(error_message)
-      @current_user.meals.find(params[:meal_id].to_i, :include => :food_items)
-    rescue
-      fail_to_meals_path(error_message)
-      nil
-    end
+  def get_all_foods
+    @foods = @current_user.foods.pagination(params[:page], params[:sort] || 'name', params[:dir] ? 'DESC' : 'ASC')
+  end
 
-    def get_food(error_message)
-      @current_user.foods.find(params[:food_id].to_i)
-    rescue
-      fail_to_meal_path(@meal, error_message)
-      nil
-    end
+  def get_meal(error_message)
+    @current_user.meals.find(params[:meal_id].to_i, :include => :food_items)
+  rescue
+    fail_to_meals_url(error_message)
+    nil
+  end
 
-    def get_food_item(error_message)
-      @meal.food_items.find(params[:id].to_i)
-    rescue
-      fail_to_meal_path(@meal, error_message)
-      nil
-    end
+  def get_food(error_message)
+    @current_user.foods.find(params[:food_id].to_i)
+  rescue
+    fail_to_meal_url(@meal, error_message)
+    nil
+  end
 
-    def fail_to_meals_path(message)
-      flash[:error] = message
-      redirect_to(meals_path)
-    end
+  def get_food_item(error_message)
+    @meal.food_items.find(params[:id].to_i)
+  rescue
+    fail_to_meal_url(@meal, error_message)
+    nil
+  end
 
-    def fail_to_meal_path(meal, message)
-      flash[:error] = message
-      redirect_to(meal_path(meal))
-    end
+  def fail_to_meals_url(message)
+    flash[:error] = message
+    redirect_to(meals_url)
+  end
 
-    def handle_quantity_change
-      params[:submit] = 'add' if params['add.x']
-      params[:submit] = 'delete' if params['delete.x']
-      params[:action_type] = 'update' if !params[:action_type]
-      
-      if params[:submit] == 'add'
-        @food_item.increment!(:quantity)
-      elsif params[:submit] == 'delete'
-        @food_item.decrement!(:quantity)
-        if @food_item.quantity < 1
-          @food_item.destroy
-        end
+  def fail_to_meal_url(meal, message)
+    flash[:error] = message
+    redirect_to(meal_url(meal))
+  end
+
+  def handle_quantity_change
+    params[:submit] = 'add' if params['add.x']
+    params[:submit] = 'delete' if params['delete.x']
+    params[:action_type] = 'update' if !params[:action_type]
+
+    if params[:submit] == 'add'
+      @food_item.increment!(:quantity)
+    elsif params[:submit] == 'delete'
+      @food_item.decrement!(:quantity)
+      if @food_item.quantity < 1
+        @food_item.destroy
       end
+    end
 
-      @meal.food_items(true)
+    @meal.food_items(true)
 
-      
-      if params[:action_type] == 'new'
-        # sender: new meal food item page 'meals/x/food_items/new'
-        if request.xhr?
-          render(:partial => 'food_items/food', :object => @current_user.foods.find(@food_item.food_id))
-        else
-          redirect_to(new_meal_food_item_url(@meal))
-        end
+
+    if params[:action_type] == 'new'
+      # sender: new meal food item page 'meals/x/food_items/new'
+      if request.xhr?
+        render(:partial => 'food_items/food', :object => @current_user.foods.find(@food_item.food_id))
       else
-        # sender: meal page 'meals/x'
-        if request.xhr?
-          render(:partial => 'meals/food_item', :object => @food_item)
-        else
-          redirect_to(meal_url(@meal))
-        end
+        redirect_to(new_meal_food_item_url(@meal))
+      end
+    else
+      # sender: meal page 'meals/x'
+      if request.xhr?
+        render(:partial => 'meals/food_item', :object => @food_item)
+      else
+        redirect_to(meal_url(@meal))
       end
     end
+  end
 end

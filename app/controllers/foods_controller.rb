@@ -18,7 +18,7 @@ class FoodsController < ApplicationController
   def create
     @food = @current_user.foods.build(params[:food])
     @food.save!
-    redirect_to(foods_path)
+    redirect_to(foods_url)
   rescue
     flash[:error] = @food.errors
     render(:action => 'new')
@@ -28,7 +28,7 @@ class FoodsController < ApplicationController
     @food = @current_user.foods.find(params[:id].to_i)
   rescue
     flash[:error] = 'Unable to edit the selected food.'
-    redirect_to(foods_path)
+    redirect_to(foods_url)
   end
 
   def update
@@ -39,7 +39,7 @@ class FoodsController < ApplicationController
   rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
     flash[:error] = @food.errors
   ensure
-    redirect_to(foods_path)
+    redirect_to(foods_url)
   end
 
   def destroy
@@ -48,16 +48,17 @@ class FoodsController < ApplicationController
   rescue
     flash[:error] = 'Unable to delete the selected food.'
   ensure
-    redirect_to(foods_path)
+    redirect_to(foods_url)
   end
 
   protected
-    def get_all_foods
-      @foods = @current_user.foods.pagination(params[:page], params[:sort], params[:dir] ? 'DESC' : 'ASC')
-    end
 
-    def set_menu_item
-      @activemenuitem = 'menu-meals'
-      @overridden_controller = 'meals'
-    end
+  def get_all_foods
+    @foods = @current_user.foods.pagination(params[:page], params[:sort], params[:dir] ? 'DESC' : 'ASC')
+  end
+
+  def set_menu_item
+    @activemenuitem = 'menu-meals'
+    @overridden_controller = 'meals'
+  end
 end

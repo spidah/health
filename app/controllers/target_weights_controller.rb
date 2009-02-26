@@ -16,7 +16,7 @@ class TargetWeightsController < ApplicationController
   def new
     existing = @current_user.target_weights.get_latest
     if existing && existing.achieved_on == nil
-      redirect_to targetweights_path
+      redirect_to(targetweights_url)
     else
       @target_weight = TargetWeight.new
     end
@@ -25,33 +25,33 @@ class TargetWeightsController < ApplicationController
   def create
     existing = @current_user.target_weights.get_latest
     if existing && existing.achieved_on == nil
-      redirect_to targetweights_path
+      redirect_to(targetweights_url)
     else
       @target_weight = TargetWeight.new({:weight_units => @current_user.weight_units, :created_on => @current_user.get_date}.merge(params[:weight]))
 
       if @current_user.target_weights << @target_weight
         TargetWeight.update_difference(@current_user)
-        redirect_to targetweights_path
+        redirect_to(targetweights_url)
       else
         flash[:error] = @target_weight.errors
-        render :action => 'new'
+        render(:action => 'new')
       end
     end
   end
 
   def destroy
-    begin
-      @target_weight = @current_user.target_weights.find(params[:id])
-      @target_weight.destroy
-    rescue
-      flash[:error] = 'Unable to delete the target weight.'
-    end
-    redirect_to targetweights_path
+    @target_weight = @current_user.target_weights.find(params[:id])
+    @target_weight.destroy
+  rescue
+    flash[:error] = 'Unable to delete the target weight.'
+  ensure
+    redirect_to(targetweights_url)
   end
 
   protected
-    def set_menu_item
-      @activemenuitem = 'menu-weights'
-      @overridden_controller = 'weights'
-    end
+
+  def set_menu_item
+    @activemenuitem = 'menu-weights'
+    @overridden_controller = 'weights'
+  end
 end

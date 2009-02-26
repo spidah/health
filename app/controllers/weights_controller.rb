@@ -17,7 +17,7 @@ class WeightsController < ApplicationController
   # GET /weights/new
   def new
     if existing = @current_user.get_weights(:first, 'DESC', {:taken_on => current_date})
-      redirect_to(edit_weight_path(existing))
+      redirect_to(edit_weight_url(existing))
     else
       @weight = Weight.new
     end
@@ -30,7 +30,7 @@ class WeightsController < ApplicationController
 
     @weight.save!
     @current_user.weights.cache_existing_weight(session, current_date, true)
-    redirect_to(weights_path)
+    redirect_to(weights_url)
   rescue
     flash[:error] = @weight.errors
     render(:action => 'new')
@@ -41,7 +41,7 @@ class WeightsController < ApplicationController
     @weight = @current_user.weights.find(params[:id].to_i)
   rescue
     flash[:error] = 'Unable to edit the selected weight.'
-    redirect_to(weights_path)
+    redirect_to(weights_url)
   end
 
   # PUT /weights/1
@@ -49,13 +49,13 @@ class WeightsController < ApplicationController
     @weight = @current_user.weights.find(params[:id].to_i)
     @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight]))
 
-    redirect_to(weights_path)
+    redirect_to(weights_url)
   rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
     flash[:error] = @weight.errors
-    redirect_to(edit_weight_path(@weight))
+    redirect_to(edit_weight_url(@weight))
   rescue ActiveRecord::RecordNotFound
     flash[:error] = 'Unable to update the selected weight.'
-    redirect_to(weights_path)
+    redirect_to(weights_url)
   end
 
   # DESTROY /weights/1
@@ -66,10 +66,11 @@ class WeightsController < ApplicationController
   rescue
     flash[:error] = 'Unable to delete the selected weight.'
   ensure
-    redirect_to(weights_path)
+    redirect_to(weights_url)
   end
 
   protected
+
   def set_menu_item
     @activemenuitem = 'menu-weights'
   end

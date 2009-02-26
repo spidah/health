@@ -6,7 +6,7 @@ class HomeController < ApplicationController
 
   def index
     flash[:error] = 'That page could not be found.' if params[:path]
-    redirect_to(dashboard_path) and return if @current_user
+    redirect_to(dashboard_url) and return if @current_user
 
     @news = NewsItem.find(:all, :limit => 3, :order => 'posted_on DESC')
   end
@@ -23,30 +23,31 @@ class HomeController < ApplicationController
     if errors.size == 0
       Emailer.deliver_contact_form(params[:name], params[:email], params[:subject], params[:category], params[:comment])
       flash[:info] = 'Thank you for contacting us. Your comments will be read and a reply sent if needed.'
-      redirect_to(home_path)
+      redirect_to(home_url)
     else
       flash[:error] = errors
     end
   end
 
   protected
-    def include_thumbnail_viewer
-      include_extra_javascript('thumbnailviewer')
-      include_extra_stylesheet('thumbnailviewer')
-    end
 
-    def include_news_stylesheet
-      include_extra_stylesheet(:news)
-    end
+  def include_thumbnail_viewer
+    include_extra_javascript('thumbnailviewer')
+    include_extra_stylesheet('thumbnailviewer')
+  end
 
-    def check_and_add_error(array, item, message)
-      array << message if !item or item.blank?
-    end
+  def include_news_stylesheet
+    include_extra_stylesheet(:news)
+  end
 
-    def set_menu_item
-      if @current_user
-        @activemenuitem = 'menu-account'
-        @overridden_controller = 'users'
-      end
+  def check_and_add_error(array, item, message)
+    array << message if !item or item.blank?
+  end
+
+  def set_menu_item
+    if @current_user
+      @activemenuitem = 'menu-account'
+      @overridden_controller = 'users'
     end
+  end
 end
