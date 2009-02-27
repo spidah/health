@@ -2,19 +2,19 @@ module ApplicationHelper
   def print_flash(flash, flash_type, title = nil)
     if flash
       title_p = "<h5>#{title}</h5>" if title
-      result = "<div id=\"#{flash_type}-flash\" class=\"flash\">#{title_p}<p>"
+      result = "  <div id=\"#{flash_type}-flash\" class=\"flash\">\n    #{title_p}\n    <p>\n"
       
       messages = []
       if flash.class == ActiveRecord::Errors
-        flash.each {|attr, msg| messages << "<span class=\"error-msg\">#{h(msg)}</span>" if !msg.blank?}
+        flash.each {|attr, msg| messages << "      <span class=\"error-msg\">#{h(msg)}</span>" if !msg.blank?}
       elsif flash.class == Array
-        flash.each {|msg| messages << "<span class=\"error-msg\">#{h(msg)}</span>" if !msg.blank?}
+        flash.each {|msg| messages << "      <span class=\"error-msg\">#{h(msg)}</span>" if !msg.blank?}
       else
-        result << "<span class=\"error-msg\">#{h(flash)}</span>"
+        result << "      <span class=\"error-msg\">#{h(flash)}</span>"
       end
       
-      result << messages.join('<br />')
-      result << "</p><p><a href="#" class="hide-flash">Hide</a></p></div>"
+      result << messages.join("<br />\n")
+      result << "</p>\n    <p>\n      <a href=\"#\" class=\"hide-flash\">Hide</a>\n    </p>\n  </div>"
     end
   end
 
