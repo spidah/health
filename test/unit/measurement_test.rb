@@ -118,7 +118,8 @@ class MeasurementTest < Test::Unit::TestCase
     assert_equal Date.today, m.taken_on
     assert_equal 10, m.measurement
     assert_equal 'Left leg', m.location
-    m.update_attributes(:taken_on => Date.today + 1.day, :measurement => 20, :location => 'Right arm')
+    m.taken_on = Date.today + 1.day
+    m.update_attributes(:measurement => 20, :location => 'Right arm')
     m.reload
     assert_equal Date.today + 1.day, m.taken_on
     assert_equal 20, m.measurement
