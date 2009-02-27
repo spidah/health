@@ -51,7 +51,7 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
     end
 
     def check_food_listing(food)
-      get(foods_path)
+      get(foods_url)
       assert_success('foods/index')
 
       assert_select('table[class=foods-list] tr td') do
@@ -64,77 +64,77 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
     end
 
     def check_sort_action(action)
-      get(foods_path)
+      get(foods_url)
       assert_success('foods/index')
-      assert_select('th a[href=?]', CGI.escapeHTML(foods_path(:sort => action)))
+      assert_select('th a[href=?]', CGI.escapeHTML(foods_url(:sort => action)))
 
-      get(foods_path(:sort => action))
+      get(foods_url(:sort => action))
       assert_success('foods/index')
-      assert_select('th a[href=?]', CGI.escapeHTML(foods_path(:sort => action, :dir => 'down')))
+      assert_select('th a[href=?]', CGI.escapeHTML(foods_url(:sort => action, :dir => 'down')))
     end
 
     def cant_add_invalid_food
-      post(foods_path, :food => {:name => '', :description => '', :manufacturer => '', :weight => '', :fat => '', :protein => '',
+      post(foods_url, :food => {:name => '', :description => '', :manufacturer => '', :weight => '', :fat => '', :protein => '',
         :carbs => '', :calories => ''})
       assert_success('foods/new')
       assert_flash('error', 'Please enter a name for the food.')
     end
 
     def should_add_food(name, description, manufacturer, weight, fat, protein, carbs, calories)
-      get(foods_path)
+      get(foods_url)
       assert_success('foods/index')
 
-      post(foods_path, :food => {:name => name, :description => description, :manufacturer => manufacturer, :weight => weight,
+      post(foods_url, :food => {:name => name, :description => description, :manufacturer => manufacturer, :weight => weight,
              :fat => fat, :protein => protein, :carbs => carbs, :calories => calories})
-      assert_and_follow_redirect(foods_path, 'foods/index')
+      assert_and_follow_redirect(foods_url, 'foods/index')
 
       assert_no_flash('error')
       return user.foods.find(:first, :order => 'id DESC')
     end
 
     def should_update_food(food, name, description, manufacturer, weight, fat, protein, carbs, calories)
-      get(edit_food_path(food))
+      get(edit_food_url(food))
       assert_success('foods/edit')
       assert_food_form(food)
 
-      put(food_path(food), :food => {:name => name, :description => description, :manufacturer => manufacturer, :weight => weight,
+      put(food_url(food), :food => {:name => name, :description => description, :manufacturer => manufacturer, :weight => weight,
         :fat => fat, :protein => protein, :carbs => carbs, :calories => calories})
-      assert_and_follow_redirect(foods_path, 'foods/index')
+      assert_and_follow_redirect(foods_url, 'foods/index')
 
       assert_no_flash('error')
     end
 
     def cant_update_invalid_food(id)
-      get(edit_food_path(id))
-      assert_and_follow_redirect(foods_path, 'foods/index')
+      get(edit_food_url(id))
+      assert_and_follow_redirect(foods_url, 'foods/index')
       assert_flash('error', 'Unable to edit the selected food.')
 
-      put(food_path(id), :food => {:name => 'foo'})
-      assert_and_follow_redirect(foods_path, 'foods/index')
+      put(food_url(id), :food => {:name => 'foo'})
+      assert_and_follow_redirect(foods_url, 'foods/index')
       assert_flash('error', 'Unable to update the selected food.')
     end
 
     def cant_update_incorrect_food(food)
-      put(food_path(food), :food => {:name => ''})
-      assert_and_follow_redirect(foods_path, 'foods/index')
+      put(food_url(food), :food => {:name => ''})
+      assert_and_follow_redirect(foods_url, 'foods/index')
       assert_flash('error', 'Please enter a name for the food.')
     end
 
     def should_delete_food(food)
-      delete(food_path(food))
-      assert_and_follow_redirect(foods_path, 'foods/index')
+      delete(food_url(food))
+      assert_and_follow_redirect(foods_url, 'foods/index')
       assert_no_flash('error')
     end
 
     def cant_delete_invalid_food(id)
-      delete(food_path(id))
-      assert_and_follow_redirect(foods_path, 'foods/index')
+      delete(food_url(id))
+      assert_and_follow_redirect(foods_url, 'foods/index')
       assert_flash('error', 'Unable to delete the selected food.')
     end
 
     def cant_delete_another_users_food(food)
-      delete(food_path(food))
-      assert_and_follow_redirect(foods_path, 'foods/index')
+      delete(food_url(food))
+      assert_and_follow_redirect(foods_url, 'foods/index')
       assert_flash('error', 'Unable to delete the selected food.')
     end
   end

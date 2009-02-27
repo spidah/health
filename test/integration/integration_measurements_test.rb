@@ -122,7 +122,7 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     end
 
     def check_measurement_difference(weight, difference)
-      get(measurements_path)
+      get(measurements_url)
       assert_success('measurements/index')
 
       assert_measurement_list_data(measurement_params(weight.measurement, weight.location), weight.taken_on, difference)
@@ -130,11 +130,11 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
 
     def cant_add_incorrect_measurement(year, month, day, params, incorrect_location)
       change_date(Date.new(year, month, day))
-      get(new_measurement_path)
+      get(new_measurement_url)
       assert_success('measurements/new')
       assert_measurement_entry_data(1, '')
 
-      post(measurements_path, params)
+      post(measurements_url, params)
       assert_success('measurements/new')
 
       assert_flash('error', nil, 'Error saving measurement')
@@ -144,24 +144,24 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
 
     def add_measurement(year, month, day, params, difference = nil)
       change_date(Date.new(year, month, day))
-      get(new_measurement_path)
+      get(new_measurement_url)
       assert_success('measurements/new')
       assert_measurement_entry_data(1, '')
 
-      post(measurements_path, params)
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      post(measurements_url, params)
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_no_flash('error')
 
       assert_measurement_list_data(params, Date.new(year, month, day), difference)
     end
 
     def cant_update_incorrect_measurement(measurement, params, incorrect_location)
-      get(edit_measurement_path(measurement))
+      get(edit_measurement_url(measurement))
       assert_success('measurements/edit')
       assert_measurement_entry_data(measurement.measurement, measurement.location)
 
-      put(measurement_path(measurement), params)
-      assert_and_follow_redirect(edit_measurement_path(measurement), 'measurements/edit')
+      put(measurement_url(measurement), params)
+      assert_and_follow_redirect(edit_measurement_url(measurement), 'measurements/edit')
 
       assert_flash('error', nil, 'Error saving measurement')
       assert_flash_item('error', 'Please enter a valid measurement.')
@@ -169,51 +169,51 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     end
 
     def cant_update_invalid_measurement_id(id, params)
-      get(edit_measurement_path(id))
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      get(edit_measurement_url(id))
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_flash('error', 'Unable to edit the selected measurement.', 'Error')
 
-      put(measurement_path(id), params)
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      put(measurement_url(id), params)
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_flash('error', 'Unable to update the selected measurement.', 'Error')
     end
     
     def cant_update_another_users_measurement(measurement, params)
-      get(edit_measurement_path(measurement))
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      get(edit_measurement_url(measurement))
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_flash('error', 'Unable to edit the selected measurement.', 'Error')
 
-      put(measurement_path(measurement), params)
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      put(measurement_url(measurement), params)
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_flash('error', 'Unable to update the selected measurement.', 'Error')
     end
 
     def update_measurement(measurement, params, difference = nil)
-      get(edit_measurement_path(measurement))
+      get(edit_measurement_url(measurement))
       assert_success 'measurements/edit'
       assert_measurement_entry_data(measurement.measurement, measurement.location)
       
-      put(measurement_path(measurement), params)
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      put(measurement_url(measurement), params)
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_no_flash('error')
       assert_measurement_list_data(params, measurement.taken_on, difference)
     end
 
     def cant_delete_invalid_measurement_id(id)
-      delete(measurement_path(id))
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      delete(measurement_url(id))
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_flash('error', 'Unable to delete the selected measurement.', 'Error')
     end
 
     def cant_delete_another_users_measurement(measurement)
-      delete(measurement_path(measurement))
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      delete(measurement_url(measurement))
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_flash('error', 'Unable to delete the selected measurement.', 'Error')
     end
 
     def delete_measurement(measurement)
-      delete(measurement_path(measurement))
-      assert_and_follow_redirect(measurements_path, 'measurements/index')
+      delete(measurement_url(measurement))
+      assert_and_follow_redirect(measurements_url, 'measurements/index')
       assert_no_flash('error')
     end
   end

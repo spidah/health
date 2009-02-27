@@ -12,7 +12,7 @@ class IntegrationOtherTest < ActionController::IntegrationTest
     tester.post_valid_contact_form
     tester.cant_access_site_without_logging_in
     tester.cant_access_nonexisting_page
-    tester.check_login_redirects_to_requested_page(weights_path, 'weights/index', user_logins(:bob).openid_url)
+    tester.check_login_redirects_to_requested_page(weights_url, 'weights/index', user_logins(:bob).openid_url)
   end
 
   module OtherTestDSL
@@ -21,20 +21,20 @@ class IntegrationOtherTest < ActionController::IntegrationTest
     end
 
     def check_index_page
-      get(home_path)
+      get(home_url)
       assert_success('home/index')
       assert_news_items(3)
     end
 
     def check_news_page(page, count)
-      get(news_path) if page == 1
-      get(news_page_path(:page => page)) if page > 1
+      get(news_url) if page == 1
+      get(news_page_url(:page => page)) if page > 1
       assert_success('news/index')
       assert_news_items(count)
     end
 
     def check_tour_page
-      get(tour_path)
+      get(tour_url)
       assert_success('home/tour')
 
       assert_select('h4', {:minimum => 1})
@@ -44,10 +44,10 @@ class IntegrationOtherTest < ActionController::IntegrationTest
     end
 
     def check_contact_form
-      get(contact_path)
+      get(contact_url)
       assert_success('home/contact')
 
-      assert_select('form[action=?]', contact_path) do
+      assert_select('form[action=?]', contact_url) do
         assert_select('div[class=form-row]', 6)
         assert_select('input[type=submit]', 1)
         assert_select('input[type=text][id=name]', 1)
@@ -59,7 +59,7 @@ class IntegrationOtherTest < ActionController::IntegrationTest
     end
 
     def post_failing_contact_form
-      post(contact_path)
+      post(contact_url)
       assert_success('home/contact')
 
       assert_flash_item('error', 'Please enter your name.')
@@ -69,20 +69,20 @@ class IntegrationOtherTest < ActionController::IntegrationTest
     end
 
     def post_valid_contact_form
-      post(contact_path, {:name => 'Spidah', :email => 'spidahman@gmail.com', :subject => 'Test', :category => 'other', :comment => 'Test'})
-      assert_and_follow_redirect(home_path, 'home/index')
+      post(contact_url, {:name => 'Spidah', :email => 'spidahman@gmail.com', :subject => 'Test', :category => 'other', :comment => 'Test'})
+      assert_and_follow_redirect(home_url, 'home/index')
       assert_flash('info', 'Thank you for contacting us. Your comments will be read and a reply sent if needed.', nil)
     end
 
     def cant_access_site_without_logging_in
-      get(weights_path)
-      assert_and_follow_redirect(login_path, 'sessions/new')
+      get(weights_url)
+      assert_and_follow_redirect(login_url, 'sessions/new')
 
-      get(measurements_path)
-      assert_and_follow_redirect(login_path, 'sessions/new')
+      get(measurements_url)
+      assert_and_follow_redirect(login_url, 'sessions/new')
 
-      get(targetweights_path)
-      assert_and_follow_redirect(login_path, 'sessions/new')
+      get(targetweights_url)
+      assert_and_follow_redirect(login_url, 'sessions/new')
     end
 
     def cant_access_nonexisting_page
@@ -93,9 +93,9 @@ class IntegrationOtherTest < ActionController::IntegrationTest
 
     def check_login_redirects_to_requested_page(page, template, openid_url)
       get(page)
-      assert_and_follow_redirect(login_path, 'sessions/new')
-      post(session_path, :openid_url => openid_url)
-      get(open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1)
+      assert_and_follow_redirect(login_url, 'sessions/new')
+      post(session_url, :openid_url => openid_url)
+      get(open_id_complete_url, :openid_url => openid_url, :open_id_complete => 1)
       assert_and_follow_redirect(page, template)
     end
   end

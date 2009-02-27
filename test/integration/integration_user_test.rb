@@ -68,17 +68,17 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def login_normal(loginname, password)
-      get(login_path)
-      post(session_path, {:loginname => loginname, :password => password})
+      get(login_url)
+      post(session_url, {:loginname => loginname, :password => password})
       assert_dashboard_redirect
     end
 
     def logout
-      delete(logout_path)
+      delete(logout_url)
     end
 
     def change_date(new_year, new_month, new_day, valid = true, existing_year = nil, existing_month = nil, existing_day = nil)
-      post(change_date_path, {:date_picker => "#{new_year}-#{new_month}-#{new_day}"})
+      post(change_date_url, {:date_picker => "#{new_year}-#{new_month}-#{new_day}"})
 
       assert_response(:redirect)
       follow_redirect!
@@ -92,7 +92,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def check_settings(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
-      get(edit_user_path)
+      get(edit_user_url)
 
       assert_success('users/edit')
 
@@ -104,7 +104,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def update_user(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
-      put(user_path, "user[gender]" => gender, "user[dob(3i)]" => dob_day,
+      put(user_url, "user[gender]" => gender, "user[dob(3i)]" => dob_day,
         "user[dob(2i)]" => dob_month, "user[dob(1i)]" => dob_year, "user[timezone]" => timezone,
         "user[weight_units]" => weight_units, "user[measurement_units]" => measurement_units)
     end
@@ -112,7 +112,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
     def should_update_settings(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
       update_user(gender, dob_day, dob_month, dob_year, timezone, weight_units, measurement_units)
 
-      assert_and_follow_redirect(edit_user_path, 'users/edit')
+      assert_and_follow_redirect(edit_user_url, 'users/edit')
 
       assert_flash('info', 'Your settings have been updated.')
 
@@ -128,7 +128,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
         new_weight_units, new_measurement_units)
       update_user(new_gender, new_dob_day, new_dob_month, new_dob_year, new_timezone, new_weight_units, new_measurement_units)
 
-      assert_and_follow_redirect(edit_user_path, 'users/edit')
+      assert_and_follow_redirect(edit_user_url, 'users/edit')
 
       assert_flash('error', nil, 'Unable to update your settings')
       assert_select 'div[class=flash][id=error-flash]>p>span[class=error-msg]', 3
@@ -144,9 +144,9 @@ class IntegrationUserTest < ActionController::IntegrationTest
       u = get_user
       assert !u.admin
 
-      put(user_path, "user[admin]" => 1)
+      put(user_url, "user[admin]" => 1)
 
-      assert_and_follow_redirect(edit_user_path, 'users/edit')
+      assert_and_follow_redirect(edit_user_url, 'users/edit')
 
       assert_no_flash('error')
       assert_flash('info', 'Your settings have been updated.')
@@ -169,7 +169,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def should_view_profile(username, profile_parts)
-      get(profile_path(username))
+      get(profile_url(username))
       assert_success('users/show')
 
       assert_select('h2', "#{username}'s Profile")
@@ -183,24 +183,24 @@ class IntegrationUserTest < ActionController::IntegrationTest
     end
 
     def cant_view_invalid_profile(username)
-      get(profile_path(:loginname => username))
+      get(profile_url(:loginname => username))
       assert_dashboard_redirect
     end
 
     def add_data(user)
       if user.weight_units == 'lbs'
-        post(weights_path, :weight => {'stone' => 10, 'lbs' => 10})
-        post(targetweights_path, :weight => {'stone' => 8, 'lbs' => 0})
+        post(weights_url, :weight => {'stone' => 10, 'lbs' => 10})
+        post(targetweights_url, :weight => {'stone' => 8, 'lbs' => 0})
       else
-        post(weights_path, :weight => {'weight' => 50})
-        post(targetweights_path, :weight => {'weight' => 25})
+        post(weights_url, :weight => {'weight' => 50})
+        post(targetweights_url, :weight => {'weight' => 25})
       end
 
-      post(measurements_path, :measurement => {'measurement' => 30, 'location' => 'Arm'})
+      post(measurements_url, :measurement => {'measurement' => 30, 'location' => 'Arm'})
     end
 
     def change_password(current_password, new_password, confirm_password)
-      put(user_path, :current_password => current_password, :new_password => new_password, :confirm_password => confirm_password)
+      put(user_url, :current_password => current_password, :new_password => new_password, :confirm_password => confirm_password)
     end
 
     def cant_change_invalid_password(current_password)
@@ -221,19 +221,19 @@ class IntegrationUserTest < ActionController::IntegrationTest
 
     def check_menu_changes_from_add_to_edit_when_values_are_added
       date = Date.today - 1.year
-      post(change_date_path, :date_picker => date)
-      get(dashboard_path)
-      assert_select('a[href=/weights/new]', 'Add Weight')
+      post(change_date_url, :date_picker => date)
+      get(dashboard_url)
+      assert_select("a[href=#{new_weight_url}]", 'Add Weight')
 
-      post(weights_path, :weight => {'stone' => 12, 'lbs' => 4})
+      post(weights_url, :weight => {'stone' => 12, 'lbs' => 4})
       weight = user.weights.find(:first, :conditions => {:taken_on => date})
 
-      get(dashboard_path)
-      assert_select("a[href=/weights/#{weight.id}/edit]", 'Edit Weight')
+      get(dashboard_url)
+      assert_select("a[href=#{edit_weight_url(weight.id)}]", 'Edit Weight')
 
-      delete(weight_path(weight.id))
-      get(dashboard_path)
-      assert_select('a[href=/weights/new]', 'Add Weight')
+      delete(weight_url(weight.id))
+      get(dashboard_url)
+      assert_select("a[href=#{new_weight_url}]", 'Add Weight')
     end
   end
 
