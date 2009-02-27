@@ -21,12 +21,14 @@ class MeasurementsController < ApplicationController
 
   # POST measurements
   def create
-    if @measurement = @current_user.measurements.create({:taken_on => current_date}.merge(params[:measurement]))
-      redirect_to(measurements_url)
-    else
-      flash[:error] = @measurement.errors
-      render(:action => 'new')
-    end
+    @measurement = @current_user.measurements.build(params[:measurement])
+    @measurement.taken_on = current_date
+    
+    @measurement.save!
+    redirect_to(measurements_url)
+  rescue
+    flash[:error] = @measurement.errors
+    render(:action => 'new')
   end
 
   # GET measurements/edit/id
