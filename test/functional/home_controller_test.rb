@@ -18,7 +18,7 @@ class HomeControllerTest < Test::Unit::TestCase
     assert_equal 3, assigns(:news).size
 
     user = User.create(:dob => Date.today, :gender => 'm', :weight_units => 'lbs', :measurement_units => 'inches', :timezone => 0,
-      :isdst => true, :loginname => 'newuser', :email => 'foo@foo.foo')
+      :loginname => 'newuser', :email => 'foo@foo.foo')
     openid = UserLogin.create(:openid_url => 'http://newuser.myopenid.com', :user_id => user.id, :linked_to => 0)
 
     get :index, nil, {:user_id => user.id, :user_login_id => openid.id}

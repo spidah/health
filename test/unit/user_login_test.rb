@@ -62,7 +62,7 @@ class UserLoginTest < Test::Unit::TestCase
 
     (1..20).each { |i|
       u = User.create(:loginname => "newuser#{i}", :email => "spidahman#{i}@gmail.com", :gender => 'm', :dob => Date.today,
-        :timezone => 0, :isdst => 0, :weight_units => 'lbs', :measurement_units => 'inches')
+        :timezone => 0, :weight_units => 'lbs', :measurement_units => 'inches')
       create_user_login(:password => 'test', :password_confirmation => 'test', :user_id => u.id)
     }
 
