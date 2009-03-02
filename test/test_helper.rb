@@ -56,8 +56,8 @@ class ActionController::Integration::Session
 
   def assert_flash(type, message = nil, title = nil)
     assert_select("div[class=flash][id=#{type}-flash]", {:minimum => 1})
-    assert_select("div[class=flash][id=#{type}-flash]>p", message if message)
-    assert_select("div[class=flash][id=#{type}-flash]>h5", title if title)
+    assert_select("div[class=flash][id=#{type}-flash]>p", message) if message
+    assert_select("div[class=flash][id=#{type}-flash]>h5", title) if title
   end
 
   def assert_flash_item(type, item)

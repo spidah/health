@@ -12,7 +12,7 @@ class HomeControllerTest < Test::Unit::TestCase
   end
 
   def test_home
-    get(:index
+    get(:index)
     assert_response(:success)
     assert_template('home/index')
     assert_equal(3, assigns(:news).size)
