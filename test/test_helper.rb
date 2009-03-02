@@ -13,8 +13,8 @@ end
 class ActionController::Integration::Session
   def login(user, openid_url)
     $mockuser = user
-    post session_path, :openid_url => openid_url
-    get open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1
+    post(session_path, :openid_url => openid_url)
+    get(open_id_complete_path, :openid_url => openid_url, :open_id_complete => 1)
     assert_dashboard_redirect
   end
 
@@ -30,12 +30,12 @@ class ActionController::Integration::Session
 
   def assert_dashboard
     assert_success('users/index')
-    assert_select 'h2', 'Your Dashboard'
+    assert_select('h2', 'Your Dashboard')
   end
 
   def assert_dashboard_redirect
     assert_and_follow_redirect(dashboard_path, 'users/index')
-    assert_select 'h2', 'Your Dashboard'
+    assert_select('h2', 'Your Dashboard')
   end
 
   def assert_user_settings_redirect
@@ -43,35 +43,35 @@ class ActionController::Integration::Session
   end
 
   def assert_and_follow_redirect(path, template)
-    assert_redirected_to path
+    assert_redirected_to(path)
     follow_redirect!
-    assert_response :success
-    assert_template template
+    assert_response(:success)
+    assert_template(template)
   end
 
   def assert_success(template)
-    assert_response :success
-    assert_template template
+    assert_response(:success)
+    assert_template(template)
   end
 
   def assert_flash(type, message = nil, title = nil)
-    assert_select "div[class=flash][id=#{type}-flash]", {:minimum => 1}
-    assert_select "div[class=flash][id=#{type}-flash]>p", message if message
-    assert_select "div[class=flash][id=#{type}-flash]>h5", title if title
+    assert_select("div[class=flash][id=#{type}-flash]", {:minimum => 1})
+    assert_select("div[class=flash][id=#{type}-flash]>p", message if message)
+    assert_select("div[class=flash][id=#{type}-flash]>h5", title if title)
   end
 
   def assert_flash_item(type, item)
-    assert_select "div[class=flash][id=#{type}-flash]>p>span", item
+    assert_select("div[class=flash][id=#{type}-flash]>p>span", item)
   end
 
   def assert_flash_item_count(type, count)
-    assert_select "div[class=flash][id=#{type}-flash]>p>span", count
+    assert_select("div[class=flash][id=#{type}-flash]>p>span", count)
   end
 
   def assert_no_flash(type)
-    assert_select "div[class=flash][id=#{type}-flash]", 0
-    assert_select "div[class=flash][id=#{type}-flash]>p", 0
-    assert_select "div[class=flash][id=#{type}-flash]>h5", 0
+    assert_select("div[class=flash][id=#{type}-flash]", 0)
+    assert_select("div[class=flash][id=#{type}-flash]>p", 0)
+    assert_select("div[class=flash][id=#{type}-flash]>h5", 0)
   end
 
   def format_date(date, format = nil)
@@ -105,11 +105,11 @@ class Test::Unit::TestCase
   def assert_difference(object, method, difference=1)
     initial_value = object.send(method)
     yield
-    assert_equal initial_value + difference, object.send(method)
+    assert_equal(initial_value + difference, object.send(method))
   end
 
   def assert_no_difference(object, method, &block)
-    assert_difference object, method, 0, &block
+    assert_difference(object, method, 0, &block)
   end
 
   fixtures :all

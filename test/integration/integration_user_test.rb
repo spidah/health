@@ -142,7 +142,7 @@ class IntegrationUserTest < ActionController::IntegrationTest
 
     def cant_update_to_admin
       u = get_user
-      assert !u.admin
+      assert(!u.admin)
 
       put(user_url, "user[admin]" => 1)
 

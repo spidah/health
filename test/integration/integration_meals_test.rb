@@ -226,7 +226,7 @@ class IntegrationMealsTest < ActionController::IntegrationTest
 
     def cant_add_with_invalid_food_or_meal(meal, food)
       get(new_meal_food_item_url(1000))
-      assert_redirected_to meals_url
+      assert_redirected_to(meals_url)
 
       post(meal_food_items_url(100), :food_id => food)
       assert_and_follow_redirect(meals_url, 'meals/index')

@@ -115,7 +115,7 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
         if user.measurement_units == 'inches'
           assert_select('td[class=measurement]', "#{m['measurement']} inches")
         else
-          assert_select 'td[class=measurement]', "#{m['measurement']} cm"
+          assert_select('td[class=measurement]', "#{m['measurement']} cm")
         end
         assert_select('td[class=difference]', difference) if difference
       end
@@ -190,7 +190,7 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
 
     def update_measurement(measurement, params, difference = nil)
       get(edit_measurement_url(measurement))
-      assert_success 'measurements/edit'
+      assert_success('measurements/edit')
       assert_measurement_entry_data(measurement.measurement, measurement.location)
       
       put(measurement_url(measurement), params)

@@ -203,7 +203,7 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
 
     def add_target_weight(params)
       get(new_targetweight_path)
-      assert_success 'target_weights/new'
+      assert_success('target_weights/new')
       assert_target_weight_entry_data(0, 0, 0)
 
       post(targetweights_path, params)
