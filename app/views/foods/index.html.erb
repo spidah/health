@@ -14,9 +14,9 @@
 <% else -%>
   <p>You have not entered any foods yet. Before adding items to a meal you will need to add some foods.</p>
   <div id="foods_form">
-    <% form_for(@food) do |f| -%>
-      <%= render :partial => 'food_form', :locals => {:f => f, :action => 'Add'} -%>
-    <% end -%>
+    <% form_for(@food) do |f| %>
+      <%= render(:partial => 'food_form', :locals => {:f => f, :action => 'Add'}) -%>
+    <% end %>
   </div>
 <% end -%>
 </div>

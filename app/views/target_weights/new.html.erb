@@ -2,6 +2,6 @@
   <h2>New Target Weight</h2>
 <%= print_flash(flash[:info], 'info') -%>
   <% form_for(:target_weight, @target_weight, :url => targetweights_url, :html => {:id => 'target_weight_form'}) do |f| %>
-<%= render :partial => 'target_weight_form', :locals => {:f => f} -%>
+<%= render(:partial => 'target_weight_form', :locals => {:f => f}) -%>
   <% end %>
 </div>
