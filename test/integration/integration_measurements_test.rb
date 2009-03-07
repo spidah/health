@@ -171,21 +171,21 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     def cant_update_invalid_measurement_id(id, params)
       get(edit_measurement_url(id))
       assert_and_follow_redirect(measurements_url, 'measurements/index')
-      assert_flash('error', 'Unable to edit the selected measurement.', 'Error')
+      assert_flash('error', 'Unable to find the selected measurement.', 'Error')
 
       put(measurement_url(id), params)
       assert_and_follow_redirect(measurements_url, 'measurements/index')
-      assert_flash('error', 'Unable to update the selected measurement.', 'Error')
+      assert_flash('error', 'Unable to find the selected measurement.', 'Error')
     end
     
     def cant_update_another_users_measurement(measurement, params)
       get(edit_measurement_url(measurement))
       assert_and_follow_redirect(measurements_url, 'measurements/index')
-      assert_flash('error', 'Unable to edit the selected measurement.', 'Error')
+      assert_flash('error', 'Unable to find the selected measurement.', 'Error')
 
       put(measurement_url(measurement), params)
       assert_and_follow_redirect(measurements_url, 'measurements/index')
-      assert_flash('error', 'Unable to update the selected measurement.', 'Error')
+      assert_flash('error', 'Unable to find the selected measurement.', 'Error')
     end
 
     def update_measurement(measurement, params, difference = nil)
@@ -202,13 +202,13 @@ class IntegrationMeasurementsTest < ActionController::IntegrationTest
     def cant_delete_invalid_measurement_id(id)
       delete(measurement_url(id))
       assert_and_follow_redirect(measurements_url, 'measurements/index')
-      assert_flash('error', 'Unable to delete the selected measurement.', 'Error')
+      assert_flash('error', 'Unable to find the selected measurement.', 'Error')
     end
 
     def cant_delete_another_users_measurement(measurement)
       delete(measurement_url(measurement))
       assert_and_follow_redirect(measurements_url, 'measurements/index')
-      assert_flash('error', 'Unable to delete the selected measurement.', 'Error')
+      assert_flash('error', 'Unable to find the selected measurement.', 'Error')
     end
 
     def delete_measurement(measurement)

@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.link_openid       'openid_links',           :controller => 'openid_links',        :action => 'create',  :requirements => {:method => :get}
   map.resources :openid_links
   map.resources :weights
-  map.resources :measurements
+  map.resources :measurements,                    :member     => {:destroy => :get}
   map.resources :targetweights,                   :controller => 'target_weights'
   map.resources :meals do |meal|
     meal.resources :food_items

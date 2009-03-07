@@ -1,10 +1,11 @@
 class MeasurementsController < ApplicationController
   before_filter :login_required, :set_menu_item
+  before_filter :get_measurement, :only => [:edit, :update, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
   verify :method => :post, :only => [:create], :redirect_to => 'index'
   verify :method => :put, :only => [:update], :redirect_to => 'index'
-  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+  verify :method => [:get, :delete], :only => :destroy, :redirect_to => 'index'
 
   # GET measurements
   def index
@@ -33,41 +34,40 @@ class MeasurementsController < ApplicationController
 
   # GET measurements/edit/id
   def edit
-    @measurement = @current_user.measurements.find(params[:id])
-  rescue
-    flash[:error] = 'Unable to edit the selected measurement.'
-    redirect_to(measurements_url)
   end
 
   # PUT measurements/id
   def update
-    @measurement = @current_user.measurements.find(params[:id])
     @measurement.update_attributes!(params[:measurement])
-
     redirect_to(measurements_url)
   rescue
-    if @measurement
-      flash[:error] = @measurement.errors
-      redirect_to(edit_measurement_url(@measurement))
-    else
-      flash[:error] = 'Unable to update the selected measurement.'
-      redirect_to(measurements_url)
-    end
+    flash[:error] = @measurement.errors
+    redirect_to(edit_measurement_url(@measurement))
   end
 
   # DESTROY measurements/id
   def destroy
-    @measurement = @current_user.measurements.find(params[:id])
-    @measurement.destroy
-  rescue
-    flash[:error] = 'Unable to delete the selected measurement.'
-  ensure
-    redirect_to(measurements_url)
+    if request.delete?
+      begin
+        @measurement.destroy
+      rescue
+        flash[:error] = 'Unable to delete the selected measurement.'
+      ensure
+        redirect_to(measurements_url)
+      end
+    end
   end
 
   protected
 
   def set_menu_item
     @activemenuitem = 'menu-measurements'
+  end
+
+  def get_measurement
+    @measurement = @current_user.measurements.find(params[:id])
+  rescue
+    flash[:error] = 'Unable to find the selected measurement.'
+    redirect_to(measurements_url)
   end
 end
