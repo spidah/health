@@ -12,6 +12,6 @@
     </div>
     <div class="form-row">
       <%= link_to('Edit', meal_url(meal)) %>
-      <%= link_to('Delete', meal_url(meal), :method => :delete, :confirm => 'Are you sure you want to delete this meal?') %>
+      <%= link_to('Delete', destroy_meal_url(meal), :class => 'delete') %>
     </div>
   </fieldset>

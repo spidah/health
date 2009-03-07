@@ -231,13 +231,13 @@ class IntegrationTargetWeightsTest < ActionController::IntegrationTest
     def cant_delete_invalid_target_weight_id(id)
       delete(targetweight_path(id))
       assert_and_follow_redirect(targetweights_path, 'target_weights/index')
-      assert_flash('error', 'Unable to delete the target weight.')
+      assert_flash('error', 'Unable to find the target weight.')
     end
 
     def cant_delete_another_users_target_weight(target_weight)
       delete(targetweight_path(target_weight))
       assert_and_follow_redirect(targetweights_path, 'target_weights/index')
-      assert_flash('error', 'Unable to delete the target weight.')
+      assert_flash('error', 'Unable to find the target weight.')
     end
 
     def delete_target_weight(target_weight)

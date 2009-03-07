@@ -133,7 +133,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
     def should_not_edit_invalid_activity
       get(edit_activity_path(10000))
       assert_and_follow_redirect(activities_path, 'activities/index')
-      assert_flash('error', 'Unable to edit the selected activity.')
+      assert_flash('error', 'Unable to find the selected activity.')
     end
 
     def should_update_activity(activity, name, description, type, duration, calories)
@@ -156,7 +156,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
     def should_not_update_invalid_activity
       put(activity_path(10000), :activity => {:name => 'a', :description => 'a', :type => 'a', :duration => 1, :calories => 1})
       assert_and_follow_redirect(activities_path, 'activities/index')
-      assert_flash('error', 'Unable to update the selected activity.')
+      assert_flash('error', 'Unable to find the selected activity.')
     end
 
     def delete_activity(activity)
@@ -166,7 +166,7 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
     def should_not_delete_invalid_activity
       delete_activity(10000)
       assert_and_follow_redirect(activities_path, 'activities/index')
-      assert_flash('error', 'Unable to delete the selected activity.')
+      assert_flash('error', 'Unable to find the selected activity.')
     end
 
     def should_delete_activity(activity)
@@ -247,19 +247,19 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
     def should_not_delete_invalid_exercise
       delete_exercise(10000)
       assert_and_follow_redirect(exercises_path, 'exercises/index')
-      assert_flash('error', 'Unable to delete the selected exercise.')
+      assert_flash('error', 'Unable to find the selected exercise.')
     end
 
     def should_not_edit_invalid_exercise
       get(edit_exercise_path(10000))
       assert_and_follow_redirect(exercises_path, 'exercises/index')
-      assert_flash('error', 'Unable to edit the selected exercise.')
+      assert_flash('error', 'Unable to find the selected exercise.')
     end
 
     def should_not_update_invalid_exercise
       put(exercise_path(10000))
       assert_and_follow_redirect(exercises_path, 'exercises/index')
-      assert_flash('error', 'Unable to update the selected exercise.')
+      assert_flash('error', 'Unable to find the selected exercise.')
     end
 
     def should_not_update_exercise_with_invalid_activity(exercise)
@@ -277,37 +277,37 @@ class IntegrationExercisesTest < ActionController::IntegrationTest
     def should_not_edit_another_users_activity(activity)
       get(edit_activity_path(activity))
       assert_and_follow_redirect(activities_path, 'activities/index')
-      assert_flash('error', 'Unable to edit the selected activity.')
+      assert_flash('error', 'Unable to find the selected activity.')
     end
 
     def should_not_update_another_users_activity(activity)
       put(activity_path(activity))
       assert_and_follow_redirect(activities_path, 'activities/index')
-      assert_flash('error', 'Unable to update the selected activity.')
+      assert_flash('error', 'Unable to find the selected activity.')
     end
 
     def should_not_delete_another_users_activity(activity)
       delete(activity_path(activity))
       assert_and_follow_redirect(activities_path, 'activities/index')
-      assert_flash('error', 'Unable to delete the selected activity.')
+      assert_flash('error', 'Unable to find the selected activity.')
     end
 
     def should_not_edit_another_users_exercise(exercise)
       get(edit_exercise_path(exercise))
       assert_and_follow_redirect(exercises_path, 'exercises/index')
-      assert_flash('error', 'Unable to edit the selected exercise.')
+      assert_flash('error', 'Unable to find the selected exercise.')
     end
 
     def should_not_update_another_users_exercise(exercise)
       put(exercise_path(exercise))
       assert_and_follow_redirect(exercises_path, 'exercises/index')
-      assert_flash('error', 'Unable to update the selected exercise.')
+      assert_flash('error', 'Unable to find the selected exercise.')
     end
 
     def should_not_delete_another_users_exercise(exercise)
       delete(exercise_path(exercise))
       assert_and_follow_redirect(exercises_path, 'exercises/index')
-      assert_flash('error', 'Unable to delete the selected exercise.')
+      assert_flash('error', 'Unable to find the selected exercise.')
     end
   end
 

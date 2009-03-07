@@ -1,10 +1,11 @@
 class FoodsController < ApplicationController
   before_filter :login_required, :set_menu_item
+  before_filter :get_food, :only => [:edit, :update, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
   verify :method => :post, :only => :create, :redirect_to => 'index'
   verify :method => :put, :only => :update, :redirect_to => 'index'
-  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+  verify :method => [:get, :delete], :only => :destroy, :redirect_to => 'index'
 
   def index
     get_all_foods
@@ -25,17 +26,10 @@ class FoodsController < ApplicationController
   end
 
   def edit
-    @food = @current_user.foods.find(params[:id].to_i)
-  rescue
-    flash[:error] = 'Unable to edit the selected food.'
-    redirect_to(foods_url)
   end
 
   def update
-    @food = @current_user.foods.find(params[:id].to_i)
     @food.update_attributes!(params[:food])
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = 'Unable to update the selected food.'
   rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
     flash[:error] = @food.errors
   ensure
@@ -43,18 +37,23 @@ class FoodsController < ApplicationController
   end
 
   def destroy
-    @food = @current_user.foods.find(params[:id].to_i)
-    @food.destroy
-  rescue
-    flash[:error] = 'Unable to delete the selected food.'
-  ensure
-    redirect_to(foods_url)
+    if request.delete?
+      @food.destroy
+      redirect_to(foods_url)
+    end
   end
 
   protected
 
   def get_all_foods
     @foods = @current_user.foods.pagination(params[:page], params[:sort], params[:dir] ? 'DESC' : 'ASC')
+  end
+
+  def get_food
+    @food = @current_user.foods.find(params[:id].to_i)
+  rescue
+    flash[:error] = 'Unable to find the selected food.'
+    redirect_to(foods_url)
   end
 
   def set_menu_item

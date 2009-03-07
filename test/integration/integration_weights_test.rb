@@ -203,11 +203,11 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
       get(edit_weight_path(id))
 
       assert_and_follow_redirect(weights_path, 'weights/index')
-      assert_flash('error', 'Unable to edit the selected weight.')
+      assert_flash('error', 'Unable to find the selected weight.')
 
       put(weight_path(id), params)
       assert_and_follow_redirect(weights_path, 'weights/index')
-      assert_flash('error', 'Unable to update the selected weight.', 'Error')
+      assert_flash('error', 'Unable to find the selected weight.', 'Error')
     end
 
     def cant_change_taken_on_date(date, weight)
@@ -232,7 +232,7 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     def cant_delete_invalid_weight_id(id)
       delete(weight_path(id))
       assert_and_follow_redirect(weights_path, 'weights/index')
-      assert_flash('error', 'Unable to delete the selected weight.', 'Error')
+      assert_flash('error', 'Unable to find the selected weight.', 'Error')
     end
 
     def delete_weight(weight)
@@ -244,17 +244,17 @@ class IntegrationWeightsTest < ActionController::IntegrationTest
     def cant_update_another_users_weight(weight, params)
       get(edit_weight_path(weight))
       assert_and_follow_redirect(weights_path, 'weights/index')
-      assert_flash('error', 'Unable to edit the selected weight.', 'Error')
+      assert_flash('error', 'Unable to find the selected weight.', 'Error')
 
       put(weight_path(weight), params)
       assert_and_follow_redirect(weights_path, 'weights/index')
-      assert_flash('error', 'Unable to update the selected weight.', 'Error')
+      assert_flash('error', 'Unable to find the selected weight.', 'Error')
     end
 
     def cant_delete_another_users_weight(weight)
       delete(weight_path(weight))
       assert_and_follow_redirect(weights_path, 'weights/index')
-      assert_flash('error', 'Unable to delete the selected weight.', 'Error')
+      assert_flash('error', 'Unable to find the selected weight.', 'Error')
     end
   end
 

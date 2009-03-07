@@ -1,12 +1,12 @@
 class TargetWeightsController < ApplicationController
-  before_filter :login_required
-  before_filter :set_menu_item
+  before_filter :login_required, :set_menu_item
+  before_filter :get_targetweight, :only => :destroy
 
   helper :weights
 
   verify :method => :get, :only => [:index, :new], :redirect_to => 'index'
   verify :method => :post, :only => [:create], :redirect_to => 'index'
-  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+  verify :method => [:get, :delete], :only => :destroy, :redirect_to => 'index'
 
   def index
     @target_weight = @current_user.target_weights.get_latest
@@ -40,12 +40,15 @@ class TargetWeightsController < ApplicationController
   end
 
   def destroy
-    @target_weight = @current_user.target_weights.find(params[:id])
-    @target_weight.destroy
-  rescue
-    flash[:error] = 'Unable to delete the target weight.'
-  ensure
-    redirect_to(targetweights_url)
+    if request.delete?
+      begin
+        @target_weight.destroy
+      rescue
+        flash[:error] = 'Unable to delete the target weight.'
+      ensure
+        redirect_to(targetweights_url)
+      end
+    end
   end
 
   protected
@@ -53,5 +56,12 @@ class TargetWeightsController < ApplicationController
   def set_menu_item
     @activemenuitem = 'menu-weights'
     @overridden_controller = 'weights'
+  end
+
+  def get_targetweight
+    @target_weight = @current_user.target_weights.find(params[:id].to_i)
+  rescue
+    flash[:error] = 'Unable to find the target weight.'
+    redirect_to(targetweights_url)
   end
 end

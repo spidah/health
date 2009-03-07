@@ -3,6 +3,5 @@
         <td class="weight"><%= weight.format(@current_user.weight_units) %></td>
         <td class="difference"><%= weight_difference(@current_user.weight_units, weight.difference) %></td>
         <td class="edit"><%= link_to(image_tag('/images/edit.gif'), edit_weight_url(weight)) %></td>
-        <td class="delete"><%= link_to(image_tag('/images/delete.gif'), weight_url(weight),
-          :confirm => 'Are you sure you want to delete this weight?', :method => :delete) %></td>
+        <td class="delete"><%= link_to(image_tag('/images/delete.gif'), destroy_weight_url(weight), :class => 'delete') %></td>
       </tr>

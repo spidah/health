@@ -230,45 +230,45 @@ class IntegrationMealsTest < ActionController::IntegrationTest
 
       post(meal_food_items_url(100), :food_id => food)
       assert_and_follow_redirect(meals_url, 'meals/index')
-      assert_flash('error', 'Unable to add a food item to an invalid meal.')
+      assert_flash('error', 'Unable to find the selected meal.')
 
       post(meal_food_items_url(meal), :food_id => 1000)
       assert_and_follow_redirect(meal_url(meal), 'meals/show')
-      assert_flash('error', 'Unable to add the selected food item.')
+      assert_flash('error', 'Unable to find the selected food.')
     end
 
     def cant_delete_with_invalid_fooditem_or_meal(meal, food_item)
       delete(meal_food_item_url(1000, food_item))
       assert_and_follow_redirect(meals_url, 'meals/index')
-      assert_flash('error', 'Unable to delete a food item for an invalid meal.')
+      assert_flash('error', 'Unable to find the selected meal.')
 
       delete(meal_food_item_url(meal, 1000))
       assert_and_follow_redirect(meal_url(meal), 'meals/show')
-      assert_flash('error', 'Unable to delete the selected food item.')
+      assert_flash('error', 'Unable to find the selected food item.')
     end
 
     def cant_show_invalid_meal(id)
       get(meal_url(id))
       assert_and_follow_redirect(meals_url, 'meals/index')
-      assert_flash('error', 'Unable to display the selected meal.')
+      assert_flash('error', 'Unable to find the selected meal.')
     end
 
     def cant_show_another_users_meal(meal)
       get(meal_url(meal))
       assert_and_follow_redirect(meals_url, 'meals/index')
-      assert_flash('error', 'Unable to display the selected meal.')
+      assert_flash('error', 'Unable to find the selected meal.')
     end
 
     def cant_update_another_users_meal(meal)
       get(edit_meal_url(meal))
       assert_and_follow_redirect(meals_url, 'meals/index')
-      assert_flash('error', 'Unable to edit the selected meal.')
+      assert_flash('error', 'Unable to find the selected meal.')
     end
 
     def cant_delete_another_users_meal(meal)
       delete(meal_url(meal))
       assert_and_follow_redirect(meals_url, 'meals/index')
-      assert_flash('error', 'Unable to delete the selected meal.')
+      assert_flash('error', 'Unable to find the selected meal.')
     end
   end
 

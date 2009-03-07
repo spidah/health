@@ -22,7 +22,6 @@
       <td class="target-weight-current">No entry</td>
       <td class="target-weight-difference"><%= @target_weight.format(@current_user.weight_units) %></td>
 <% end -%>
-      <td class="delete"><%= link_to(image_tag('/images/delete.gif'), targetweight_url(@target_weight),
-        :confirm => 'Are you sure you want to delete this target weight?', :method => :delete) %></td>
+      <td class="delete"><%= link_to(image_tag('/images/delete.gif'), destroy_targetweight_url(@target_weight), :class => 'delete') %></td>
     </tr>
   </table>

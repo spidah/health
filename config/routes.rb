@@ -4,15 +4,15 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :user
   map.link_openid       'openid_links',           :controller => 'openid_links',        :action => 'create',  :requirements => {:method => :get}
   map.resources :openid_links
-  map.resources :weights
+  map.resources :weights,                         :member     => {:destroy => :get}
   map.resources :measurements,                    :member     => {:destroy => :get}
-  map.resources :targetweights,                   :controller => 'target_weights'
-  map.resources :meals do |meal|
-    meal.resources :food_items
+  map.resources :targetweights,                   :controller => 'target_weights',      :member => {:destroy => :get}
+  map.resources :meals, :member => {:destroy => :get} do |meal|
+    meal.resources :food_items,                   :member     => {:destroy => :get}
   end
-  map.resources :foods
-  map.resources :exercises
-  map.resources :activities
+  map.resources :foods,                           :member     => {:destroy => :get}
+  map.resources :exercises,                       :member     => {:destroy => :get}
+  map.resources :activities,                      :member     => {:destroy => :get}
   map.resource :calendar,                         :controller => 'calendar'
 
   map.admin             '/admin',                 :controller => 'admin/admin',         :action => 'index'

@@ -1,11 +1,11 @@
 class WeightsController < ApplicationController
-  before_filter :login_required
-  before_filter :set_menu_item
+  before_filter :login_required, :set_menu_item
+  before_filter :get_weight, :only => [:edit, :update, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
   verify :method => :post, :only => [:create], :redirect_to => 'index'
   verify :method => :put, :only => [:update], :redirect_to => 'index'
-  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+  verify :method => [:get, :delete], :only => :destroy, :redirect_to => 'index'
 
   # GET /weights
   def index
@@ -38,40 +38,42 @@ class WeightsController < ApplicationController
 
   # GET /weights/edit/1
   def edit
-    @weight = @current_user.weights.find(params[:id].to_i)
-  rescue
-    flash[:error] = 'Unable to edit the selected weight.'
-    redirect_to(weights_url)
   end
 
   # PUT /weights/1
   def update
-    @weight = @current_user.weights.find(params[:id].to_i)
     @weight.update_attributes!({:weight_units => @current_user.weight_units}.merge(params[:weight]))
 
     redirect_to(weights_url)
   rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
     flash[:error] = @weight.errors
     redirect_to(edit_weight_url(@weight))
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = 'Unable to update the selected weight.'
-    redirect_to(weights_url)
   end
 
   # DESTROY /weights/1
   def destroy
-    @weight = @current_user.weights.find(params[:id].to_i)
-    @weight.destroy
-    @current_user.weights.cache_existing_weight(session, current_date, true)
-  rescue
-    flash[:error] = 'Unable to delete the selected weight.'
-  ensure
-    redirect_to(weights_url)
+    if request.delete?
+      begin
+        @weight.destroy
+        @current_user.weights.cache_existing_weight(session, current_date, true)
+      rescue
+        flash[:error] = 'Unable to delete the selected weight.'
+      ensure
+        redirect_to(weights_url)
+      end
+    end
   end
 
   protected
 
   def set_menu_item
     @activemenuitem = 'menu-weights'
+  end
+
+  def get_weight
+    @weight = @current_user.weights.find(params[:id].to_i)
+  rescue
+    flash[:error] = 'Unable to find the selected weight.'
+    redirect_to(weights_url)
   end
 end

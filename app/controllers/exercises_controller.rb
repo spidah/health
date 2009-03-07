@@ -1,10 +1,11 @@
 class ExercisesController < ApplicationController
   before_filter :login_required, :set_menu_item
+  before_filter :get_exercise, :only => [:edit, :update, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
   verify :method => :post, :only => :create, :redirect_to => 'index'
   verify :method => :put, :only => :update, :redirect_to => 'index'
-  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+  verify :method => [:get, :delete], :only => :destroy, :redirect_to => 'index'
 
   def index
     get_all_exercises
@@ -38,21 +39,10 @@ class ExercisesController < ApplicationController
   end
 
   def edit
-    @exercise = @current_user.exercises.find(params[:id])
     get_all_activities
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = 'Unable to edit the selected exercise.'
-    redirect_to(exercises_url)
   end
 
   def update
-    begin
-      @exercise = @current_user.exercises.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:error] = 'Unable to update the selected exercise.'
-      redirect_to(exercises_url) and return
-    end
-
     begin
       @activity = @current_user.activities.find(params[:exercise]["activity"])
     rescue ActiveRecord::RecordNotFound
@@ -72,18 +62,28 @@ class ExercisesController < ApplicationController
   end
 
   def destroy
-    @exercise = @current_user.exercises.find(params[:id])
-    @exercise.destroy
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = 'Unable to delete the selected exercise.'
-  ensure
-    redirect_to(exercises_url)
+    if request.delete?
+      begin
+        @exercise.destroy
+      rescue ActiveRecord::RecordNotFound
+        flash[:error] = 'Unable to delete the selected exercise.'
+      ensure
+        redirect_to(exercises_url)
+      end
+    end
   end
 
   protected
 
   def get_all_exercises
     @exercises = @current_user.exercises.for_day(current_date)
+  end
+
+  def get_exercise
+    @exercise = @current_user.exercises.find(params[:id].to_i)
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = 'Unable to find the selected exercise.'
+    redirect_to(exercises_url)
   end
 
   def get_all_activities

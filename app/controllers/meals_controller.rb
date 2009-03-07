@@ -1,20 +1,13 @@
 class MealsController < ApplicationController
   before_filter :login_required, :set_menu_item, :include_meal_files
+  before_filter :get_meal, :only => [:show, :edit, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit, :show], :redirect_to => 'index'
   verify :method => :post, :only => [:create], :redirect_to => 'index'
-  verify :method => :delete, :only => :destroy, :redirect_to => 'index'
+  verify :method => [:get, :delete], :only => :destroy, :redirect_to => 'index'
 
   def index
     @meals = @current_user.meals.for_day(current_date)
-  end
-
-  def show
-    @meal = @current_user.meals.find(params[:id].to_i)
-    redirect_to(new_meal_food_item_url(@meal)) and return if @meal.food_items.size == 0
-  rescue
-    flash[:error] = 'Unable to display the selected meal.'
-    redirect_to(meals_url)
   end
 
   def new
@@ -30,20 +23,23 @@ class MealsController < ApplicationController
     render(:action => 'new')
   end
 
-  def destroy
-    @meal = @current_user.meals.find(params[:id].to_i)
-    @meal.destroy
-  rescue
-    flash[:error] = 'Unable to delete the selected meal.'
-  ensure
-    redirect_to(meals_url)
+  def show
+    redirect_to(new_meal_food_item_url(@meal)) if @meal.food_items.size == 0
   end
 
   def edit
-    @meal = @current_user.meals.find(params[:id].to_i)
-  rescue
-    flash[:error] = 'Unable to edit the selected meal.'
-    redirect_to(meals_url)
+  end
+
+  def destroy
+    if request.delete?
+      begin
+        @meal.destroy
+      rescue
+        flash[:error] = 'Unable to delete the selected meal.'
+      ensure
+        redirect_to(meals_url)
+      end
+    end
   end
 
   protected
@@ -55,5 +51,12 @@ class MealsController < ApplicationController
   def include_meal_files
     include_extra_stylesheet(:meals)
     include_extra_javascript(:meals)
+  end
+
+  def get_meal
+    @meal = @current_user.meals.find(params[:id].to_i)
+  rescue
+    flash[:error] = 'Unable to find the selected meal.'
+    redirect_to(meals_url)
   end
 end

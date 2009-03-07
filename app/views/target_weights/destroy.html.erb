@@ -1,0 +1,12 @@
+<div class="block">
+  <h2>Delete Target Weight</h2>
+  <% form_tag(targetweight_url(@target_weight), :method => :delete) do %>
+    <div class="form-row">
+      <span class="data">Are you sure you want to delete this target weight?</span>
+    </div>
+    <div class="form-row">
+      <span class="data"><%= submit_tag('Delete') %></span>
+      <span class="data"><%= cancel_button %></span>
+    </div>
+  <% end %>
+</div>

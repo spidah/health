@@ -5,6 +5,5 @@
       <td><%= pluralize(activity.duration, 'minute') %></td>
       <td class="number"><%= activity.calories %></td>
       <td class="edit"><%= link_to(image_tag('/images/edit.gif'), edit_activity_url(activity)) %></td>
-      <td class="delete"><%= link_to(image_tag('/images/delete.gif'), activity_url(activity),
-        :confirm => 'Are you sure you want to delete this activity?', :method => :delete) %></td>
+      <td class="delete"><%= link_to(image_tag('/images/delete.gif'), destroy_activity_url(activity), :class => 'delete') %></td>
     </tr>

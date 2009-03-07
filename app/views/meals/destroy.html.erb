@@ -1,8 +1,8 @@
-  <div class="block">
-  <h2>Delete Exercise</h2>
-  <% form_tag(exercise_url(@exercise), :method => :delete) do %>
+<div class="block">
+  <h2>Delete Meal</h2>
+  <% form_tag(meal_url(@meal), :method => :delete) do %>
     <div class="form-row">
-      <span class="data">Are you sure you want to delete this exercise?</span>
+      <span class="data">Are you sure you want to delete this meal?</span>
     </div>
     <div class="form-row">
       <span class="data"><%= submit_tag('Delete') %></span>

@@ -107,11 +107,11 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
     def cant_update_invalid_food(id)
       get(edit_food_url(id))
       assert_and_follow_redirect(foods_url, 'foods/index')
-      assert_flash('error', 'Unable to edit the selected food.')
+      assert_flash('error', 'Unable to find the selected food.')
 
       put(food_url(id), :food => {:name => 'foo'})
       assert_and_follow_redirect(foods_url, 'foods/index')
-      assert_flash('error', 'Unable to update the selected food.')
+      assert_flash('error', 'Unable to find the selected food.')
     end
 
     def cant_update_incorrect_food(food)
@@ -129,13 +129,13 @@ class IntegrationFoodsTest < ActionController::IntegrationTest
     def cant_delete_invalid_food(id)
       delete(food_url(id))
       assert_and_follow_redirect(foods_url, 'foods/index')
-      assert_flash('error', 'Unable to delete the selected food.')
+      assert_flash('error', 'Unable to find the selected food.')
     end
 
     def cant_delete_another_users_food(food)
       delete(food_url(food))
       assert_and_follow_redirect(foods_url, 'foods/index')
-      assert_flash('error', 'Unable to delete the selected food.')
+      assert_flash('error', 'Unable to find the selected food.')
     end
   end
 
