@@ -9,7 +9,7 @@
       <th>Edit</th>
       <th>Delete</th>
     </tr>
-<%= render(:partial => 'user_login_item', :collection => @user_logins) -%>
+<%= render(:partial => 'user_login', :collection => @user_logins) -%>
   </table>
   <%= will_paginate(@user_logins) -%>
 </div>

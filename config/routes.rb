@@ -17,9 +17,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.admin             '/admin',                 :controller => 'admin/admin',         :action => 'index'
   map.namespace(:admin) do |admin|
-    admin.resources :users,                       :controller => 'admin_users'
-    admin.resources :user_logins,                 :controller => 'admin_user_logins'
-    admin.resources :news,                        :controller => 'admin_news'
+    admin.resources :users,                       :controller => 'admin_users',         :member => {:destroy => :get}
+    admin.resources :user_logins,                 :controller => 'admin_user_logins',   :member => {:destroy => :get}
+    admin.resources :news,                        :controller => 'admin_news',          :member => {:destroy => :get}
   end
 
   map.home              '',                       :controller => 'home',                :action => 'index'

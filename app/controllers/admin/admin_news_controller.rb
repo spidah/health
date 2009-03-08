@@ -1,6 +1,7 @@
 class Admin::AdminNewsController < ApplicationController
   before_filter :admin_required
   before_filter :override_controller, :set_menu_item
+  before_filter :get_news_item, :only => [:edit, :update, :destroy]
 
   def index
     @news = NewsItem.pagination(params[:page])
@@ -21,13 +22,9 @@ class Admin::AdminNewsController < ApplicationController
   end
 
   def edit
-    @item = NewsItem.find(params[:id])
-  rescue
-    redirect_to(admin_news_index_url)
   end
 
   def update
-    @item = NewsItem.find(params[:id])
     @item.update_attributes!(params[:news_item])
     redirect_to(admin_news_index_url)
   rescue
@@ -36,12 +33,10 @@ class Admin::AdminNewsController < ApplicationController
   end
 
   def destroy
-    news = NewsItem.find(params[:id])
-    news.destroy
-  rescue
-    flash[:error] = 'Unable to delete the selected news item.'
-  ensure
-    redirect_to(admin_news_index_url)
+    if request.delete?
+      @item.destroy
+      redirect_to(admin_news_index_url)
+    end
   end
 
   protected
@@ -52,5 +47,11 @@ class Admin::AdminNewsController < ApplicationController
 
   def set_menu_item
     @activemenuitem = 'menu-account'
+  end
+
+  def get_news_item
+    @item = NewsItem.find(params[:id])
+  rescue
+    redirect_to(admin_news_index_url)
   end
 end

@@ -1,26 +1,19 @@
 class Admin::AdminUserLoginsController < ApplicationController
   before_filter :admin_required
   before_filter :override_controller, :set_menu_item
+  before_filter :get_user_login, :only => [:show, :edit, :update, :destroy]
 
   def index
     @user_logins = UserLogin.admin_pagination(params[:page])
   end
 
   def show
-    @user_login = UserLogin.find(params[:id])
-  rescue
-    redirect_to(admin_user_logins_url)
   end
 
   def edit
-    @user_login = UserLogin.find(params[:id], :include => :user)
-  rescue
-    redirect_to(admin_user_logins_url)
   end
 
   def update
-    @user_login = UserLogin.find(params[:id])
-
     if params[:password]
       @user_login.password = params[:password]
       @user_login.password_confirmation = params[:password_confirmation]
@@ -36,13 +29,11 @@ class Admin::AdminUserLoginsController < ApplicationController
   end
 
   def destroy
-    @user_login = UserLogin.find(params[:id])
-    @user_login.destroy
-    flash[:info] = 'The user login details were deleted successfully.'
-  rescue
-    flash[:error] = 'Unable to delete the selected OpenID link.'
-  ensure
-    redirect_to(admin_user_logins_url)
+    if request.delete?
+      @user_login.destroy
+      flash[:info] = 'The user login details were deleted successfully.'
+      redirect_to(admin_user_logins_url)
+    end
   end
 
   protected
@@ -53,5 +44,11 @@ class Admin::AdminUserLoginsController < ApplicationController
 
   def set_menu_item
     @activemenuitem = 'menu-account'
+  end
+
+  def get_user_login
+    @user_login = UserLogin.find(params[:id])
+  rescue
+    redirect_to(admin_user_logins_url)
   end
 end
