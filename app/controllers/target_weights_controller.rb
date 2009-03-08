@@ -31,13 +31,8 @@ class TargetWeightsController < ApplicationController
 
   def destroy
     if request.delete?
-      begin
-        @target_weight.destroy
-      rescue
-        flash[:error] = 'Unable to delete the target weight.'
-      ensure
-        redirect_to(targetweights_url)
-      end
+      @target_weight.destroy
+      redirect_to(targetweights_url)
     end
   end
 
