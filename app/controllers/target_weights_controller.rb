@@ -19,15 +19,14 @@ class TargetWeightsController < ApplicationController
   end
 
   def create
-    @target_weight = TargetWeight.new({:weight_units => @current_user.weight_units, :created_on => @current_user.get_date}.merge(params[:weight]))
-
-    if @current_user.target_weights << @target_weight
-      TargetWeight.update_difference(@current_user)
-      redirect_to(targetweights_url)
-    else
-      flash[:error] = @target_weight.errors
-      render(:action => 'new')
-    end
+    @target_weight = @current_user.target_weights.build({:weight_units => @current_user.weight_units,
+      :created_on => @current_user.get_date}.merge(params[:weight]))
+    @target_weight.save!
+    TargetWeight.update_difference(@current_user)
+    redirect_to(targetweights_url)
+  rescue
+    flash.now[:error] = @target_weight.errors
+    render(:action => 'new')
   end
 
   def destroy
