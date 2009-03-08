@@ -1,5 +1,6 @@
 class OpenidLinksController < ApplicationController
   before_filter :login_required
+  before_filter :get_openid, :only => :destroy
 
   verify :method => [:get, :post], :only => :create, :redirect_to => {:controller => 'users', :action => 'edit'}
   verify :method => :delete, :only => :destroy, :redirect_to => {:controller => 'users', :action => 'edit'}
@@ -21,18 +22,21 @@ class OpenidLinksController < ApplicationController
 
   # action for unlinking an OpenID account
   def destroy
-    begin
-      openid = UserLogin.find(params[:id], :conditions => ['user_id == ?', @current_user.id])
-      openid.destroy
-      flash[:info] = "OpenID login #{openid.openid_url} has been unlinked."
-    rescue
-      flash[:openid_error] = 'Unable to remove the link. Please go back and try again.'
+    if request.delete?
+      @openid.destroy
+      flash[:info] = "OpenID login #{@openid.openid_url} has been unlinked."
+      redirect_to(edit_user_url)
     end
-
-    redirect_to(edit_user_url)
   end
 
   protected
+
+  def get_openid
+    @openid = UserLogin.find(params[:id], :conditions => ['user_id == ?', @current_user.id])
+  rescue
+    flash[:openid_error] = 'Unable to remove the link. Please go back and try again.'
+    redirect_to(edit_user_url)
+  end
 
   def authenticate_linked_openid(openid_link = nil)
     authenticate_with_open_id(openid_link) do |result, identity_url, registration|

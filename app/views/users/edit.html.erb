@@ -110,8 +110,7 @@
     <legend>Linked OpenID's</legend>
 <% for link in @openid_links do -%>
     <div class="form-row">
-      <label class="label"><%= link_to(image_tag('/images/delete.gif'), openid_link_url(link),
-        :confirm => 'Are you sure you want to delete this OpenID login link?', :method => :delete) %></label>
+      <label class="label"><%= link_to(image_tag('/images/delete.gif'), openid_link_url(link), :class => 'delete') %></label>
       <span class="data"><span class="openid-link"><%= h(link.openid_url) %></span></span>
     </div>
 <% end -%>

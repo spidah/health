@@ -1,0 +1,12 @@
+<div class="block">
+  <h2>Delete Measurement</h2>
+  <% form_tag(openid_link_url(@openid_link), :method => :delete) do %>
+    <div class="form-row">
+      <span class="data">Are you sure you want to delete this OpenID login link?</span>
+    </div>
+    <div class="form-row">
+      <span class="data"><%= submit_tag('Delete') %></span>
+      <span class="data"><%= cancel_button %></span>
+    </div>
+  <% end %>
+</div>
