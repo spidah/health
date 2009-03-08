@@ -1,6 +1,7 @@
 class TargetWeightsController < ApplicationController
   before_filter :login_required, :set_menu_item
   before_filter :get_targetweight, :only => :destroy
+  before_filter :check_existing_targetweight, :only => [:new, :create]
 
   helper :weights
 
@@ -14,28 +15,18 @@ class TargetWeightsController < ApplicationController
   end
 
   def new
-    existing = @current_user.target_weights.get_latest
-    if existing && existing.achieved_on == nil
-      redirect_to(targetweights_url)
-    else
-      @target_weight = TargetWeight.new
-    end
+    @target_weight = TargetWeight.new
   end
 
   def create
-    existing = @current_user.target_weights.get_latest
-    if existing && existing.achieved_on == nil
+    @target_weight = TargetWeight.new({:weight_units => @current_user.weight_units, :created_on => @current_user.get_date}.merge(params[:weight]))
+
+    if @current_user.target_weights << @target_weight
+      TargetWeight.update_difference(@current_user)
       redirect_to(targetweights_url)
     else
-      @target_weight = TargetWeight.new({:weight_units => @current_user.weight_units, :created_on => @current_user.get_date}.merge(params[:weight]))
-
-      if @current_user.target_weights << @target_weight
-        TargetWeight.update_difference(@current_user)
-        redirect_to(targetweights_url)
-      else
-        flash[:error] = @target_weight.errors
-        render(:action => 'new')
-      end
+      flash[:error] = @target_weight.errors
+      render(:action => 'new')
     end
   end
 
@@ -63,5 +54,10 @@ class TargetWeightsController < ApplicationController
   rescue
     flash[:error] = 'Unable to find the target weight.'
     redirect_to(targetweights_url)
+  end
+
+  def check_existing_targetweight
+    existing = @current_user.target_weights.get_latest
+    redirect_to(targetweights_url) if existing && existing.achieved_on == nil
   end
 end
