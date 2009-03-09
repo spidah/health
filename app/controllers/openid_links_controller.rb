@@ -32,7 +32,7 @@ class OpenidLinksController < ApplicationController
   protected
 
   def get_openid
-    @openid = UserLogin.find(params[:id], :conditions => ['user_id == ?', @current_user.id])
+    @openid = UserLogin.find(params[:id].to_i, :conditions => ['user_id == ?', @current_user.id])
   rescue
     flash[:openid_error] = 'Unable to remove the link. Please go back and try again.'
     redirect_to(edit_user_url)

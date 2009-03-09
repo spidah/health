@@ -65,7 +65,7 @@ class MeasurementsController < ApplicationController
   end
 
   def get_measurement
-    @measurement = @current_user.measurements.find(params[:id])
+    @measurement = @current_user.measurements.find(params[:id].to_i)
   rescue
     flash[:error] = 'Unable to find the selected measurement.'
     redirect_to(measurements_url)

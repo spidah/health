@@ -47,7 +47,7 @@ class Admin::AdminUserLoginsController < ApplicationController
   end
 
   def get_user_login
-    @user_login = UserLogin.find(params[:id])
+    @user_login = UserLogin.find(params[:id].to_i)
   rescue
     redirect_to(admin_user_logins_url)
   end

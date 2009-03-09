@@ -50,7 +50,7 @@ class Admin::AdminNewsController < ApplicationController
   end
 
   def get_news_item
-    @item = NewsItem.find(params[:id])
+    @item = NewsItem.find(params[:id].to_i)
   rescue
     redirect_to(admin_news_index_url)
   end
