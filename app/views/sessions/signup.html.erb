@@ -5,33 +5,43 @@
      The loginname is used as both your public profile username and also a backup way of logging in (along with the password) if
      your OpenID provider is not working for any reason.</p>
 <% else -%>
-  <p>To login to the Healtheriser website you need to have either an OpenID account or a normal account. OpenID allows
-     you to have a single login that works over multiple websites, meaning you only need to remember
-     one password to access all the websites that support OpenID accounts.</p>
-  <p>You can get an OpenID account from various places but I recommend that you use
-     <a href="http://www.myopenid.com/" title="MyOpenID homepage" onclick="window.open(this.href); return false;">MyOpenID.com</a>
-     (opens in a new window) to get your account.
-     Just click the &quot;Sign Up Now&quot; link, enter in the details it asks for, click the
-     &quot;Sign Up&quot; button and you're all done. Now you can close that window and return here
-     to login.</p>
-  <p>If you would rather not use an OpenID account then please fill out the form below to create a normal account.</p>
+  <p>Please enter your desired login name and password.</p>
 <% end -%>
 <%= print_flash(flash[:signup_error], 'error', 'Signup error') -%>
   <% form_tag(signup_url, :id => 'signup_form') do %>
-    <div class="form-row">
-      <label for="loginname" class="label">Loginname</label>
-      <span class="data"><%= text_field_tag('loginname', session[:signup_loginname]) %></span>
-    </div>
-    <div class="form-row">
-      <label for="password" class="label">Password</label>
-      <span class="data"><%= password_field_tag('password') %></span>
-    </div>
-    <div class="form-row">
-      <label for="password_confirmation" class="label">Confirm Password</label>
-      <span class="data"><%= password_field_tag('password_confirmation') %></span>
-    </div>
-    <div class="form-row">
-      <span class="data"><input type="submit" name="signup" value="Signup" /></span>
-    </div>
+    <fieldset>
+      <div class="form-row">
+        <label for="loginname" class="label">Loginname</label>
+        <span class="data"><%= text_field_tag('loginname', session[:signup_loginname]) %></span>
+      </div>
+      <div class="form-row">
+        <span class="label">&nbsp;</span>
+        <span class="data">Allowed characters: 'a'-'z', '0'-'9', '.', '_', and '-'.</span>
+      </div>
+      <div class="form-row">
+        <label for="password" class="label">Password</label>
+        <span class="data"><%= password_field_tag('password') %></span>
+      </div>
+      <div class="form-row">
+        <span class="label">&nbsp;</span>
+        <span class="data">Between 4 and 40 characters.</span>
+      </div>
+      <div class="form-row">
+        <label for="password_confirmation" class="label">Confirm Password</label>
+        <span class="data"><%= password_field_tag('password_confirmation') %></span>
+      </div>
+      <div class="form-row">
+        <span class="data"><input type="submit" name="signup" value="Signup" /></span>
+      </div>
+    </fieldset>
   <% end %>
+<% if !session[:openid_url] -%>
+  <p>You can also login using an OpenID account. OpenID allows you to have a single login that works over multiple websites, meaning
+     you only need to remember one password to access all the websites that support OpenID accounts.</p>
+  <p>You can get an OpenID account from various places. Please visit
+     <a href="http://openid.net/get/" title="OpenID.net webpage" onclick="window.open(this.href); return false;">this OpenID.net page</a>
+     for more information on websites that may already allow you to use OpenID enabled websites, and for a list of websites that
+     allow you to signup and create your own account. Once you've found one that you can use, or signed up for one, just return to this
+     website and login using the form on the right.</p>
+<% end -%>
 </div>
