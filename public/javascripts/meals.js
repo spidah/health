@@ -4,7 +4,7 @@ $(function() {
     $('table#meals tr td.calories').each(function() {
       total += parseInt($(this).text());
     });
-    $('table#meals tr td.total-calories').text(total);
+    $('table#meals tr td.total-calories strong').text(total);
   };
 
   $('table#meals tr td form input').live('click', function() {
