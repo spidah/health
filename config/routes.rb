@@ -36,7 +36,8 @@ ActionController::Routing::Routes.draw do |map|
   map.contact           '/contact',               :controller => 'home',                :action => 'contact'
 
   map.profile           'users/:loginname',       :controller => 'users',               :action => 'show'
-  
+  map.help              'help/:action',           :controller => 'help'
+
   map.connect           '',                       :controller => 'home',                :action => 'index'
   map.connect           '*path',                  :controller => 'home',                :action => 'index'
 end
