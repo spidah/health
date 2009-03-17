@@ -54,11 +54,6 @@ p {
   margin-bottom: 0.4em;
 }
 
-img {
-  border: 0;
-  padding: 0;
-}
-
 fieldset {
   border: 2px solid #bbdbfe;
   margin: 1em 0 0 0;
@@ -238,6 +233,10 @@ div.image-left {
 div.image-right {
   float: right;
   margin: 0.2em 0 0 0.5em;
+}
+
+img.help {
+  margin: 1em;
 }
 
 input.text {
