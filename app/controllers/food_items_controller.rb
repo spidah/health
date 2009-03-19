@@ -40,7 +40,7 @@ class FoodItemsController < ApplicationController
   end
 
   def update
-    if params['add.x'] || params['delete.x'] || params[:submit]
+    if params['add.x'] || params['remove.x'] || params[:submit]
       handle_quantity_change
     else
       @food_item.quantity = params[:food_item][:quantity]
@@ -105,12 +105,12 @@ class FoodItemsController < ApplicationController
 
   def handle_quantity_change
     params[:submit] = 'add' if params['add.x']
-    params[:submit] = 'delete' if params['delete.x']
+    params[:submit] = 'remove' if params['remove.x']
     params[:action_type] = 'update' if !params[:action_type]
 
     if params[:submit] == 'add'
       @food_item.increment!(:quantity)
-    elsif params[:submit] == 'delete'
+    elsif params[:submit] == 'remove'
       @food_item.decrement!(:quantity)
       if @food_item.quantity < 1
         @food_item.destroy
