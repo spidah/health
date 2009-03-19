@@ -3,11 +3,11 @@
       <td class="quantity number">
         <% form_tag(meal_food_item_url(@meal, food_item), :method => :put) do %>
           <div class="inline"><%= hidden_field_tag('action_type', 'update', :id => nil) %></div>
-          <div class="inline"><%= submit_tag('Delete', :src => '/images/delete.gif', :type => :image, :name => 'delete') %></div>
+          <div class="inline"><%= submit_tag('Remove', :src => '/images/remove.gif', :type => :image, :name => 'remove') %></div>
           <div class="inline"><span class="quantity"><%= food_item.quantity %></span></div>
           <div class="inline"><%= submit_tag('Add', :src => '/images/add.gif', :type => :image, :name => 'add') %></div>
         <% end %>
       </td>
       <td class="calories number"><%= food_item.quantity * food_item.calories %></td>
-      <td class="delete"><%= link_to(image_tag('cross.gif'), destroy_meal_food_item_url(@meal, food_item), :class => 'delete') %></td>
+      <td class="delete"><%= link_to(image_tag('delete.gif'), destroy_meal_food_item_url(@meal, food_item), :class => 'delete') %></td>
     </tr>
