@@ -5,6 +5,10 @@ class HelpController < ApplicationController
     @activemenuitem = 'menu-measurements'
   end
 
+  def targetweight
+    @activemenuitem = 'menu-weights'
+  end
+
   def weights
     @activemenuitem = 'menu-weights'
   end
