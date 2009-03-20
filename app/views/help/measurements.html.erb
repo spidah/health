@@ -1,0 +1,44 @@
+<div class="block">
+  <h2><a name="top">Measurements Help</a></h2>
+  <ul>
+    <li><a href="#a1">How do I add a new measurement?</a></li>
+    <li><a href="#a2">How do I edit an existing measurement?</a></li>
+    <li><a href="#a3">How do I delete an entered measurement?</a></li>
+  </ul>
+</div>
+
+<div class="block">
+  <h2><a name="a1">How do I add a new measurement?</a></h2>
+  <p>First, make sure you're on the correct day. Then either select
+     &quot;Add Measurement&quot; from the measurements menu:<br />
+     <%= image_tag('help/measurements-menu-add.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
+     or click &quot;Add measurement&quot; next to the correct date in the main measurements list:<br />
+     <%= image_tag('help/measurements-list-new.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
+     This takes you to a page where you can enter the measurement location (eg. waist, chest, etc.) and the measurement,
+     in either inches or cm (depending on what measurement units you have selected):<br />
+     <%= image_tag('help/measurements-new.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
+     Once you have entered everything, click &quot;Save&quot;, and you will be taken back to the measurements list.
+  </p>
+  <%= top_link %>
+</div>
+
+<div class="block">
+  <h2><a name="a2">How do I edit an existing measurement?</a></h2>
+  <p>Click the image in the edit column next to the measurement that you want to edit:<br />
+     <%= image_tag('help/measurements-list-edit.jpg', :alt => 'Editing a measurement', :class => 'help') %><br />
+     You can now change the entered location or measurement:<br />
+     <%= image_tag('help/measurements-edit.jpg', :alt => 'Editing a measurement', :class => 'help') %><br />
+     Click &quot;Save&quot; and you will be taken back to the measurements list.
+  </p>
+  <%= top_link %>
+</div>
+
+<div class="block">
+  <h2><a name="a3">How do I delete an entered measurement?</a></h2>
+  <p>Click the image in the delete column next to the measurement that you want to delete:<br />
+     <%= image_tag('help/measurements-list-delete.jpg', :alt => 'Deleting a measurement', :class => 'help') %><br />
+     You'll be asked if you're sure you want to delete the measurement. If you're sure then click
+     &quot;OK&quot; and you will be taken back to the measurements list.
+  </p>
+  <%= top_link %>
+</div>
