@@ -54,6 +54,10 @@ p {
   margin-bottom: 0.4em;
 }
 
+ol {
+  font-size: 95%;
+}
+
 fieldset {
   border: 2px solid #bbdbfe;
   margin: 1em 0 0 0;
