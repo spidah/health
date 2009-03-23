@@ -1,6 +1,10 @@
 class HelpController < ApplicationController
   before_filter :login_required
 
+  def foods
+    @activemenuitem = 'menu-meals'
+  end
+
   def measurements
     @activemenuitem = 'menu-measurements'
   end
