@@ -1,0 +1,56 @@
+<div class="block">
+  <h2><a name="top">Activities Help</a></h2>
+  <ul>
+    <li><a href="#a1">How do I add a new activity?</a></li>
+    <li><a href="#a2">How do I edit an existing activity?</a></li>
+    <li><a href="#a3">How do I delete an existing activity?</a></li>
+  </ul>
+</div>
+
+<div class="block">
+  <h2><a name="a1">How do I add a new activity?</a></h2>
+  <p>Either select &quot;Add activity&quot; from the exercise menu:<br />
+     <%= image_tag('help/activities-menu-add.jpg', :alt => 'Adding a new activity', :class => 'help') %><br />
+     or click &quot;add another&quot; in the activities lists if you've already added activities:<br />
+     <%= image_tag('help/activities-list-add.jpg', :alt => 'Adding a new activity', :class => 'help') %><br />
+     This takes you to a page where you can enter the activity information:<br />
+     <%= image_tag('help/activities-new.jpg', :alt => 'Adding a new activity', :class => 'help') %></p>
+  <p>
+     The name, duration, and calories values are the important ones. The description and type are for your own usage
+     (although the type might be used later on) so you can better distinguish between different forms of the same
+     activity. You could give all types of running the name of &quot;Running&quot; and put the average speed/intensity
+     in the description. The description will be displayed when adding an exercise, so it'll be easy to pick the correct
+     one.
+  </p>
+  <p>The duration and calories values might be a bit confusing at first. They are both linked together and are vital to
+     the exercises calorie totals being calculated correctly. The duration is how long you do the activity to burn the
+     entered number of calories. These two values are then used together to work out how many calories you burn when
+     actually doing your exercise. If you enter 20 minutes for the duration and 60 for the calories, if you then did
+     that activity as an exercise for 40 minutes then you would have burnt 120 calories, as you exercised for twice the
+     length of the activity and the calories are doubled (not always correct, but it's a rough estimate).
+  </p>
+  <p>Once you have entered everything, click &quot;Save&quot;, and you will be taken back to the activities list.
+  </p>
+  <%= top_link %>
+</div>
+
+<div class="block">
+  <h2><a name="a2">How do I edit an existing activity?</a></h2>
+  <p>Click the image in the edit column next to the activity that you want to edit:<br />
+     <%= image_tag('help/activities-list-edit.jpg', :alt => 'Editing a activity', :class => 'help') %><br />
+     You can now change the entered values for the activity:<br />
+     <%= image_tag('help/activities-edit.jpg', :alt => 'Editing a activity', :class => 'help') %><br />
+     Click &quot;Save&quot; and you will be taken back to the activities list.
+  </p>
+  <%= top_link %>
+</div>
+
+<div class="block">
+  <h2><a name="a3">How do I delete an existing activity?</a></h2>
+  <p>Click the image in the delete column next to the activity that you want to delete:<br />
+     <%= image_tag('help/activities-list-delete.jpg', :alt => 'Deleting a activity', :class => 'help') %><br />
+     You'll be asked if you're sure you want to delete the activity. If you're sure then click
+     &quot;OK&quot; and you will be taken back to the activities list.
+  </p>
+  <%= top_link %>
+</div>

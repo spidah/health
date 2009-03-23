@@ -1,6 +1,10 @@
 class HelpController < ApplicationController
   before_filter :login_required
 
+  def activities
+    @activemenuitem = 'menu-exercise'
+  end
+
   def foods
     @activemenuitem = 'menu-meals'
   end
