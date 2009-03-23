@@ -5,6 +5,10 @@ class HelpController < ApplicationController
     @activemenuitem = 'menu-exercise'
   end
 
+  def exercise
+    @activemenuitem = 'menu-exercise'
+  end
+
   def foods
     @activemenuitem = 'menu-meals'
   end

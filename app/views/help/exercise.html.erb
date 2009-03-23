@@ -1,0 +1,49 @@
+<div class="block">
+  <h2><a name="top">Exercise Help</a></h2>
+  <ul>
+    <li><a href="#a1">How do I add a new exercise?</a></li>
+    <li><a href="#a2">How do I edit an existing exercise?</a></li>
+    <li><a href="#a3">How do I delete an existing execise?</a></li>
+  </ul>
+</div>
+
+<div class="block">
+  <h2><a name="a1">How do I add a new exercise?</a></h2>
+  <p>
+    Select &quot;Add exercise&quot; from the exercise menu:<br />
+    <%= image_tag('help/exercises-menu-add.jpg', :alt => 'Adding a new exercise', :class => 'help') %><br />
+    This takes you to a page where you can enter the exercise information:<br />
+    <%= image_tag('help/exercises-new-1.jpg', :alt => 'Adding a new exercise', :class => 'help') %><br />
+    The drop-down list contains all of your activities with both name and description (if you added one of the activity),
+    so you can easily work out which activity you want:<br />
+    <%= image_tag('help/exercises-new-2.jpg', :alt => 'Adding a new exercise', :class => 'help') %>
+  </p>
+  <p>
+    Once you have picked your activity and entered the duration, click &quot;Save&quot;, and you will be taken to
+    the exercises list.
+  </p>
+  <%= top_link %>
+</div>
+
+<div class="block">
+  <h2><a name="a2">How do I edit an existing exercise?</a></h2>
+  <p>
+    Click the image in the edit column next to the exercise that you want to edit:<br />
+    <%= image_tag('help/exercises-list-edit.jpg', :alt => 'Editing a exercise', :class => 'help') %><br />
+    You can now change the activity and duration for the exercise:<br />
+    <%= image_tag('help/exercises-edit.jpg', :alt => 'Editing a exercise', :class => 'help') %><br />
+    Click &quot;Save&quot; and you will be taken back to the exercises list.
+  </p>
+  <%= top_link %>
+</div>
+
+<div class="block">
+  <h2><a name="a3">How do I delete an existing exercise?</a></h2>
+  <p>
+    Click the image in the delete column next to the exercise that you want to delete:<br />
+    <%= image_tag('help/exercises-list-delete.jpg', :alt => 'Deleting a exercise', :class => 'help') %><br />
+    You'll be asked if you're sure you want to delete the exercise. If you're sure then click
+    &quot;OK&quot; and you will be taken back to the exercises list.
+  </p>
+  <%= top_link %>
+</div>
