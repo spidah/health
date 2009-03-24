@@ -109,8 +109,10 @@ class IntegrationMealsTest < ActionController::IntegrationTest
 
     def check_food_quantity(meal, food, quantity)
       get(meal_url(meal))
-      assert_select('td[class=name]', food.name)
-      assert_select('td[class*=quantity]', "#{quantity}")
+      assert_select('tr') do
+        assert_select('td[class=name]', food.name)
+        assert_select('td[class*=quantity]', "#{quantity}")
+      end
     end
 
     def check_total_calories(meal, calories)
@@ -196,7 +198,7 @@ class IntegrationMealsTest < ActionController::IntegrationTest
     end
 
     def dec_food_item_quantity(meal, food_item)
-      put(meal_food_item_url(meal, food_item), :submit => 'delete')
+      put(meal_food_item_url(meal, food_item), :submit => 'remove')
     end
 
     def should_destroy_food_item_with_dec(meal, food_item, food)
