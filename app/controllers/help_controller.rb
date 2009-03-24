@@ -5,7 +5,7 @@ class HelpController < ApplicationController
     @activemenuitem = 'menu-exercise'
   end
 
-  def exercise
+  def exercises
     @activemenuitem = 'menu-exercise'
   end
 
@@ -21,7 +21,7 @@ class HelpController < ApplicationController
     @activemenuitem = 'menu-measurements'
   end
 
-  def targetweight
+  def targetweights
     @activemenuitem = 'menu-weights'
   end
 

@@ -96,6 +96,6 @@ class ExercisesController < ApplicationController
   end
 
   def set_menu_item
-    @activemenuitem = 'menu-exercise'
+    @activemenuitem = 'menu-exercises'
   end
 end
