@@ -10,56 +10,61 @@
 
 <div class="block">
   <h2><a name="a1">How do I add a new measurement?</a></h2>
-  <p>First, make sure you're on the correct day. Then either select
-     &quot;Add Measurement&quot; from the measurements menu:<br />
-     <%= image_tag('help/measurements-menu-add.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
-     or click &quot;Add measurement&quot; next to the correct date in the main measurements list:<br />
-     <%= image_tag('help/measurements-list-new.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
-     This takes you to a page where you can enter the measurement location (eg. waist, chest, etc.) and the measurement,
-     in either inches or cm (depending on what measurement units you have selected):<br />
-     <%= image_tag('help/measurements-new.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
-     Once you have entered everything, click &quot;Save&quot;, and you will be taken back to the measurements list.
+  <p>
+    First, make sure you're on the correct day. Then either select &quot;Add Measurement&quot; from the measurements
+    menu:<br />
+    <%= image_tag('help/measurements-menu-add.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
+    or click &quot;Add measurement&quot; next to the correct date in the main measurements list:<br />
+    <%= image_tag('help/measurements-list-new.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
+    This takes you to a page where you can enter the measurement location (eg. waist, chest, etc.) and the measurement,
+    in either inches or cm (depending on what measurement units you have selected):<br />
+    <%= image_tag('help/measurements-new.jpg', :alt => 'Adding a new measurement', :class => 'help') %><br />
+    Once you have entered everything, click &quot;Save&quot;, and you will be taken back to the measurements list.
   </p>
   <%= top_link %>
 </div>
 
 <div class="block">
   <h2><a name="a2">How do I edit an existing measurement?</a></h2>
-  <p>Click the image in the edit column next to the measurement that you want to edit:<br />
-     <%= image_tag('help/measurements-list-edit.jpg', :alt => 'Editing a measurement', :class => 'help') %><br />
-     You can now change the entered location or measurement:<br />
-     <%= image_tag('help/measurements-edit.jpg', :alt => 'Editing a measurement', :class => 'help') %><br />
-     Click &quot;Save&quot; and you will be taken back to the measurements list.
+  <p>
+    Click the image in the edit column next to the measurement that you want to edit:<br />
+    <%= image_tag('help/measurements-list-edit.jpg', :alt => 'Editing a measurement', :class => 'help') %><br />
+    You can now change the entered location or measurement:<br />
+    <%= image_tag('help/measurements-edit.jpg', :alt => 'Editing a measurement', :class => 'help') %><br />
+    Click &quot;Save&quot; and you will be taken back to the measurements list.
   </p>
   <%= top_link %>
 </div>
 
 <div class="block">
   <h2><a name="a3">How do I delete an existing measurement?</a></h2>
-  <p>Click the image in the delete column next to the measurement that you want to delete:<br />
-     <%= image_tag('help/measurements-list-delete.jpg', :alt => 'Deleting a measurement', :class => 'help') %><br />
-     You'll be asked if you're sure you want to delete the measurement. If you're sure then click
-     &quot;OK&quot; and you will be taken back to the measurements list.
+  <p>
+    Click the image in the delete column next to the measurement that you want to delete:<br />
+    <%= image_tag('help/measurements-list-delete.jpg', :alt => 'Deleting a measurement', :class => 'help') %><br />
+    You'll be asked if you're sure you want to delete the measurement. If you're sure then click
+    &quot;OK&quot; and you will be taken back to the measurements list.
   </p>
   <%= top_link %>
 </div>
 
 <div class="block">
   <h2><a name="a4">How are the measurement differences calculate?</a></h2>
-  <p>Each time you add a measurement it'll scan back to find the last time you entered a measurement for that location.
-     If it finds one then it'll work out the difference. If the new measurement is more than the previous measurement
-     then it'll display &quot;gained x&quot;. If the new measurement is less than the previous measurement then it'll
-     displayed &quot;lost x&quot;. Finally, if the new measurment is the same as the previous measurement, or no
-     previous measurement was found, then it'll display &quot;---&quot;.
+  <p>
+    Each time you add a measurement it'll scan back to find the last time you entered a measurement for that location.
+    If it finds one then it'll work out the difference. If the new measurement is more than the previous measurement
+    then it'll display &quot;gained x&quot;. If the new measurement is less than the previous measurement then it'll
+    displayed &quot;lost x&quot;. Finally, if the new measurment is the same as the previous measurement, or no
+    previous measurement was found, then it'll display &quot;---&quot;.
   </p>
-  <p>Measurements are unique to the location. If you add a measurement for your &quot;Right leg&quot; then it'll only
-     calculate the difference if it finds another measurement for the location &quot;Right leg&quot;. Location names
-     are stored with a capital first letter and the rest as lowercase letters. Regardless of how you enter the name,
-     this is how it will be stored. It is done this way to try to ensure that however you enter the location name it
-     will always be able to match it. For example, you add a measurement for the location &quot;Right Leg&quot; then
-     the next week you add a measurement for the location &quot;right leg&quot;. Even though you entered the two location
-     names using different letters (capital R and L verses lowercase r and l), they are both converted to
-     &quot;Right leg&quot; when you add them, so they both point to your right leg.
+  <p>
+    Measurements are unique to the location. If you add a measurement for your &quot;Right leg&quot; then it'll only
+    calculate the difference if it finds another measurement for the location &quot;Right leg&quot;. Location names
+    are stored with a capital first letter and the rest as lowercase letters. Regardless of how you enter the name,
+    this is how it will be stored. It is done this way to try to ensure that however you enter the location name it
+    will always be able to match it. For example, you add a measurement for the location &quot;Right Leg&quot; then
+    the next week you add a measurement for the location &quot;right leg&quot;. Even though you entered the two location
+    names using different letters (capital R and L verses lowercase r and l), they are both converted to
+    &quot;Right leg&quot; when you add them, so they both point to your right leg.
   </p>
   <%= top_link %>
 </div>

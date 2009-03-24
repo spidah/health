@@ -24,12 +24,14 @@
     Once you have entered your target weight, click &quot;Save&quot;, and you one of two things will happen.
   </p>
   <ol>
-    <li>If the target weight is <b>less</b> than your current weight then it will tell you how much you have left to lose
-        until you achieve it:<br />
-        <%= image_tag('help/target-weight-remaining.jpg', :alt => 'Target weight remaining', :class => 'help') %>
+    <li>
+      If the target weight is <b>less</b> than your current weight then it will tell you how much you have left to lose
+      until you achieve it:<br />
+      <%= image_tag('help/target-weight-remaining.jpg', :alt => 'Target weight remaining', :class => 'help') %>
     </li>
-    <li>If the target weight is <b>more</b> than your current weight then it will tell you when you achieved it:<br />
-    <%= image_tag('help/target-weight-list.jpg', :alt => 'Target weight achieved', :class => 'help') %>
+    <li>
+      If the target weight is <b>more</b> than your current weight then it will tell you when you achieved it:<br />
+      <%= image_tag('help/target-weight-list.jpg', :alt => 'Target weight achieved', :class => 'help') %>
     </li>
   </ol>
   <%= top_link %>
@@ -37,29 +39,34 @@
 
 <div class="block">
   <h2><a name="a2">How do I delete my target weight?</a></h2>
-  <p>Click the image in the delete column next to the target weight:<br />
-     <%= image_tag('help/target-weight-list-delete.jpg', :alt => 'Deleting the target weight', :class => 'help') %><br />
-     You'll be asked if you are sure you want to delete the target weight. If you are sure then click
-     &quot;OK&quot;. You will be taken back to the target weight page and it'll show a previous target weight, if you've
-     added any, or it will ask you if you want to add a target weight.
+  <p>
+    Click the image in the delete column next to the target weight:<br />
+    <%= image_tag('help/target-weight-list-delete.jpg', :alt => 'Deleting the target weight', :class => 'help') %><br />
+    You'll be asked if you are sure you want to delete the target weight. If you are sure then click
+    &quot;OK&quot;. You will be taken back to the target weight page and it'll show a previous target weight, if you've
+    added any, or it will ask you if you want to add a target weight.
   </p>
   <%= top_link %>
 </div>
 
 <div class="block">
   <h2><a name="a3">Why can't I edit my target weight?</a></h2>
-  <p>Target weights should be seen more as mile stones. You set a target weight then work to reach it. As time goes on
-     and you get closer to your target weight you'll be able to see it easily as the remaining value will gradually
-     decrease until finally you achieve the target weight. Then you set yourself a new target weight to aim for.
-     Editing the target weight could mean that you never actually achieve the target weight and wouldn't be able to
-     see on what day you managed to reach it.</p>
+  <p>
+    Target weights should be seen more as mile stones. You set a target weight then work to reach it. As time goes on
+    and you get closer to your target weight you'll be able to see it easily as the remaining value will gradually
+    decrease until finally you achieve the target weight. Then you set yourself a new target weight to aim for.
+    Editing the target weight could mean that you never actually achieve the target weight and wouldn't be able to
+    see on what day you managed to reach it.
+  </p>
   <%= top_link %>
 </div>
 
 <div class="block">
   <h2><a name="a4">What happens when I reach my target weight?</a></h2>
-  <p>When you enter a weight that is less than your target weight, the date is stored in the target weight and is used
-     to show when you achieved the target weight:<br />
-     <%= image_tag('help/target-weight-list.jpg', :alt => 'Target weight achieved', :class => 'help') %><br />
-     You're then able to add a new target weight to aim for.</p>
+  <p>
+    When you enter a weight that is less than your target weight, the date is stored in the target weight and is used
+    to show when you achieved the target weight:<br />
+    <%= image_tag('help/target-weight-list.jpg', :alt => 'Target weight achieved', :class => 'help') %><br />
+    You're then able to add a new target weight to aim for.
+  </p>
 </div>
