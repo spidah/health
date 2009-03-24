@@ -13,6 +13,10 @@ class HelpController < ApplicationController
     @activemenuitem = 'menu-meals'
   end
 
+  def meals
+    @activemenuitem = 'menu-meals'
+  end
+
   def measurements
     @activemenuitem = 'menu-measurements'
   end

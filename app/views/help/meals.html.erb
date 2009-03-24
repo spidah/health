@@ -1,0 +1,64 @@
+<div class="block">
+  <h2><a name="top">Meals Help</a></h2>
+  <ul>
+    <li><a href="#a1">How do I add a new meal?</a></li>
+    <li><a href="#a2">How do I edit an existing meal?</a></li>
+    <li><a href="#a3">How do I delete an existing meal?</a></li>
+  </ul>
+</div>
+
+<div class="block">
+  <h2><a name="a1">How do I add a new meal?</a></h2>
+  <p>
+    Select &quot;Add Meal&quot; from the meals menu:<br />
+    <%= image_tag('help/meals-menu-add.jpg', :alt => 'Adding a new meal', :class => 'help') %><br />
+    You'll need to enter a name for the meal so that you can distinguish it from other meals added for the same day:<br />
+    <%= image_tag('help/meals-new.jpg', :alt => 'Adding a new meal', :class => 'help') %><br />
+    It will then display your foods list (as long as you've entered some foods), like this:<br />
+    <%= image_tag('help/meals-add-food.jpg', :alt => 'Foods list for a meal', :class => 'help') %><br />
+    To add a food, or add more of that food, to the meal, click the plus icon next to the food:<br />
+    <%= image_tag('help/meals-add-food-increment.jpg', :alt => 'Adding a food to a meal', :class => 'help') %><br />
+    To remove a food, or decrease the quantity of a food, click the minus icon next to the food:<br />
+    <%= image_tag('help/meals-add-food-decrement.jpg', :alt => 'Removing a food from a meal', :class => 'help') %><br />
+    Setting a foods quantity to 0 totally removes that food.
+  </p>
+  <p>
+    Once you have picked the foods, click &quot;Return to the meal&quot;:<br />
+    <%= image_tag('help/meals-return.jpg', :alt => 'Returning to a meal', :class => 'help') %><br />
+    You will be taken to the meal where you can see how many calories the meal costs, plus also make any adjustments to
+    the quantity of the foods:<br />
+    <%= image_tag('help/meals-edit.jpg', :alt => 'Returning to a meal', :class => 'help') %><br />
+  </p>
+  <%= top_link %>
+</div>
+
+<div class="block">
+  <h2><a name="a2">How do I edit an existing meal?</a></h2>
+  <p>
+    When on the meals list, click the &quot;Edit&quot; link under the meal you want to edit:<br />
+    <%= image_tag('help/meals-list-edit.jpg', :alt => 'Editing a meal', :class => 'help') %><br />
+    This displays the meal, allowing you to change the food quantities:<br />
+    <%= image_tag('help/meals-edit.jpg', :alt => 'Editing a meal', :class => 'help') %><br />
+    To increase the quantity of a food, click the plus icon next to the quantity:<br />
+    <%= image_tag('help/meals-edit-increment.jpg', :alt => 'Increasing the quantity of a food', :class => 'help') %><br />
+    To decrease the quantity of a food, click the minus icon next to the quantity:<br />
+    <%= image_tag('help/meals-edit-decrement.jpg', :alt => 'Decreasing the quantity of a food', :class => 'help') %><br />
+    To remove a food from the meal you can either decrease the quantity to 0 (it'll disappear the next time the meal is
+    displayed), or click the cross icon next to the food:<br />
+    <%= image_tag('help/meals-edit-remove.jpg', :alt => 'Removing a food', :class => 'help') %><br />
+    To add a new food to the meal click the &quot;add a food&quot; link above the food table:<br />
+    <%= image_tag('help/meals-edit-new.jpg', :alt => 'Adding a new food to a meal', :class => 'help') %><br />
+  </p>
+  <%= top_link %>
+</div>
+
+<div class="block">
+  <h2><a name="a3">How do I delete an existing meal?</a></h2>
+  <p>
+    Click the &quot;Delete&quot; link under the meal you want to delete:<br />
+    <%= image_tag('help/meals-list-delete.jpg', :alt => 'Deleting a food', :class => 'help') %><br />
+    You'll be asked if you're sure you want to delete the meal. If you're sure then click
+    &quot;OK&quot; and you will be taken back to the meals list.
+  </p>
+  <%= top_link %>
+</div>
