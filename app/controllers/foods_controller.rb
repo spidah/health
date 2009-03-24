@@ -58,6 +58,5 @@ class FoodsController < ApplicationController
 
   def set_menu_item
     @activemenuitem = 'menu-meals'
-    @overridden_controller = 'meals'
   end
 end

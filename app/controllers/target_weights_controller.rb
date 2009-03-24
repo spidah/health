@@ -40,7 +40,6 @@ class TargetWeightsController < ApplicationController
 
   def set_menu_item
     @activemenuitem = 'menu-weights'
-    @overridden_controller = 'weights'
   end
 
   def get_targetweight
