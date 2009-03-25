@@ -1,12 +1,14 @@
 <%= print_flash(flash[:info], 'info') -%>
 <%= print_flash(flash[:error], 'error') -%>
 <div class="block">
-<h2>Welcome</h2>
-<p>Welcome to the Healtheriser. Using this website you will be able to store health data,
-like weights, measurements, meals, exercise, and so on, and see at a glance how you are doing.</p>
+  <h2>Welcome</h2>
+  <p>
+    Welcome to the Healtheriser. Using this website you will be able to store health data,
+    like weights, measurements, meals, exercise, and so on, and see at a glance how you are doing.
+  </p>
 </div>
 <div class="block">
-<h2>Latest News</h2>
+  <h2>Latest News</h2>
 <%= render(:partial => 'news/news', :collection => @news) %>
-<p><span class="news-item-body"><%= link_to('More news', news_url) %></span></p>
+  <p><%= link_to('More news', news_url) %></p>
 </div>

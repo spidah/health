@@ -1,6 +1,7 @@
 div.news-item {
   padding-left: 1em;
   border-bottom: 1px solid #b0a8b8;
+  overflow: hidden;
 }
 
 div.news-item-date {

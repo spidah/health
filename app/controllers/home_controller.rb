@@ -8,7 +8,7 @@ class HomeController < ApplicationController
     flash[:error] = 'That page could not be found.' if params[:path]
     redirect_to(dashboard_url) and return if @current_user
 
-    @news = NewsItem.find(:all, :limit => 3, :order => 'posted_on DESC')
+    @news = NewsItem.pagination(1, 3)
   end
 
   def contact
