@@ -3,6 +3,7 @@ class FoodItemsController < ApplicationController
   before_filter :get_meal
   before_filter :get_food, :only => :create
   before_filter :get_food_item, :only => [:edit, :update, :destroy]
+  before_filter :check_cancel, :only => [:destroy]
 
   verify :method => :get, :only => [:new, :edit], :redirect_to => 'index'
   verify :method => :post, :only => :create, :redirect_to => 'index'
@@ -119,7 +120,6 @@ class FoodItemsController < ApplicationController
 
     @meal.food_items(true)
 
-
     if params[:action_type] == 'new'
       # sender: new meal food item page 'meals/x/food_items/new'
       if request.xhr?
@@ -135,5 +135,9 @@ class FoodItemsController < ApplicationController
         redirect_to(meal_url(@meal))
       end
     end
+  end
+
+  def check_cancel
+    redirect_to(meal_url(@meal)) if params[:cancel]
   end
 end

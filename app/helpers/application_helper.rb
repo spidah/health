@@ -59,7 +59,7 @@ module ApplicationHelper
   end
 
   def cancel_button
-    '<input name="cancel" type="button" value="Cancel" onclick="history.go(-1)" />'
+    '<input name="cancel" type="submit" value="Cancel" />'
   end
 
   def output_stylesheets(*files)

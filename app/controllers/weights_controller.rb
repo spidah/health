@@ -1,6 +1,7 @@
 class WeightsController < ApplicationController
   before_filter :login_required, :set_menu_item
   before_filter :get_weight, :only => [:edit, :update, :destroy]
+  before_filter :check_cancel, :only => [:create, :update, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
   verify :method => :post, :only => [:create], :redirect_to => 'index'
@@ -75,5 +76,9 @@ class WeightsController < ApplicationController
   rescue
     flash[:error] = 'Unable to find the selected weight.'
     redirect_to(weights_url)
+  end
+
+  def check_cancel
+    redirect_to(weights_url) if params[:cancel]
   end
 end

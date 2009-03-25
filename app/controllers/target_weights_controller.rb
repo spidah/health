@@ -2,6 +2,7 @@ class TargetWeightsController < ApplicationController
   before_filter :login_required, :set_menu_item
   before_filter :get_targetweight, :only => :destroy
   before_filter :check_existing_targetweight, :only => [:new, :create]
+  before_filter :check_cancel, :only => [:create, :destroy]
 
   helper :weights
 
@@ -52,5 +53,9 @@ class TargetWeightsController < ApplicationController
   def check_existing_targetweight
     existing = @current_user.target_weights.get_latest
     redirect_to(targetweights_url) if existing && existing.achieved_on == nil
+  end
+
+  def check_cancel
+    redirect_to(targetweights_url) if params[:cancel]
   end
 end

@@ -1,6 +1,7 @@
 class ActivitiesController < ApplicationController
   before_filter :login_required, :set_menu_item
   before_filter :get_activity, :only => [:edit, :update, :destroy]
+  before_filter :check_cancel, :only => [:create, :update, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
   verify :method => :post, :only => :create, :redirect_to => 'index'
@@ -64,7 +65,11 @@ class ActivitiesController < ApplicationController
     redirect_to(activities_url)
   end
 
+  def check_cancel
+    redirect_to(activities_url) if params[:cancel]
+  end
+
   def set_menu_item
-    @activemenuitem = 'menu-exercise'
+    @activemenuitem = 'menu-exercises'
   end
 end

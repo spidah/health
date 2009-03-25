@@ -1,6 +1,7 @@
 class ExercisesController < ApplicationController
   before_filter :login_required, :set_menu_item
   before_filter :get_exercise, :only => [:edit, :update, :destroy]
+  before_filter :check_cancel, :only => [:create, :update, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit], :redirect_to => 'index'
   verify :method => :post, :only => :create, :redirect_to => 'index'
@@ -93,6 +94,10 @@ class ExercisesController < ApplicationController
   def get_totals
     @total_duration = @current_user.exercises.for_day(current_date).duration
     @total_calories = @current_user.exercises.for_day(current_date).calories
+  end
+
+  def check_cancel
+    redirect_to(exercises_url) if params[:cancel]
   end
 
   def set_menu_item

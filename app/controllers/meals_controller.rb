@@ -1,6 +1,7 @@
 class MealsController < ApplicationController
   before_filter :login_required, :set_menu_item, :include_meal_files
   before_filter :get_meal, :only => [:show, :edit, :destroy]
+  before_filter :check_cancel, :only => [:create, :destroy]
 
   verify :method => :get, :only => [:index, :new, :edit, :show], :redirect_to => 'index'
   verify :method => :post, :only => [:create], :redirect_to => 'index'
@@ -58,5 +59,9 @@ class MealsController < ApplicationController
   rescue
     flash[:error] = 'Unable to find the selected meal.'
     redirect_to(meals_url)
+  end
+
+  def check_cancel
+    redirect_to(meals_url) if params[:cancel]
   end
 end
