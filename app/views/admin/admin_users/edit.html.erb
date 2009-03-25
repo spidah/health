@@ -2,7 +2,7 @@
 <h2>Admin :: Edit User</h2>
 <%= print_flash(flash[:error], 'error', 'Unable to update the settings') %>
 <%= print_flash(flash[:info], 'info') %>
-<% form_for(:user, @user, :url => user_url, :html => {:method => :put}) do |f| %>
+<% form_for(:user, @user, :url => admin_user_url(@user), :html => {:method => :put}) do |f| %>
 <fieldset>
   <legend>Personal Data</legend>
   <div class="form-row">
@@ -34,7 +34,8 @@
   </div>
 </fieldset>
 <div class="form-row">
-  <%= submit_tag('Update', :class => 'submit') %>
+  <%= submit_tag('Save', :class => 'submit') %>
+  <%= cancel_button %>
 </div>
 <% end %>
 </div>

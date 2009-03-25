@@ -2,6 +2,7 @@ class Admin::AdminUsersController < ApplicationController
   before_filter :admin_required
   before_filter :override_controller, :set_menu_item
   before_filter :admin_get_user, :only => [:show, :edit, :update, :destroy]
+  before_filter :check_cancel, :only => [:update, :destroy]
 
   def index
     @users = User.admin_pagination(params[:page])
@@ -14,7 +15,7 @@ class Admin::AdminUsersController < ApplicationController
   end
 
   def update
-    @user.update_attributes(params[:user])
+    @user.update_attributes!(params[:user])
     redirect_to(admin_users_url)
   rescue
     flash[:error] = @user.errors
@@ -42,5 +43,9 @@ class Admin::AdminUsersController < ApplicationController
     @user = User.find(params[:id].to_i)
   rescue
     redirect_to(admin_users_url)
+  end
+
+  def check_cancel
+    redirect_to(admin_users_url) if params[:cancel]
   end
 end

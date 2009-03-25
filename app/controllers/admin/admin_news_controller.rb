@@ -2,6 +2,7 @@ class Admin::AdminNewsController < ApplicationController
   before_filter :admin_required
   before_filter :override_controller, :set_menu_item
   before_filter :get_news_item, :only => [:edit, :update, :destroy]
+  before_filter :check_cancel, :only => [:create, :update, :destroy]
 
   def index
     @news = NewsItem.pagination(params[:page])
@@ -53,5 +54,9 @@ class Admin::AdminNewsController < ApplicationController
     @item = NewsItem.find(params[:id].to_i)
   rescue
     redirect_to(admin_news_index_url)
+  end
+
+  def check_cancel
+    redirect_to(admin_news_index_url) if params[:cancel]
   end
 end

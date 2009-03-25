@@ -2,6 +2,7 @@ class Admin::AdminUserLoginsController < ApplicationController
   before_filter :admin_required
   before_filter :override_controller, :set_menu_item
   before_filter :get_user_login, :only => [:show, :edit, :update, :destroy]
+  before_filter :check_cancel, :only => [:update, :destroy]
 
   def index
     @user_logins = UserLogin.admin_pagination(params[:page])
@@ -50,5 +51,9 @@ class Admin::AdminUserLoginsController < ApplicationController
     @user_login = UserLogin.find(params[:id].to_i)
   rescue
     redirect_to(admin_user_logins_url)
+  end
+
+  def check_cancel
+    redirect_to(admin_user_logins_url) if params[:cancel]
   end
 end
