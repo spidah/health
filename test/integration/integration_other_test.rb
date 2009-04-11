@@ -7,9 +7,9 @@ class IntegrationOtherTest < ActionController::IntegrationTest
     tester.check_news_page(1, 7)
     tester.check_news_page(2, 5)
     tester.check_tour_page
-    tester.check_contact_form
-    tester.post_failing_contact_form
-    tester.post_valid_contact_form
+    #tester.check_contact_form
+    #tester.post_failing_contact_form
+    #tester.post_valid_contact_form
     tester.cant_access_site_without_logging_in
     tester.cant_access_nonexisting_page
     tester.check_login_redirects_to_requested_page(weights_url, 'weights/index', user_logins(:bob).openid_url)
