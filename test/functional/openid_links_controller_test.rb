@@ -1,16 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'openid_links_controller'
 
-# Re-raise errors caught by the controller.
-class OpenidLinksController; def rescue_action(e) raise e end; end
-
-class OpenidLinksControllerTest < Test::Unit::TestCase
-  def setup
-    @controller = OpenidLinksController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-  end
-
+class OpenidLinksControllerTest < ActionController::TestCase
   # Replace this with your real tests.
   def test_truth
     assert true

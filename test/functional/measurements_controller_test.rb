@@ -1,16 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'measurements_controller'
 
-# Re-raise errors caught by the controller.
-class MeasurementsController; def rescue_action(e) raise e end; end
-
-class MeasurementsControllerTest < Test::Unit::TestCase
-  def setup
-    @controller = MeasurementsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-  end
-
+class MeasurementsControllerTest < ActionController::TestCase
   # Replace this with your real tests.
   def test_truth
     assert true
