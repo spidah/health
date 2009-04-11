@@ -105,7 +105,6 @@ class SessionsController < ApplicationController
         redirect_to(dashboard_url)
         return
       else
-        reset_session
         session[:login_loginname] = loginname
         session[:login_password] = password
         failed_login('Unable to log you in. Please check your loginname and password and try again.')
@@ -134,7 +133,6 @@ class SessionsController < ApplicationController
           successful_login
           return
         else
-          reset_session
           session[:openid_url] = identity_url
           session[:openid_registration] = registration
 
