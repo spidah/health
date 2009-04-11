@@ -12,7 +12,6 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
   html_tag
 end
 
-ActiveRecord::Base.default_timezone = :utc
 ENV['TZ'] = 'UTC'
 
 require 'will_paginate'
@@ -115,19 +114,4 @@ def normalise_url(url)
   rescue URI::InvalidURIError
     raise InvalidOpenId.new("#{url} is not an OpenID URL")
   end
-end
-
-# stupid simple logging:
-def yell_log(file, msg)
-  f = File.open(File.expand_path(File.dirname(__FILE__) + "/../log/#{file}.log"),"a")
-  f.puts "#{Time.now.to_s} - #{msg}"
-  f.close
-end
-
-def yell(msg)
-  yell_log('yell', msg)
-end
-
-def log_test(msg)
-  RAILS_DEFAULT_LOGGER.warn "#{Time.now.to_s} - #{msg}"
 end
