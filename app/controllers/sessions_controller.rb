@@ -98,7 +98,6 @@ class SessionsController < ApplicationController
   def password_authentication(loginname, password)
     if @user = User.find(:first, :conditions => {:loginname => loginname})
       if @user_login = UserLogin.authenticate(@user.id, password)
-        reset_session
         session[:user_id] = @user.id
         session[:user_login_id] = @user_login.id
         @user.last_login = Time.now
@@ -128,7 +127,6 @@ class SessionsController < ApplicationController
           @user.save
 
           temp = session[:return_to]
-          reset_session
           session[:user_id] = @user.id
           session[:user_login_id] = @user_login.id
           session[:return_to] = temp

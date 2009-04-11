@@ -4,8 +4,6 @@
 class ApplicationController < ActionController::Base
   # Stop GWA and other pre-fetchers
   include LinkPrefetchingBlock
-  # Pick a unique cookie name to distinguish our session data from others'
-  session :session_key => '_health_session_id'
   protect_from_forgery
   before_filter :get_user
   helper_method :current_date
