@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include LinkPrefetchingBlock
   # Pick a unique cookie name to distinguish our session data from others'
   session :session_key => '_health_session_id'
-  protect_from_forgery :secret => '22bf5f741da2673a5d144122a3af97f9da94d417'
+  protect_from_forgery
   before_filter :get_user
   helper_method :current_date
 
