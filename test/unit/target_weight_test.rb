@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TargetWeightTest < Test::Unit::TestCase
+class TargetWeightTest < ActiveSupport::TestCase
   def setup
     @user_lbs = User.find(users(:spidah).id)
     @user_kg = User.find(users(:jimmy).id)

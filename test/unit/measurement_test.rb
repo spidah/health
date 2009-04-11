@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class MeasurementTest < Test::Unit::TestCase
-  fixtures :users, :measurements
-
+class MeasurementTest < ActiveSupport::TestCase
   def setup
     @user = User.find(users(:spidah).id)
   end

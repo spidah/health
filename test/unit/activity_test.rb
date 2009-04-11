@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ActivityTest < Test::Unit::TestCase
+class ActivityTest < ActiveSupport::TestCase
   def setup
     @user = User.find(users(:spidah).id)
     @valid_attributes = { :name => 'Jogging', :description => 'Jogging', :type => 'Aerobic', :duration => 10, :calories => 10 }

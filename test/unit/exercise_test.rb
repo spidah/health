@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ExerciseTest < Test::Unit::TestCase
+class ExerciseTest < ActiveSupport::TestCase
   def setup
     @user = User.find(users(:bob).id)
     @activity = Activity.find(activities(:jogging).id)

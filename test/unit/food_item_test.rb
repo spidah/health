@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class FoodItemTest < Test::Unit::TestCase
+class FoodItemTest < ActiveSupport::TestCase
   def setup
     @user = User.find(users(:spidah).id)
     @food = @user.foods.create(:name => 'Food', :description => 'Food', :manufacturer => 'Shop', :fat => 1, :protein => 1, :carbs => 1, :calories => 1)

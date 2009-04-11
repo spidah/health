@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class UserTest < Test::Unit::TestCase
+class UserTest < ActiveSupport::TestCase
   def setup
     @valid_attributes = {:loginname => 'newuser', :email => 'spidahman@gmail.com', :gender => 'm', :dob => Date.today,
       :timezone => 'London', :weight_units => 'lbs', :measurement_units => 'inches'}

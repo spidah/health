@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class FoodTest < Test::Unit::TestCase
+class FoodTest < ActiveSupport::TestCase
   def setup
     @user = User.find(users(:spidah).id)
     @valid_attributes = { :name => 'Food', :description => 'Food', :manufacturer => 'Shop', :weight => '1', :fat => 1, :protein => 1, :carbs => 1, :calories => 1 }

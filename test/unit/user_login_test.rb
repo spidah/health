@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class UserLoginTest < Test::Unit::TestCase
+class UserLoginTest < ActiveSupport::TestCase
   def test_should_create_user_logins
     assert_difference(UserLogin, :count) do
       user_logins = create_user_login
