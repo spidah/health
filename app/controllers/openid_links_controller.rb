@@ -7,7 +7,7 @@ class OpenidLinksController < ApplicationController
 
   # action for adding an OpenID account link
   def create
-    if params[:openid_link] && oid = UserLogin.get(OpenIdAuthentication.normalize_url(params[:openid_link]))
+    if params[:openid_link] && oid = UserLogin.get(OpenIdAuthentication.normalize_identifier(params[:openid_link]))
       if oid.user_id == @current_user.id
         flash[:openid_error] = "You have already linked #{params[:openid_link]} to your account."
       else

@@ -4,7 +4,7 @@ module OpenIdAuthentication
       if params[:open_id_complete].nil?
         redirect_to '/'
       else
-        identity_url = normalize_url(identity_url)
+        identity_url = normalize_identifier(identity_url)
         extension_response_fields = {}
         if $mockuser
           extension_response_fields['nickname'] = $mockuser[:loginname]
