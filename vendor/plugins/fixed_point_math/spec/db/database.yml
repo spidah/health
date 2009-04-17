@@ -1,0 +1,3 @@
+sqlite3:
+  :adapter: sqlite3
+  :dbfile: vendor/plugins/fixed_point_math/spec/db/fixed_point_math.sqlite3.db
