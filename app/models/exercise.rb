@@ -1,6 +1,8 @@
 class Exercise < ActiveRecord::Base
   belongs_to :user
 
+  fixed_point_number_integer :calories, :duration
+
   named_scope :for_day, lambda { |date| { :conditions => { :taken_on => date } } }
 
   named_scope :for_month, lambda { |month|
@@ -15,24 +17,6 @@ class Exercise < ActiveRecord::Base
     self[:activity_type] = activity.type
     self.duration = duration
     self.calories = ((activity.calories.to_f / activity.duration.to_f) * self.duration).to_i
-  end
-
-  def calories
-    @calories ||= self[:calories] / 100
-  end
-
-  def calories=(value)
-    self[:calories] = value.to_i * 100
-    @calories = value.to_i
-  end
-
-  def duration
-    @duration ||= self[:duration] / 100
-  end
-
-  def duration=(value)
-    self[:duration] = value.to_i * 100
-    @duration = value.to_i
   end
 
   def self.get_latest_date

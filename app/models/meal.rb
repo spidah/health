@@ -2,6 +2,8 @@ class Meal < ActiveRecord::Base
   belongs_to :user
   has_many :food_items, :dependent => :delete_all
 
+  fixed_point_number_integer :total_calories
+
   named_scope :for_day, lambda { |date| { :conditions => { :created_on => date } } }
 
   named_scope :for_month, lambda { |month|
@@ -16,15 +18,6 @@ class Meal < ActiveRecord::Base
     items.each {|item| tc += item.calories * item.quantity}
     self.total_calories = tc
     save
-  end
-
-  def total_calories
-    @total_calories ||= self[:total_calories] / 100
-  end
-
-  def total_calories=(value)
-    self[:total_calories] = value.to_i * 100
-    @total_calories = value.to_i
   end
 
   def self.get_latest_date
